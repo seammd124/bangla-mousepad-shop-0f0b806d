@@ -138,8 +138,8 @@ function Index() {
               </dl>
             </div>
 
-            <div className="relative mx-auto w-full max-w-sm">
-              <div className="iso-shadow border border-ink bg-surface-alt p-2">
+            <div className="relative order-1 mx-auto w-full max-w-xs sm:max-w-sm lg:order-2 lg:max-w-md">
+              <div className="iso-shadow border border-ink bg-background p-2">
                 <video
                   src={heroVideo.url}
                   poster={heroPoster.url}
@@ -152,6 +152,9 @@ function Index() {
                   className="aspect-9/16 w-full object-cover"
                 />
               </div>
+              <span className="absolute -bottom-3 left-4 border border-ink bg-primary px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-primary-foreground">
+                {PRODUCT_SIZE}
+              </span>
             </div>
           </div>
         </section>
