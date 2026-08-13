@@ -9,6 +9,7 @@ import type {
   ThicknessId,
 } from "./catalog";
 import { createPublicSupabaseClient } from "./supabase-public.server";
+import { checkIsAdmin } from "@/lib/is-admin";
 
 type ProductRow = {
   id: string;
@@ -83,10 +84,7 @@ export const getStorefront = createServerFn({ method: "GET" }).handler(
 );
 
 async function assertAdmin(context: { supabase: any; userId: string }) {
-  const { data: isAdmin } = await context.supabase.rpc("has_role", {
-    _user_id: context.userId,
-    _role: "admin",
-  });
+  const isAdmin = await checkIsAdmin(context.supabase, context.userId);
   if (!isAdmin) throw new Error("Forbidden");
 }
 
