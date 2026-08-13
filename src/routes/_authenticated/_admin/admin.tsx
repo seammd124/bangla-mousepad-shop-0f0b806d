@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Search, Eye, Phone, MessageCircle, Copy, Download } from "lucide-react";
+import { Search, Eye, Phone, MessageCircle, Copy, Download, Calendar } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -79,6 +79,8 @@ function AdminPage() {
   const [exportKeys, setExportKeys] = useState<string[]>(() =>
     EXPORT_COLUMNS.map((c) => c.key),
   );
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
 
   useEffect(() => {
     const saved = localStorage.getItem(EXPORT_PREFS_KEY);
@@ -151,9 +153,40 @@ function AdminPage() {
     });
   }, [orders, query, statusFilter]);
 
+  // Orders narrowed to the selected date range (for CSV export only).
+  const exportFiltered = useMemo(() => {
+    return filtered.filter((o) => {
+      if (!o.created_at) return true;
+      const d = new Date(o.created_at).getTime();
+      if (dateFrom && d < new Date(dateFrom + "T00:00:00").getTime()) return false;
+      if (dateTo && d > new Date(dateTo + "T23:59:59").getTime()) return false;
+      return true;
+    });
+  }, [filtered, dateFrom, dateTo]);
+
+  const setDatePreset = (days: number | "all" | "today") => {
+    if (days === "all") {
+      setDateFrom("");
+      setDateTo("");
+      return;
+    }
+    const now = new Date();
+    const end = new Date(now);
+    end.setHours(23, 59, 59, 999);
+    const start = new Date(now);
+    if (days === "today") {
+      start.setHours(0, 0, 0, 0);
+    } else {
+      start.setDate(start.getDate() - (days - 1));
+      start.setHours(0, 0, 0, 0);
+    }
+    setDateFrom(start.toISOString().slice(0, 10));
+    setDateTo(end.toISOString().slice(0, 10));
+  };
+
   const exportCsv = () => {
-    if (filtered.length === 0) {
-      toast.error("No orders to export");
+    if (exportFiltered.length === 0) {
+      toast.error("No orders to export in this range");
       return;
     }
     const columns = EXPORT_COLUMNS.filter((c) => exportKeys.includes(c.key));
@@ -165,7 +198,7 @@ function AdminPage() {
       const s = value === null || value === undefined ? "" : String(value);
       return `"${s.replace(/"/g, '""')}"`;
     };
-    const rows = filtered.map((o) =>
+    const rows = exportFiltered.map((o) =>
       columns.map((c) => escape((o as Record<string, unknown>)[c.key])).join(","),
     );
     const csv = ["\uFEFF" + columns.map((c) => escape(c.label)).join(","), ...rows].join("\r\n");
@@ -173,11 +206,14 @@ function AdminPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `unipadz-orders-${new Date().toISOString().slice(0, 10)}.csv`;
+    const rangeTag = dateFrom || dateTo
+      ? `${dateFrom || "start"}_to_${dateTo || "end"}`
+      : new Date().toISOString().slice(0, 10);
+    a.download = `unipadz-orders-${rangeTag}.csv`;
     a.click();
     URL.revokeObjectURL(url);
     setExportOpen(false);
-    toast.success(`${filtered.length} orders exported`);
+    toast.success(`${exportFiltered.length} orders exported`);
   };
 
 
@@ -207,9 +243,52 @@ function AdminPage() {
                 </DialogTitle>
               </DialogHeader>
               <p className="text-sm text-muted-foreground">
-                Choose which columns to include. {filtered.length} order(s) match the current
-                filters.
+                Choose which columns to include. {exportFiltered.length} order(s) match the
+                current filters and date range.
               </p>
+              <div className="space-y-2 border border-border p-3">
+                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em]">
+                  <Calendar className="h-3.5 w-3.5" /> Date range
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {[
+                    { label: "Today", val: "today" as const },
+                    { label: "7 days", val: 7 as const },
+                    { label: "30 days", val: 30 as const },
+                    { label: "All", val: "all" as const },
+                  ].map((p) => (
+                    <Button
+                      key={p.label}
+                      variant="outline"
+                      size="sm"
+                      className="rounded-none px-2 py-1 text-xs"
+                      onClick={() => setDatePreset(p.val)}
+                    >
+                      {p.label}
+                    </Button>
+                  ))}
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <label className="flex flex-col gap-1 text-xs text-muted-foreground">
+                    From
+                    <Input
+                      type="date"
+                      value={dateFrom}
+                      onChange={(e) => setDateFrom(e.target.value)}
+                      className="rounded-none"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1 text-xs text-muted-foreground">
+                    To
+                    <Input
+                      type="date"
+                      value={dateTo}
+                      onChange={(e) => setDateTo(e.target.value)}
+                      className="rounded-none"
+                    />
+                  </label>
+                </div>
+              </div>
               <div className="flex gap-2">
                 <Button
                   variant="outline"
