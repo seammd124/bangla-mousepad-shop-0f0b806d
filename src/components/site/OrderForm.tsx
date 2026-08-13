@@ -34,14 +34,12 @@ function FieldError({ message }: { message?: string | undefined }) {
   return <p className="mt-1.5 text-xs font-medium text-destructive">{message}</p>;
 }
 
-export function OrderForm({
-  designId,
-  onDesignChange,
-  thickness,
-  onThicknessChange,
-}: OrderFormProps) {
+export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
   const submitOrder = useServerFn(placeOrder);
   const [confirmation, setConfirmation] = useState<{ orderNumber: string; total: number } | null>(null);
+
+  const selected = getDesign(designId) ?? DESIGNS[0]!;
+  const thickness = selected.thickness;
 
   const {
     register,
@@ -69,19 +67,18 @@ export function OrderForm({
 
   const quantity = watch("quantity");
   const deliveryArea = watch("deliveryArea");
+  const qty = Number(quantity) || 1;
 
-  const unitPrice = getThickness(thickness)?.price ?? 0;
+  const unitPrice = selected.price;
   const deliveryFee = getDelivery(deliveryArea)?.fee ?? 0;
-  const total = unitPrice * (Number(quantity) || 1) + deliveryFee;
+  const total = unitPrice * qty + deliveryFee;
+  const discount = savings(selected) * qty;
 
   const selectDesign = (id: DesignId) => {
     onDesignChange(id);
     setValue("designId", id, { shouldValidate: true });
-  };
-
-  const selectThickness = (id: ThicknessId) => {
-    onThicknessChange(id);
-    setValue("thickness", id, { shouldValidate: true });
+    const next = getDesign(id);
+    if (next) setValue("thickness", next.thickness, { shouldValidate: true });
   };
 
   const onSubmit = async (values: OrderInput) => {
