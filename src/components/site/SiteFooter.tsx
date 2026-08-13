@@ -58,18 +58,9 @@ export function SiteFooter() {
                 Place an order
               </a>
             </li>
-            <li>
-              <a href="#designs" className="hover:text-background">
-                Browse designs
-              </a>
-            </li>
-            <li>
-              <a href="#delivery" className="hover:text-background">
-                Delivery &amp; returns
-              </a>
-            </li>
             <li>Cash on Delivery nationwide</li>
           </ul>
+
         </div>
       </div>
 
