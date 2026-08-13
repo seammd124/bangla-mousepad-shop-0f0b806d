@@ -243,9 +243,52 @@ function AdminPage() {
                 </DialogTitle>
               </DialogHeader>
               <p className="text-sm text-muted-foreground">
-                Choose which columns to include. {filtered.length} order(s) match the current
-                filters.
+                Choose which columns to include. {exportFiltered.length} order(s) match the
+                current filters and date range.
               </p>
+              <div className="space-y-2 border border-border p-3">
+                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em]">
+                  <Calendar className="h-3.5 w-3.5" /> Date range
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {[
+                    { label: "Today", val: "today" as const },
+                    { label: "7 days", val: 7 as const },
+                    { label: "30 days", val: 30 as const },
+                    { label: "All", val: "all" as const },
+                  ].map((p) => (
+                    <Button
+                      key={p.label}
+                      variant="outline"
+                      size="sm"
+                      className="rounded-none px-2 py-1 text-xs"
+                      onClick={() => setDatePreset(p.val)}
+                    >
+                      {p.label}
+                    </Button>
+                  ))}
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <label className="flex flex-col gap-1 text-xs text-muted-foreground">
+                    From
+                    <Input
+                      type="date"
+                      value={dateFrom}
+                      onChange={(e) => setDateFrom(e.target.value)}
+                      className="rounded-none"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1 text-xs text-muted-foreground">
+                    To
+                    <Input
+                      type="date"
+                      value={dateTo}
+                      onChange={(e) => setDateTo(e.target.value)}
+                      className="rounded-none"
+                    />
+                  </label>
+                </div>
+              </div>
               <div className="flex gap-2">
                 <Button
                   variant="outline"
