@@ -83,7 +83,7 @@ function MetaSettingsPage() {
   return (
     <main className="min-h-screen bg-background">
       <header className="border-b border-border">
-        <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-4 px-4 py-5">
+        <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:py-5">
           <LogoLockup />
           <nav className="flex items-center gap-2">
             <Button asChild variant="outline" className="rounded-none uppercase tracking-[0.14em]">

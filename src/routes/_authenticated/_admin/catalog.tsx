@@ -121,7 +121,7 @@ function CatalogPage() {
   return (
     <div className="min-h-screen bg-surface-alt">
       <header className="border-b border-border bg-background">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-5">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-5 sm:py-5">
           <LogoLockup compact />
           <Button asChild variant="outline" className="rounded-none uppercase tracking-[0.14em]">
             <Link to="/admin">Orders</Link>
