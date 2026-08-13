@@ -500,9 +500,9 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
         </Button>
       </aside>
 
-      {/* Sticky mobile checkout bar */}
-      <div className="fixed inset-x-0 bottom-0 z-50 border-t border-ink bg-background/95 px-4 pb-[env(safe-area-inset-bottom)] pt-3 backdrop-blur lg:hidden">
-        <div className="mx-auto flex max-w-6xl items-center gap-3">
+      {/* Mobile checkout block (inline, inside the order form) */}
+      <div className="border-t border-ink pt-4 lg:hidden">
+        <div className="flex items-center gap-3">
           <div className="min-w-0">
             <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Total</p>
             <p className="truncate font-display text-xl font-black leading-none">{formatBdt(total)}</p>
@@ -521,10 +521,11 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
             )}
           </Button>
         </div>
-        <p className="bn mb-2 mt-1.5 text-center text-[10px] text-muted-foreground">
+        <p className="bn mt-1.5 text-center text-[10px] text-muted-foreground">
           ক্যাশ অন ডেলিভারি — পণ্য হাতে পেয়ে টাকা দিন।
         </p>
       </div>
+
     </form>
 
   );
