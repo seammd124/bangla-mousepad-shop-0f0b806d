@@ -1,11 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowDown, BadgeCheck, Layers, Ruler, Truck, Wallet } from "lucide-react";
+import { ArrowDown, BadgeCheck, Flame, Layers, RotateCcw, Ruler, ShieldCheck, Truck, Wallet } from "lucide-react";
 
 import { OrderForm } from "@/components/site/OrderForm";
+import { OfferBar } from "@/components/site/OfferBar";
+import { PriceTag } from "@/components/site/PriceTag";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
-import { DESIGNS, PRODUCT_SIZE, THICKNESS_OPTIONS, formatBdt, type DesignId, type ThicknessId } from "@/lib/catalog";
+import {
+  DESIGNS,
+  HEADLINE_DISCOUNT,
+  MAX_SAVING,
+  PRODUCT_SIZE,
+  THICKNESS_OPTIONS,
+  formatBdt,
+  type DesignId,
+} from "@/lib/catalog";
 import { DESIGN_IMAGES } from "@/lib/design-images";
 import heroVideo from "@/assets/unipadz-hero.mp4.asset.json";
 import heroPoster from "@/assets/unipadz-poster.jpg.asset.json";
