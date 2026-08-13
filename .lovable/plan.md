@@ -69,26 +69,34 @@ Copy stays honest: it advertises a launch/limited-time discount off the regular 
 
 1. **`src/lib/catalog.ts`**
    - Replace the 9 placeholder `Design` entries with the 9 real ones above (id, name, nameBn, description, descriptionBn).
-   - Add `thickness: ThicknessId` and `price: number` (and optional `wasPrice`) fields to the `Design` interface, set per design.
+   - Add `thickness: ThicknessId`, `price: number`, and `regularPrice: number` fields to the `Design` interface, set per design.
    - Keep `THICKNESS_OPTIONS` for labels/pricing reference, but the order form no longer lets the user pick it freely.
    - Add short Bangla descriptions for each design.
+   - Add helpers: `savings(design)` and `discountPercent(design)`.
 
 2. **`src/lib/design-images.ts`**
    - Replace the 9 placeholder asset imports with the 9 real `.webp` images (downloaded from uniquemodz.com, uploaded to the CDN via Lovable Assets, referenced by `.asset.json` pointers).
    - Map new `DesignId` values to the real images.
 
-3. **`src/components/site/OrderForm.tsx`**
+3. **`src/components/site/PriceTag.tsx`** (new)
+   - Shared price treatment: struck-through regular price, bold offer price, `-22%` badge, bilingual save line. Size variants for hero / card / summary.
+
+4. **`src/components/site/OfferBar.tsx`** (new)
+   - Sticky top announcement strip with the bilingual limited-time message and a daily countdown to midnight, dismissible. Rendered above `SiteHeader` in `__root.tsx`.
+
+5. **`src/components/site/OrderForm.tsx`**
    - Remove the standalone thickness `<select>`/radio.
    - When a design is chosen, set `thickness` and `unitPrice` from that design's fields (read-only display in the summary).
-   - Live summary shows: design name, its thickness, its price (with struck-through "was" price), qty, delivery fee, total.
+   - Live summary line items: `Regular ৳X`, `Discount −৳Y`, delivery fee, **Total**, plus a `You're saving ৳Y today · আজ ৳Y সাশ্রয়` highlight above the confirm button.
    - zod schema: `thickness` still validated server-side, but it now must equal the chosen design's thickness.
 
-4. **`src/routes/index.tsx`** (gallery + hero)
-   - Gallery cards render the real image, name, description, a thickness badge (4mm/5mm), and price (৳1,399 / ৳1,799 with struck-through original).
-   - Clicking a card selects that design and scrolls to the form (already works; just uses new data).
-   - Hero price line stays ৳1,399 / ৳1,799.
+6. **`src/routes/index.tsx`** (hero + gallery + trust strip)
+   - Hero: `22% OFF · LAUNCH OFFER` badge, `PriceTag` price line, `Offer ends soon · অফার শীঘ্রই শেষ`.
+   - Gallery cards: real image, name, description, thickness badge, `-22%` corner badge, and `PriceTag`.
+   - Add the Cash on Delivery / 7-day returns / limited stock strip near the form.
 
-5. **`src/lib/order-schema.ts`** — no structural change; `thickness` remains a required field, now derived from the design client-side and re-validated server-side.
+7. **`src/lib/order-schema.ts`** — no structural change; `thickness` remains a required field, now derived from the design client-side and re-validated server-side.
+
 
 ## Backend
 
