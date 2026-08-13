@@ -155,27 +155,11 @@ function AdminPage() {
       toast.error("No orders to export");
       return;
     }
-    const columns: { key: string; label: string }[] = [
-      { key: "order_number", label: "Order No" },
-      { key: "created_at", label: "Date" },
-      { key: "status", label: "Status" },
-      { key: "customer_name", label: "Name" },
-      { key: "phone", label: "Phone" },
-      { key: "email", label: "Email" },
-      { key: "address", label: "Address" },
-      { key: "area", label: "Area" },
-      { key: "city", label: "City" },
-      { key: "postal_code", label: "Postal Code" },
-      { key: "country", label: "Country" },
-      { key: "design_name", label: "Design" },
-      { key: "thickness", label: "Thickness" },
-      { key: "quantity", label: "Qty" },
-      { key: "unit_price", label: "Unit Price" },
-      { key: "delivery_area", label: "Delivery Area" },
-      { key: "delivery_fee", label: "Delivery Fee" },
-      { key: "total", label: "Total" },
-      { key: "note", label: "Note" },
-    ];
+    const columns = EXPORT_COLUMNS.filter((c) => exportKeys.includes(c.key));
+    if (columns.length === 0) {
+      toast.error("Select at least one column");
+      return;
+    }
     const escape = (value: unknown) => {
       const s = value === null || value === undefined ? "" : String(value);
       return `"${s.replace(/"/g, '""')}"`;
@@ -191,8 +175,10 @@ function AdminPage() {
     a.download = `unipadz-orders-${new Date().toISOString().slice(0, 10)}.csv`;
     a.click();
     URL.revokeObjectURL(url);
+    setExportOpen(false);
     toast.success(`${filtered.length} orders exported`);
   };
+
 
 
   return (
