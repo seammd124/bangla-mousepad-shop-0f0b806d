@@ -174,16 +174,29 @@ function Index() {
 
             <div className="mt-10 grid gap-4 sm:grid-cols-2">
               {THICKNESS_OPTIONS.map((option) => (
-                <div key={option.id} className="flex items-center justify-between border border-ink bg-background p-6">
+                <div key={option.id} className="flex items-center justify-between gap-4 border border-ink bg-background p-6">
                   <div>
                     <p className="font-display text-2xl font-black">
                       {PRODUCT_SIZE} · {option.label}
                     </p>
                     <p className="bn mt-1 text-sm text-muted-foreground">{option.blurbBn}</p>
                   </div>
-                  <p className="font-display text-3xl font-black">{formatBdt(option.price)}</p>
+                  <PriceTag regularPrice={option.regularPrice} price={option.price} size="lg" />
                 </div>
               ))}
+            </div>
+
+            {/* Trust strip */}
+            <div className="mt-10 grid gap-px border border-ink bg-ink sm:grid-cols-3">
+              <p className="flex items-center gap-3 bg-background p-5 text-sm font-semibold">
+                <Wallet className="size-5" aria-hidden="true" /> Cash on delivery nationwide
+              </p>
+              <p className="flex items-center gap-3 bg-background p-5 text-sm font-semibold">
+                <RotateCcw className="size-5" aria-hidden="true" /> 7-day replacement guarantee
+              </p>
+              <p className="flex items-center gap-3 bg-background p-5 text-sm font-semibold">
+                <ShieldCheck className="size-5" aria-hidden="true" /> Limited launch stock
+              </p>
             </div>
           </div>
         </section>
@@ -193,7 +206,7 @@ function Index() {
           <div className="mx-auto max-w-6xl px-5 py-16">
             <p className="eyebrow text-muted-foreground">The lineup</p>
             <h2 className="mt-4 font-display text-3xl font-black uppercase tracking-tight sm:text-4xl">
-              Nine designs. One price.
+              Nine designs. Up to {HEADLINE_DISCOUNT}% off.
             </h2>
             <p className="bn mt-2 text-muted-foreground">
               পছন্দের ডিজাইনে ট্যাপ করুন — অর্ডার ফর্মে সেটি সিলেক্ট হয়ে যাবে।
@@ -216,20 +229,32 @@ function Index() {
                         : "border-border hover:iso-shadow hover:-translate-x-[2px] hover:-translate-y-[2px] hover:border-ink"
                     }`}
                   >
-                    <img
-                      src={DESIGN_IMAGES[design.id]}
-                      alt={`${design.name} — Unipadz mousepad design`}
-                      loading="lazy"
-                      width={1024}
-                      height={512}
-                      className="aspect-2/1 w-full object-cover"
-                    />
+                    <div className="relative">
+                      <img
+                        src={DESIGN_IMAGES[design.id]}
+                        alt={`${design.name} — Unipadz mousepad design`}
+                        loading="lazy"
+                        width={1000}
+                        height={444}
+                        className="aspect-2/1 w-full object-cover"
+                      />
+                      <span className="absolute left-2 top-2 border border-ink bg-background px-2 py-1 text-[10px] font-bold uppercase tracking-[0.12em]">
+                        {design.thickness}
+                      </span>
+                    </div>
                     <div className="p-3">
                       <h3 className="font-display text-lg font-black uppercase">{design.name}</h3>
                       <p className="bn text-sm text-muted-foreground">{design.nameBn}</p>
                       <p className="mt-2 text-sm text-muted-foreground">{design.description}</p>
+                      <PriceTag
+                        className="mt-3"
+                        regularPrice={design.regularPrice}
+                        price={design.price}
+                        size="sm"
+                      />
                     </div>
                   </button>
+
                 );
               })}
             </div>
