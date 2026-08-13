@@ -206,6 +206,60 @@ function Index() {
           </div>
         </section>
 
+        {/* Why choose Unipadz */}
+        <section id="why-unipadz" className="wave-field relative overflow-hidden border-b border-border">
+          <WaveBackdrop />
+          <div className="mx-auto max-w-6xl px-5 py-16">
+            <p className="eyebrow text-muted-foreground">Why Unipadz · কেন ইউনিপ্যাডজ</p>
+            <h2 className="mt-4 max-w-3xl font-display text-3xl font-black uppercase tracking-tight sm:text-4xl">
+              Smoother control. Better comfort. Premium desk aesthetics.
+            </h2>
+            <p className="bn mt-3 max-w-2xl text-muted-foreground">
+              গেমিং, অফিস, ডিজাইন বা পড়াশোনা — যেকোনো কাজে নিখুঁত মাউস ট্র্যাকিং আর আরামদায়ক
+              অভিজ্ঞতা।
+            </p>
+
+            <div className="mt-8 grid gap-8 lg:grid-cols-2">
+              <div className="space-y-4 text-sm leading-relaxed text-muted-foreground">
+                <p>
+                  Whether you are gaming, working, designing, or studying, Unipadz delivers precise
+                  mouse tracking with a soft and durable surface. Crafted using high-quality
+                  materials, this mousepad features a smooth micro-textured cloth surface for speed
+                  and accuracy, while the anti-slip rubber base keeps it firmly in place during
+                  intense gaming sessions or daily office work.
+                </p>
+                <p>
+                  The stitched edges prevent fraying and increase durability, making it ideal for
+                  long-term use.
+                </p>
+              </div>
+              <div className="bn space-y-4 text-sm leading-relaxed text-muted-foreground">
+                <p>
+                  গেমিং হোক বা অফিসের কাজ — ইউনিপ্যাডজ দেয় নিখুঁত মাউস ট্র্যাকিং, নরম অথচ টেকসই
+                  সারফেসে। উন্নতমানের উপাদানে তৈরি এই মাউসপ্যাডের মাইক্রো-টেক্সচার্ড কাপড়ের
+                  সারফেস দ্রুত ও নির্ভুল মুভমেন্ট নিশ্চিত করে, আর অ্যান্টি-স্লিপ রাবার বেস প্যাডটিকে
+                  ডেস্কে শক্তভাবে ধরে রাখে।
+                </p>
+                <p>
+                  সেলাই করা কিনারা ছিঁড়ে যাওয়া রোধ করে, ফলে দীর্ঘদিন ব্যবহারেও প্যাডটি থাকে
+                  নতুনের মতো।
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-10 grid gap-px border border-ink bg-ink sm:grid-cols-3">
+              {WHY_FEATURES.map((item) => (
+                <div key={item.title} className="bg-background p-6">
+                  <item.icon className="size-6" aria-hidden="true" />
+                  <h3 className="mt-4 font-display text-lg font-black uppercase">{item.title}</h3>
+                  <p className="mt-3 text-sm text-muted-foreground">{item.body}</p>
+                  <p className="bn mt-2 text-sm text-muted-foreground">{item.bodyBn}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Designs */}
         <section id="designs" className="border-b border-border">
           <div className="mx-auto max-w-6xl px-5 py-16">
