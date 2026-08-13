@@ -34,18 +34,18 @@ export interface CapiPurchase {
   value: number;
   currency: string;
   contentIds: string[];
-  contentName?: string;
-  quantity?: number;
-  email?: string;
-  phone?: string;
-  firstName?: string;
-  city?: string;
-  postalCode?: string;
-  clientIp?: string;
-  userAgent?: string;
-  fbp?: string;
-  fbc?: string;
-  sourceUrl?: string;
+  contentName?: string | undefined;
+  quantity?: number | undefined;
+  email?: string | undefined;
+  phone?: string | undefined;
+  firstName?: string | undefined;
+  city?: string | undefined;
+  postalCode?: string | undefined;
+  clientIp?: string | undefined;
+  userAgent?: string | undefined;
+  fbp?: string | undefined;
+  fbc?: string | undefined;
+  sourceUrl?: string | undefined;
 }
 
 /** Fire a server-side Conversions API event. Never throws — tracking must not break orders. */
