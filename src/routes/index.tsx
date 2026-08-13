@@ -1,12 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowDown, BadgeCheck, Flame, Layers, RotateCcw, Ruler, ShieldCheck, Truck, Wallet } from "lucide-react";
+import { ArrowDown, BadgeCheck, Flame, Grip, Layers, RotateCcw, Ruler, Scissors, ShieldCheck, Sparkles, Truck, Wallet } from "lucide-react";
 
 import { OrderForm } from "@/components/site/OrderForm";
 import { OfferBar } from "@/components/site/OfferBar";
 import { PriceTag } from "@/components/site/PriceTag";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
+import { WaveBackdrop } from "@/components/site/WaveBackdrop";
 import {
   DESIGNS,
   HEADLINE_DISCOUNT,
@@ -68,6 +69,27 @@ const FEATURES = [
   },
 ];
 
+const WHY_FEATURES = [
+  {
+    icon: Sparkles,
+    title: "Ultra Smooth Finish",
+    body: "Ultra Smooth Finish microfiber fabric ensures smooth and accurate mouse movement for both gaming and professional work.",
+    bodyBn: "আলট্রা স্মুথ ফিনিশ মাইক্রোফাইবার কাপড়ে মাউস চলে মসৃণ ও নিখুঁতভাবে — গেমিং ও পেশাদার কাজ, দুটোতেই।",
+  },
+  {
+    icon: Grip,
+    title: "Natural Rubber Base",
+    body: "High-quality natural rubber provides strong anti-slip grip and long-lasting comfort during extended use.",
+    bodyBn: "উন্নতমানের প্রাকৃতিক রাবার বেস শক্ত অ্যান্টি-স্লিপ গ্রিপ আর দীর্ঘ সময় আরাম নিশ্চিত করে।",
+  },
+  {
+    icon: Scissors,
+    title: "Premium Stitched Edges",
+    body: "Built to prevent fraying, making the mousepad more durable and reliable over time.",
+    bodyBn: "প্রিমিয়াম সেলাই করা কিনারা ছিঁড়ে যাওয়া রোধ করে, প্যাডকে করে আরও টেকসই ও নির্ভরযোগ্য।",
+  },
+];
+
 function Index() {
   const [designId, setDesignId] = useState<DesignId>("blood-moon-samurai");
 
@@ -79,9 +101,10 @@ function Index() {
 
       <main>
         {/* Hero */}
-        <section className="border-b border-border">
-          <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:py-24">
-            <div>
+        <section className="wave-field relative overflow-hidden border-b border-border">
+          <WaveBackdrop />
+          <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-24">
+            <div className="order-2 lg:order-1">
               <p className="eyebrow text-muted-foreground">Unique Modz · Unipadz</p>
               <p className="mt-4 inline-flex items-center gap-2 border border-ink bg-primary px-3 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-primary-foreground">
                 <Flame className="size-3.5" aria-hidden="true" />
@@ -136,8 +159,8 @@ function Index() {
               </dl>
             </div>
 
-            <div className="relative mx-auto w-full max-w-sm">
-              <div className="iso-shadow border border-ink bg-surface-alt p-2">
+            <div className="relative order-1 mx-auto w-full max-w-xs sm:max-w-sm lg:order-2 lg:max-w-[340px]">
+              <div className="iso-shadow border border-ink bg-background p-2">
                 <video
                   src={heroVideo.url}
                   poster={heroPoster.url}
@@ -150,6 +173,9 @@ function Index() {
                   className="aspect-9/16 w-full object-cover"
                 />
               </div>
+              <span className="absolute -bottom-3 left-4 border border-ink bg-primary px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-primary-foreground">
+                {PRODUCT_SIZE}
+              </span>
             </div>
           </div>
         </section>
@@ -197,6 +223,60 @@ function Index() {
               <p className="flex items-center gap-3 bg-background p-5 text-sm font-semibold">
                 <ShieldCheck className="size-5" aria-hidden="true" /> Limited launch stock
               </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Why choose Unipadz */}
+        <section id="why-unipadz" className="wave-field relative overflow-hidden border-b border-border">
+          <WaveBackdrop />
+          <div className="mx-auto max-w-6xl px-5 py-16">
+            <p className="eyebrow text-muted-foreground">Why Unipadz · কেন ইউনিপ্যাডজ</p>
+            <h2 className="mt-4 max-w-3xl font-display text-3xl font-black uppercase tracking-tight sm:text-4xl">
+              Smoother control. Better comfort. Premium desk aesthetics.
+            </h2>
+            <p className="bn mt-3 max-w-2xl text-muted-foreground">
+              গেমিং, অফিস, ডিজাইন বা পড়াশোনা — যেকোনো কাজে নিখুঁত মাউস ট্র্যাকিং আর আরামদায়ক
+              অভিজ্ঞতা।
+            </p>
+
+            <div className="mt-8 grid gap-8 lg:grid-cols-2">
+              <div className="space-y-4 text-sm leading-relaxed text-muted-foreground">
+                <p>
+                  Whether you are gaming, working, designing, or studying, Unipadz delivers precise
+                  mouse tracking with a soft and durable surface. Crafted using high-quality
+                  materials, this mousepad features a smooth micro-textured cloth surface for speed
+                  and accuracy, while the anti-slip rubber base keeps it firmly in place during
+                  intense gaming sessions or daily office work.
+                </p>
+                <p>
+                  The stitched edges prevent fraying and increase durability, making it ideal for
+                  long-term use.
+                </p>
+              </div>
+              <div className="bn space-y-4 text-sm leading-relaxed text-muted-foreground">
+                <p>
+                  গেমিং হোক বা অফিসের কাজ — ইউনিপ্যাডজ দেয় নিখুঁত মাউস ট্র্যাকিং, নরম অথচ টেকসই
+                  সারফেসে। উন্নতমানের উপাদানে তৈরি এই মাউসপ্যাডের মাইক্রো-টেক্সচার্ড কাপড়ের
+                  সারফেস দ্রুত ও নির্ভুল মুভমেন্ট নিশ্চিত করে, আর অ্যান্টি-স্লিপ রাবার বেস প্যাডটিকে
+                  ডেস্কে শক্তভাবে ধরে রাখে।
+                </p>
+                <p>
+                  সেলাই করা কিনারা ছিঁড়ে যাওয়া রোধ করে, ফলে দীর্ঘদিন ব্যবহারেও প্যাডটি থাকে
+                  নতুনের মতো।
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-10 grid gap-px border border-ink bg-ink sm:grid-cols-3">
+              {WHY_FEATURES.map((item) => (
+                <div key={item.title} className="bg-background p-6">
+                  <item.icon className="size-6" aria-hidden="true" />
+                  <h3 className="mt-4 font-display text-lg font-black uppercase">{item.title}</h3>
+                  <p className="mt-3 text-sm text-muted-foreground">{item.body}</p>
+                  <p className="bn mt-2 text-sm text-muted-foreground">{item.bodyBn}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>

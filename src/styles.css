@@ -183,3 +183,30 @@
   font-size: 0.7rem;
 }
 
+
+/* Premium animated wave backdrop used behind the hero copy. */
+@utility wave-field {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(120% 80% at 15% 0%, color-mix(in oklab, var(--ink) 7%, transparent), transparent 60%),
+    linear-gradient(180deg, var(--surface-alt), var(--background) 70%);
+}
+
+@keyframes wave-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+.wave-layer {
+  animation: wave-drift 26s linear infinite;
+  will-change: transform;
+}
+
+.wave-layer-slow {
+  animation-duration: 44s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wave-layer { animation: none; }
+}
