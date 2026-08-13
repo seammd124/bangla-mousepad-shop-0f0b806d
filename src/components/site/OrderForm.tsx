@@ -374,34 +374,39 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
             <FieldError message={errors.address?.message} />
           </div>
 
-          <div>
-            <Label htmlFor="postalCode">
-              Postal code <span className="bn text-muted-foreground">/ পোস্ট কোড</span>
-            </Label>
-            <Input
-              id="postalCode"
-              inputMode="numeric"
-              maxLength={4}
-              className={`mt-2 max-w-60 ${errClass(!!errors.postalCode)}`}
-              aria-invalid={!!errors.postalCode}
-              {...register("postalCode")}
-            />
-            <FieldError message={errors.postalCode?.message} />
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div>
+              <Label htmlFor="postalCode">
+                Postal code <span className="bn text-muted-foreground">/ পোস্ট কোড</span>
+              </Label>
+              <Input
+                id="postalCode"
+                inputMode="numeric"
+                maxLength={4}
+                className={`mt-2 w-full ${errClass(!!errors.postalCode)}`}
+                aria-invalid={!!errors.postalCode}
+                {...register("postalCode")}
+              />
+              <FieldError message={errors.postalCode?.message} />
+            </div>
+
+            <div>
+              <Label htmlFor="quantity">
+                Quantity <span className="bn text-muted-foreground">/ পরিমাণ</span>
+              </Label>
+              <Input
+                id="quantity"
+                type="number"
+                min={1}
+                max={5}
+                className={`mt-2 w-full ${errClass(!!errors.quantity)}`}
+                aria-invalid={!!errors.quantity}
+                {...register("quantity", { valueAsNumber: true })}
+              />
+              <FieldError message={errors.quantity?.message} />
+            </div>
           </div>
 
-          <div>
-            <Label htmlFor="quantity">Quantity</Label>
-            <Input
-              id="quantity"
-              type="number"
-              min={1}
-              max={5}
-              className={`mt-2 max-w-32 ${errClass(!!errors.quantity)}`}
-              aria-invalid={!!errors.quantity}
-              {...register("quantity", { valueAsNumber: true })}
-            />
-            <FieldError message={errors.quantity?.message} />
-          </div>
 
           <div>
             <Label>
