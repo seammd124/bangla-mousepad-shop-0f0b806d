@@ -245,28 +245,17 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
             </div>
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-2">
-            <div>
-              <Label htmlFor="country">Country</Label>
-              <Input
-                id="country"
-                value="Bangladesh"
-                readOnly
-                className="mt-2 bg-surface-alt text-muted-foreground"
-              />
-            </div>
-            <div>
-              <Label htmlFor="quantity">Quantity</Label>
-              <Input
-                id="quantity"
-                type="number"
-                min={1}
-                max={5}
-                className="mt-2"
-                {...register("quantity", { valueAsNumber: true })}
-              />
-              <FieldError message={errors.quantity?.message} />
-            </div>
+          <div>
+            <Label htmlFor="quantity">Quantity</Label>
+            <Input
+              id="quantity"
+              type="number"
+              min={1}
+              max={5}
+              className="mt-2 max-w-32"
+              {...register("quantity", { valueAsNumber: true })}
+            />
+            <FieldError message={errors.quantity?.message} />
           </div>
 
           <div>
@@ -297,10 +286,6 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
             </div>
           </div>
 
-          <div>
-            <Label htmlFor="note">Note (optional)</Label>
-            <Textarea id="note" rows={2} className="mt-2" {...register("note")} />
-          </div>
         </fieldset>
       </div>
 
