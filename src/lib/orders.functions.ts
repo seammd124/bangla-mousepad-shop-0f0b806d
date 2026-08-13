@@ -2,25 +2,32 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 import { orderSchema, type OrderInput } from "./order-schema";
-import { getDelivery, getDesign } from "./catalog";
 import { createPublicSupabaseClient } from "./supabase-public.server";
 
 export const placeOrder = createServerFn({ method: "POST" })
   .inputValidator((data: OrderInput) => orderSchema.parse(data))
   .handler(async ({ data }) => {
-    const design = getDesign(data.designId);
-    const delivery = getDelivery(data.deliveryArea);
+    const supabase = createPublicSupabaseClient();
 
-    if (!design || !delivery) {
+    const { data: product, error: productError } = await supabase
+      .from("products")
+      .select("id, name, thickness, price")
+      .eq("id", data.designId)
+      .eq("active", true)
+      .maybeSingle();
+
+    const { data: delivery, error: deliveryError } = await supabase
+      .from("delivery_settings")
+      .select("id, fee")
+      .eq("id", data.deliveryArea)
+      .maybeSingle();
+
+    if (productError || deliveryError || !product || !delivery) {
       throw new Error("Invalid product selection");
     }
 
-    // Thickness and price are fixed per design — never trust the client value.
-    const unitPrice = design.price;
-    const deliveryFee = delivery.fee;
-    const total = unitPrice * data.quantity + deliveryFee;
-
-    const supabase = createPublicSupabaseClient();
+    // Price and delivery charge always come from the database, never the client.
+    const total = product.price * data.quantity + delivery.fee;
 
     const { data: orderNumber, error } = await supabase.rpc("place_order", {
       p_customer_name: data.customerName,
@@ -30,9 +37,9 @@ export const placeOrder = createServerFn({ method: "POST" })
       p_city: data.city,
       p_area: data.area,
       p_postal_code: data.postalCode,
-      p_design_id: design.id,
-      p_design_name: design.name,
-      p_thickness: design.thickness,
+      p_design_id: product.id,
+      p_design_name: product.name,
+      p_thickness: product.thickness,
       p_quantity: data.quantity,
       p_delivery_area: delivery.id,
       p_note: data.note ?? "",

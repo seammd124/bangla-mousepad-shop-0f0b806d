@@ -8,7 +8,8 @@ import { PriceTag } from "@/components/site/PriceTag";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { WaveBackdrop } from "@/components/site/WaveBackdrop";
-import { MAX_SAVING, THICKNESS_OPTIONS, formatBdt, type DesignId } from "@/lib/catalog";
+import { formatBdt, maxDiscountPercent, maxSaving } from "@/lib/catalog";
+import { getStorefront } from "@/lib/catalog.functions";
 
 
 export const Route = createFileRoute("/")({
@@ -29,6 +30,13 @@ export const Route = createFileRoute("/")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
+  loader: () => getStorefront(),
+  errorComponent: () => (
+    <div className="flex min-h-screen items-center justify-center px-5 text-center">
+      <p className="bn text-muted-foreground">দুঃখিত, পেজটি লোড করা যায়নি। একটু পরে আবার চেষ্টা করুন।</p>
+    </div>
+  ),
+  notFoundComponent: () => <div className="p-10 text-center">Not found</div>,
   component: Index,
 });
 
@@ -39,12 +47,19 @@ const TRUST = [
 ];
 
 function Index() {
-  const [designId, setDesignId] = useState<DesignId>("blood-moon-samurai");
+  const { products, delivery } = Route.useLoaderData();
+  const [designId, setDesignId] = useState<string>(products[0]?.id ?? "");
+  const saving = maxSaving(products);
+  const discount = maxDiscountPercent(products);
+  const cheapest = products.reduce<(typeof products)[number] | undefined>(
+    (best, p) => (!best || p.price < best.price ? p : best),
+    undefined,
+  );
   
 
   return (
     <div id="top" className="min-h-screen bg-background">
-      <OfferBar />
+      <OfferBar discount={discount} saving={saving} />
       <SiteHeader />
 
       <main>
@@ -54,7 +69,7 @@ function Index() {
           <div className="mx-auto max-w-3xl px-5 py-16 text-center lg:py-24">
             <p className="inline-flex items-center gap-2 border border-ink bg-primary px-3 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-primary-foreground">
               <Flame className="size-3.5" aria-hidden="true" />
-              Launch offer — save up to {formatBdt(MAX_SAVING)}
+              Launch offer — save up to {formatBdt(saving)}
             </p>
 
             <h1 className="mt-6 font-display text-4xl font-black uppercase leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl">
@@ -80,11 +95,9 @@ function Index() {
                 Order Now
                 <ArrowDown className="size-4 transition-transform group-hover:translate-y-0.5" aria-hidden="true" />
               </a>
-              <PriceTag
-                regularPrice={THICKNESS_OPTIONS[0]!.regularPrice}
-                price={THICKNESS_OPTIONS[0]!.price}
-                size="md"
-              />
+              {cheapest ? (
+                <PriceTag regularPrice={cheapest.regularPrice} price={cheapest.price} size="md" />
+              ) : null}
             </div>
 
             <ul className="mx-auto mt-10 grid max-w-2xl gap-3 border-t border-border pt-6 text-sm sm:grid-cols-3">
@@ -115,7 +128,12 @@ function Index() {
 
 
             <div className="mt-8">
-              <OrderForm designId={designId} onDesignChange={setDesignId} />
+              <OrderForm
+                designId={designId}
+                onDesignChange={setDesignId}
+                products={products}
+                delivery={delivery}
+              />
             </div>
           </div>
         </section>

@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Search, Eye, Phone, MessageCircle, Copy } from "lucide-react";
@@ -106,9 +106,14 @@ function AdminPage() {
       <header className="border-b border-border bg-background">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5">
           <LogoLockup compact />
+          <div className="flex items-center gap-2">
+          <Button asChild variant="outline" className="rounded-none uppercase tracking-[0.14em]">
+            <Link to="/catalog">Catalog</Link>
+          </Button>
           <Button variant="outline" onClick={signOut} className="rounded-none uppercase tracking-[0.14em]">
             Sign out
           </Button>
+          </div>
         </div>
       </header>
 
