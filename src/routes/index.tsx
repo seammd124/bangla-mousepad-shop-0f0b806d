@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowDown, BadgeCheck, Flame, Layers, RotateCcw, Ruler, ShieldCheck, Truck, Wallet } from "lucide-react";
+import { ArrowDown, BadgeCheck, Flame, Grip, Layers, RotateCcw, Ruler, Scissors, ShieldCheck, Sparkles, Truck, Wallet } from "lucide-react";
 
 import { OrderForm } from "@/components/site/OrderForm";
 import { OfferBar } from "@/components/site/OfferBar";
