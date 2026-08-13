@@ -118,10 +118,25 @@ Protected route under `_authenticated/`. Gate via `requireSupabaseAuth` + `has_r
 - **Hero video:** your `UniPadz-1.mp4` (2160×3840, 21.7s, 98MB) compressed with ffmpeg to a web-ready MP4 (~1080×1920, H.264) plus a WebM fallback, uploaded via Lovable Assets and streamed from the CDN. A poster JPG is extracted from the first clean frame.
 - **Design images:** placeholder monochrome renders under `src/assets/` until you send the real designs.
 
+## Contact details (footer + contact block)
+
+Rendered in the footer's "Contact Us" column, monochrome icon + text, matching the reference layout you sent:
+
+- **Phone:** 01990-858209 (tappable `tel:+8801990858209`)
+- **Email:** uniquemodzbd@gmail.com (`mailto:`)
+- **Facebook:** Unique Modz BD
+- **YouTube:** Unique Modz Bangladesh
+- **Address:** Mirpur 12, Dhaka 1216, Bangladesh
+
+The same phone/email also appear in the order-confirmation success state ("any questions, call us at …"). Social links need their real URLs — send the Facebook page and YouTube channel links and I'll wire them; until then the names render as text.
+
+Also added as `LocalBusiness` JSON-LD on `/` (name, phone, email, address) for SEO.
+
 ## What I need from you (can come after the build)
 
 1. **The 9 mousepad designs + descriptions** — I'll build against placeholders and swap them in when you send them.
-2. **Contact WhatsApp/phone number and/or email** for the contact section and footer.
+2. **Facebook page URL and YouTube channel URL** for clickable social links.
+
 
 ## Out of scope (per "landing page only")
 
