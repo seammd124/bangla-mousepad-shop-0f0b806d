@@ -69,12 +69,13 @@ const FEATURES = [
 ];
 
 function Index() {
-  const [designId, setDesignId] = useState<DesignId>("iso-grid");
-  const [thickness, setThickness] = useState<ThicknessId>("4mm");
+  const [designId, setDesignId] = useState<DesignId>("blood-moon-samurai");
 
   return (
     <div id="top" className="min-h-screen bg-background">
+      <OfferBar />
       <SiteHeader />
+
 
       <main>
         {/* Hero */}
