@@ -109,9 +109,11 @@ No new routes, no online payment, no product detail pages. Only the catalog data
 ## Build order
 
 1. Download the 9 real `.webp` images from `uniquemodz.com/wp-content/uploads/2026/06/`, upload each via `lovable-assets`, write `.asset.json` pointers.
-2. Rewrite `catalog.ts` with the 9 real designs (+ thickness/price/wasPrice per design, + Bangla descriptions).
+2. Rewrite `catalog.ts` with the 9 real designs (+ thickness/price/regularPrice, Bangla descriptions, savings helpers).
 3. Rewrite `design-images.ts` to map the new design IDs to the real asset URLs.
-4. Update `OrderForm.tsx` to design-driven thickness/pricing (remove free thickness selector, show read-only + struck-through price).
-5. Update `index.tsx` gallery cards with thickness badges and offer prices.
-6. Add a server-side guard in `placeOrder` so thickness/price must match the design.
-7. Verify build + preview: gallery shows real art, picking a design sets its price, order submit still writes a row.
+4. Build `PriceTag` and `OfferBar`; mount `OfferBar` in `__root.tsx`.
+5. Update `OrderForm.tsx` to design-driven pricing with the regular/discount/total breakdown and savings highlight.
+6. Update `index.tsx`: hero offer badge + price, gallery cards with discount badges, trust/urgency strip.
+7. Add a server-side guard in `placeOrder` so thickness/price must match the design.
+8. Verify build + preview: gallery shows real art, picking a design sets its discounted price, countdown runs, order submit still writes a row.
+
