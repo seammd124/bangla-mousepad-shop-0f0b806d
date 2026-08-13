@@ -6,7 +6,7 @@ const NAV: { href: string; label: string }[] = [];
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
-      <div className="mx-auto flex h-20 max-w-6xl items-center justify-between px-5">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:h-20 sm:px-5">
         <a href="#top" aria-label="Unique Modz home">
           <LogoLockup />
         </a>

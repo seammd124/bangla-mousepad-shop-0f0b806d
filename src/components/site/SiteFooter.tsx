@@ -6,7 +6,7 @@ import { CONTACT } from "@/lib/contact";
 export function SiteFooter() {
   return (
     <footer className="border-t border-border bg-foreground text-background">
-      <div className="mx-auto grid max-w-6xl gap-12 px-5 py-16 md:grid-cols-3">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-5 sm:py-16 md:grid-cols-3 md:gap-12">
         <div>
           <div className="[&_img]:invert [&_.text-muted-foreground]:text-background/60">
             <LogoLockup />

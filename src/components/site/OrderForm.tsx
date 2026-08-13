@@ -281,10 +281,10 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="grid gap-10 lg:grid-cols-[1.25fr_1fr] lg:items-start"
+      className="grid gap-8 pb-28 lg:grid-cols-[1.25fr_1fr] lg:items-start lg:gap-10 lg:pb-0"
       noValidate
     >
-      <div className="space-y-10">
+      <div className="space-y-8 lg:space-y-10">
         <fieldset>
           <legend className="eyebrow text-muted-foreground">01 — Choose design</legend>
           <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -296,7 +296,7 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
                   key={design.id}
                   onClick={() => selectDesign(design.id)}
                   aria-pressed={active}
-                  className={`group border p-1.5 text-left transition-all ${
+                  className={`group flex h-full flex-col border p-1.5 text-left transition-all ${
                     active
                       ? "iso-shadow-sm -translate-x-[1px] -translate-y-[1px] border-ink"
                       : "border-border hover:border-ink"
@@ -308,16 +308,17 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
                     loading="lazy"
                     className="aspect-2/1 w-full object-cover"
                   />
-                  <span className="mt-2 block px-1 text-xs font-bold uppercase tracking-wide">
+                  <span className="mt-2 block px-1 text-[11px] font-bold uppercase leading-tight tracking-wide sm:text-xs">
                     {design.name}
                   </span>
-                  <span className="mb-1 block px-1 text-[11px] text-muted-foreground">
+                  <span className="mb-1 mt-auto block px-1 pt-1 text-[11px] text-muted-foreground">
                     {design.thickness} · {formatBdt(design.price)}
                   </span>
                 </button>
               );
             })}
           </div>
+
           <FieldError message={errors.designId?.message} />
           <p className="bn mt-3 text-xs text-muted-foreground">
             প্রতিটি ডিজাইনের থিকনেস নির্দিষ্ট — ডিজাইন সিলেক্ট করলেই দাম আপডেট হবে।
@@ -451,7 +452,7 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
         </fieldset>
       </div>
 
-      <aside className="iso-shadow top-28 border border-ink bg-card p-6 lg:sticky">
+      <aside className="iso-shadow top-28 border border-ink bg-card p-5 sm:p-6 lg:sticky">
         <h3 className="eyebrow text-muted-foreground">Order summary</h3>
         <img
           src={selected.imageUrl}
@@ -505,7 +506,7 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="mt-6 h-14 w-full rounded-none text-sm font-bold uppercase tracking-[0.16em]"
+          className="mt-6 hidden h-14 w-full rounded-none text-sm font-bold uppercase tracking-[0.16em] lg:inline-flex"
         >
           {isSubmitting ? (
             <>
@@ -516,6 +517,33 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
           )}
         </Button>
       </aside>
+
+      {/* Sticky mobile checkout bar */}
+      <div className="fixed inset-x-0 bottom-0 z-50 border-t border-ink bg-background/95 px-4 pb-[env(safe-area-inset-bottom)] pt-3 backdrop-blur lg:hidden">
+        <div className="mx-auto flex max-w-6xl items-center gap-3">
+          <div className="min-w-0">
+            <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Total</p>
+            <p className="truncate font-display text-xl font-black leading-none">{formatBdt(total)}</p>
+          </div>
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="ml-auto h-12 flex-1 rounded-none text-xs font-bold uppercase tracking-[0.14em]"
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 size-4 animate-spin" /> Placing…
+              </>
+            ) : (
+              "অর্ডার করুন"
+            )}
+          </Button>
+        </div>
+        <p className="bn mb-2 mt-1.5 text-center text-[10px] text-muted-foreground">
+          ক্যাশ অন ডেলিভারি — পণ্য হাতে পেয়ে টাকা দিন।
+        </p>
+      </div>
     </form>
+
   );
 }
