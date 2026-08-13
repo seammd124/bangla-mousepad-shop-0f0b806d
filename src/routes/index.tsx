@@ -8,15 +8,8 @@ import { PriceTag } from "@/components/site/PriceTag";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { WaveBackdrop } from "@/components/site/WaveBackdrop";
-import {
-  MAX_SAVING,
-  PRODUCT_SIZE,
-  THICKNESS_OPTIONS,
-  formatBdt,
-  getDesign,
-  type DesignId,
-} from "@/lib/catalog";
-import { DESIGN_IMAGES } from "@/lib/design-images";
+import { MAX_SAVING, THICKNESS_OPTIONS, formatBdt, type DesignId } from "@/lib/catalog";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
