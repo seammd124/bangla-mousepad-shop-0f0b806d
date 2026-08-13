@@ -37,11 +37,25 @@ export function SiteFooter() {
             </li>
             <li className="flex items-center gap-3">
               <Facebook className="size-4 shrink-0" aria-hidden="true" />
-              <span>{CONTACT.facebook}</span>
+              <a
+                href={CONTACT.facebookUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-background"
+              >
+                {CONTACT.facebook}
+              </a>
             </li>
             <li className="flex items-center gap-3">
               <Youtube className="size-4 shrink-0" aria-hidden="true" />
-              <span>{CONTACT.youtube}</span>
+              <a
+                href={CONTACT.youtubeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-background"
+              >
+                {CONTACT.youtube}
+              </a>
             </li>
             <li className="flex items-start gap-3">
               <MapPin className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
