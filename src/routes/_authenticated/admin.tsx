@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Search } from "lucide-react";
+import { Search, Eye, Phone, MessageCircle, Copy } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { LogoLockup } from "@/components/site/Logo";
 import { formatBdt } from "@/lib/catalog";
 import { listOrders, updateOrderStatus } from "@/lib/orders.functions";
@@ -43,6 +49,7 @@ function AdminPage() {
   const setStatus = useServerFn(updateOrderStatus);
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
 
   const { data, isLoading } = useQuery({
@@ -65,6 +72,11 @@ function AdminPage() {
   };
 
   const orders = data?.orders ?? [];
+  const selected = orders.find((o) => o.id === selectedId) ?? null;
+  const copy = (label: string, value: string) => {
+    navigator.clipboard.writeText(value);
+    toast.success(`${label} copied`);
+  };
   const revenue = orders
     .filter((o) => o.status !== "cancelled")
     .reduce((sum, o) => sum + Number(o.total), 0);
@@ -171,6 +183,7 @@ function AdminPage() {
                     <th>Address</th>
                     <th>Total</th>
                     <th>Status</th>
+                    <th className="text-right">Details</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -219,11 +232,22 @@ function AdminPage() {
                           </SelectContent>
                         </Select>
                       </td>
+                      <td className="text-right">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="rounded-none"
+                          onClick={() => setSelectedId(order.id)}
+                        >
+                          <Eye className="size-4" />
+                          View
+                        </Button>
+                      </td>
                     </tr>
                   ))}
                   {filtered.length === 0 ? (
                     <tr>
-                      <td colSpan={6} className="px-4 py-10 text-center text-muted-foreground">
+                      <td colSpan={7} className="px-4 py-10 text-center text-muted-foreground">
                         {orders.length === 0 ? "No orders yet." : "No orders match your search."}
                       </td>
                     </tr>
@@ -234,6 +258,133 @@ function AdminPage() {
           </>
         )}
       </main>
+
+      <Dialog open={!!selected} onOpenChange={(open) => !open && setSelectedId(null)}>
+        <DialogContent className="max-h-[85vh] overflow-y-auto rounded-none border-ink sm:max-w-lg">
+          {selected ? (
+            <>
+              <DialogHeader>
+                <DialogTitle className="font-display text-2xl font-black uppercase tracking-tight">
+                  Order #{selected.order_number}
+                </DialogTitle>
+              </DialogHeader>
+
+              <p className="text-xs uppercase tracking-[0.14em] text-muted-foreground">
+                {new Date(selected.created_at).toLocaleString("en-GB")}
+              </p>
+
+              <div className="mt-2 space-y-4 text-sm">
+                <section className="border border-border p-4">
+                  <p className="eyebrow text-muted-foreground">Customer</p>
+                  <p className="mt-2 font-semibold">{selected.customer_name}</p>
+                  <div className="mt-1 flex items-center gap-2">
+                    <span>{selected.phone}</span>
+                    <button
+                      type="button"
+                      onClick={() => copy("Phone", selected.phone)}
+                      className="text-muted-foreground hover:text-foreground"
+                      aria-label="Copy phone"
+                    >
+                      <Copy className="size-3.5" />
+                    </button>
+                  </div>
+                  {selected.email ? (
+                    <p className="mt-1 text-muted-foreground">{selected.email}</p>
+                  ) : null}
+                  <div className="mt-3 flex gap-2">
+                    <Button asChild size="sm" variant="outline" className="rounded-none">
+                      <a href={`tel:${selected.phone}`}>
+                        <Phone className="size-4" /> Call
+                      </a>
+                    </Button>
+                    <Button asChild size="sm" variant="outline" className="rounded-none">
+                      <a
+                        href={`https://wa.me/${selected.phone.replace(/[^0-9]/g, "")}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <MessageCircle className="size-4" /> WhatsApp
+                      </a>
+                    </Button>
+                  </div>
+                </section>
+
+                <section className="border border-border p-4">
+                  <p className="eyebrow text-muted-foreground">Delivery address</p>
+                  <p className="mt-2">{selected.address}</p>
+                  <p className="text-muted-foreground">
+                    {selected.area}, {selected.city} — {selected.postal_code}
+                  </p>
+                  <p className="text-muted-foreground">{selected.country}</p>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="mt-3 rounded-none"
+                    onClick={() =>
+                      copy(
+                        "Address",
+                        `${selected.customer_name}, ${selected.phone}, ${selected.address}, ${selected.area}, ${selected.city} - ${selected.postal_code}`,
+                      )
+                    }
+                  >
+                    <Copy className="size-4" /> Copy full address
+                  </Button>
+                </section>
+
+                <section className="border border-border p-4">
+                  <p className="eyebrow text-muted-foreground">Product</p>
+                  <p className="mt-2 font-semibold">{selected.design_name}</p>
+                  <p className="text-muted-foreground">
+                    {selected.thickness} · Qty {selected.quantity}
+                  </p>
+                  <dl className="mt-3 space-y-1">
+                    <div className="flex justify-between">
+                      <dt className="text-muted-foreground">Unit price</dt>
+                      <dd>{formatBdt(Number(selected.unit_price))}</dd>
+                    </div>
+                    <div className="flex justify-between">
+                      <dt className="text-muted-foreground">
+                        Delivery ({selected.delivery_area === "dhaka" ? "Inside Dhaka" : "Outside Dhaka"})
+                      </dt>
+                      <dd>{formatBdt(Number(selected.delivery_fee))}</dd>
+                    </div>
+                    <div className="flex justify-between border-t border-border pt-2 font-display font-black">
+                      <dt>Total (COD)</dt>
+                      <dd>{formatBdt(Number(selected.total))}</dd>
+                    </div>
+                  </dl>
+                </section>
+
+                {selected.note ? (
+                  <section className="border border-border p-4">
+                    <p className="eyebrow text-muted-foreground">Note</p>
+                    <p className="mt-2">{selected.note}</p>
+                  </section>
+                ) : null}
+
+                <section className="border border-border p-4">
+                  <p className="eyebrow text-muted-foreground">Status</p>
+                  <Select
+                    value={selected.status}
+                    onValueChange={(value) => mutation.mutate({ id: selected.id, status: value })}
+                  >
+                    <SelectTrigger className="mt-2 rounded-none">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {STATUSES.map((status) => (
+                        <SelectItem key={status} value={status}>
+                          {status}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </section>
+              </div>
+            </>
+          ) : null}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
