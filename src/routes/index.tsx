@@ -102,7 +102,7 @@ function Index() {
               ) : null}
             </div>
 
-            <ul className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-4 border-t border-border pt-6 text-sm xs:grid-cols-3 sm:grid-cols-3">
+            <ul className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-4 border-t border-border pt-6 text-sm sm:grid-cols-3">
               {TRUST.map((item) => (
                 <li key={item.label} className="flex flex-col items-center gap-1">
                   <item.icon className="size-4 shrink-0" aria-hidden="true" />
