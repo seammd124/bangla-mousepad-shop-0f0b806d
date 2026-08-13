@@ -50,6 +50,12 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
   const selected = getDesign(designId) ?? DESIGNS[0]!;
   const thickness = selected.thickness;
 
+  const errClass = (hasError?: boolean) =>
+    hasError ? "border-destructive focus-visible:ring-destructive" : "";
+  const aria = (hasError?: boolean) =>
+    ({ "aria-invalid": hasError } as { "aria-invalid": boolean });
+
+
   const {
     register,
     handleSubmit,
