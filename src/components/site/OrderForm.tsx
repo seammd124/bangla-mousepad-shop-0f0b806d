@@ -58,6 +58,8 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
     formState: { errors, isSubmitting },
   } = useForm<OrderInput>({
     resolver: zodResolver(orderSchema),
+    mode: "onChange",
+    reValidateMode: "onChange",
     defaultValues: {
       email: "",
       phone: "",
