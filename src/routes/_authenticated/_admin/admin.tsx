@@ -79,6 +79,8 @@ function AdminPage() {
   const [exportKeys, setExportKeys] = useState<string[]>(() =>
     EXPORT_COLUMNS.map((c) => c.key),
   );
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
 
   useEffect(() => {
     const saved = localStorage.getItem(EXPORT_PREFS_KEY);
