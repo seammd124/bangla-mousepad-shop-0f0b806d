@@ -84,8 +84,8 @@ function Index() {
             </p>
 
             <p className="bn mx-auto mt-4 max-w-lg text-sm text-muted-foreground">
-              প্রথম ব্যাচের সীমিত স্টক — লঞ্চ অফার চলবে স্টক থাকা পর্যন্ত। অর্ডার করতে
-              লাগবে মাত্র ১ মিনিট, ক্যাশ অন ডেলিভারি, সারা বাংলাদেশে।
+              প্রথম ব্যাচের সীমিত স্টক — লঞ্চ অফার চলবে স্টক থাকা পর্যন্ত। ক্যাশ অন
+              ডেলিভারি, সারা বাংলাদেশে।
             </p>
 
             <div className="mt-8 flex flex-col items-center justify-center gap-5 sm:mt-9 sm:flex-row">
