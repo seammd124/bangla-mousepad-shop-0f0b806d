@@ -1,10 +1,7 @@
 import { LogoLockup } from "./Logo";
 
-const NAV = [
-  { href: "#designs", label: "Designs" },
-  { href: "#specs", label: "Specifications" },
-  { href: "#delivery", label: "Delivery" },
-];
+const NAV: { href: string; label: string }[] = [];
+
 
 export function SiteHeader() {
   return (
