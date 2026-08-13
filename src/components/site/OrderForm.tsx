@@ -36,7 +36,16 @@ function FieldError({ message }: { message?: string | undefined }) {
 
 export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
   const submitOrder = useServerFn(placeOrder);
-  const [confirmation, setConfirmation] = useState<{ orderNumber: string; total: number } | null>(null);
+  const [confirmation, setConfirmation] = useState<{
+    orderNumber: string;
+    total: number;
+    name: string;
+    phone: string;
+    design: string;
+    thickness: string;
+    quantity: number;
+    deliveryFee: number;
+  } | null>(null);
 
   const selected = getDesign(designId) ?? DESIGNS[0]!;
   const thickness = selected.thickness;
