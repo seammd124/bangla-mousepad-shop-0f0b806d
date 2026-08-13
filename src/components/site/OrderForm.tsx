@@ -506,7 +506,7 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="mt-6 h-14 w-full rounded-none text-sm font-bold uppercase tracking-[0.16em]"
+          className="mt-6 hidden h-14 w-full rounded-none text-sm font-bold uppercase tracking-[0.16em] lg:inline-flex"
         >
           {isSubmitting ? (
             <>
@@ -517,6 +517,33 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
           )}
         </Button>
       </aside>
+
+      {/* Sticky mobile checkout bar */}
+      <div className="fixed inset-x-0 bottom-0 z-50 border-t border-ink bg-background/95 px-4 pb-[env(safe-area-inset-bottom)] pt-3 backdrop-blur lg:hidden">
+        <div className="mx-auto flex max-w-6xl items-center gap-3">
+          <div className="min-w-0">
+            <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Total</p>
+            <p className="truncate font-display text-xl font-black leading-none">{formatBdt(total)}</p>
+          </div>
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="ml-auto h-12 flex-1 rounded-none text-xs font-bold uppercase tracking-[0.14em]"
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 size-4 animate-spin" /> Placing…
+              </>
+            ) : (
+              "অর্ডার করুন"
+            )}
+          </Button>
+        </div>
+        <p className="bn mb-2 mt-1.5 text-center text-[10px] text-muted-foreground">
+          ক্যাশ অন ডেলিভারি — পণ্য হাতে পেয়ে টাকা দিন।
+        </p>
+      </div>
     </form>
+
   );
 }
