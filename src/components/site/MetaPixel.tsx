@@ -53,8 +53,10 @@ export function MetaPixel() {
     })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
     /* eslint-enable */
 
-    window.fbq?.("init", pixelId);
-    window.fbq?.("track", "PageView");
+    const fbq = window.fbq as ((...args: unknown[]) => void) | undefined;
+    fbq?.("init", pixelId);
+    fbq?.("track", "PageView");
+
   }, [pixelId]);
 
   if (!pixelId) return null;
