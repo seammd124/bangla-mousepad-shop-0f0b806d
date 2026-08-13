@@ -83,6 +83,10 @@ function Index() {
           <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:py-24">
             <div>
               <p className="eyebrow text-muted-foreground">Unique Modz · Unipadz</p>
+              <p className="mt-4 inline-flex items-center gap-2 border border-ink bg-primary px-3 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-primary-foreground">
+                <Flame className="size-3.5" aria-hidden="true" />
+                Launch offer · save up to {formatBdt(MAX_SAVING)}
+              </p>
               <h1 className="mt-5 font-display text-5xl font-black uppercase leading-[0.92] tracking-tight sm:text-6xl lg:text-7xl">
                 The desk pad
                 <br />
@@ -91,8 +95,8 @@ function Index() {
                 <span className="bg-foreground px-2 text-background">your setup</span>
               </h1>
               <p className="bn mt-6 max-w-md text-lg text-muted-foreground">
-                ৯০০ × ৪০০ মি.মি. প্রিমিয়াম মাউসপ্যাড — ৯টি ডিজাইন, ২টি থিকনেস, সারা বাংলাদেশে
-                ক্যাশ অন ডেলিভারি।
+                ৯০০ × ৪০০ মি.মি. প্রিমিয়াম মাউসপ্যাড — ৯টি ডিজাইন, ৪ ও ৫ মি.মি. থিকনেস, সারা
+                বাংলাদেশে ক্যাশ অন ডেলিভারি।
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -103,13 +107,18 @@ function Index() {
                   Order Now
                   <ArrowDown className="size-4 transition-transform group-hover:translate-y-0.5" aria-hidden="true" />
                 </a>
-                <div className="text-sm">
-                  <span className="font-display text-2xl font-black">
-                    {formatBdt(THICKNESS_OPTIONS[0]!.price)}
-                  </span>
-                  <span className="ml-2 text-muted-foreground">starting price</span>
+                <div>
+                  <PriceTag
+                    regularPrice={THICKNESS_OPTIONS[0]!.regularPrice}
+                    price={THICKNESS_OPTIONS[0]!.price}
+                    size="md"
+                  />
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    starting price · offer ends soon
+                  </p>
                 </div>
               </div>
+
 
               <dl className="mt-10 grid max-w-md grid-cols-3 gap-4 border-t border-border pt-6 text-sm">
                 <div>
