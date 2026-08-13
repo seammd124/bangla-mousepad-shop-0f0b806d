@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useServerFn } from "@tanstack/react-start";
-import { Banknote, Check, Copy, Loader2, PhoneCall, Truck } from "lucide-react";
+import { Banknote, Check, Copy, Loader2, MessageCircle, PhoneCall, Truck } from "lucide-react";
+import { CONTACT } from "@/lib/contact";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -122,6 +123,14 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
   };
 
   if (confirmation) {
+    const waMessage =
+      `আসসালামু আলাইকুম, আমি অর্ডার করেছি — Unipadz।\n` +
+      `অর্ডার নম্বর: ${confirmation.orderNumber}\n` +
+      `ডিজাইন: ${confirmation.design} (${confirmation.thickness})\n` +
+      `পরিমাণ: ${confirmation.quantity}\n` +
+      `নাম: ${confirmation.name}\n` +
+      `মোট: ${formatBdt(confirmation.total)}`;
+    const waLink = `https://wa.me/${CONTACT.phoneE164.replace("+", "")}?text=${encodeURIComponent(waMessage)}`;
     return (
       <div className="mx-auto max-w-2xl">
         <div className="iso-shadow border border-ink bg-card">
@@ -213,16 +222,33 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
               </ul>
               <p className="bn mt-4 text-xs text-muted-foreground">
                 যেকোনো প্রয়োজনে কল করুন{" "}
-                <a href="tel:+8801990858209" className="font-semibold text-foreground underline">
-                  01990-858209
+                <a href={`tel:${CONTACT.phoneE164}`} className="font-semibold text-foreground underline">
+                  {CONTACT.phoneDisplay}
                 </a>
               </p>
             </div>
           </div>
 
           <div className="border-t border-ink p-6 text-center">
-            <Button type="button" variant="outline" onClick={() => setConfirmation(null)}>
-              Place another order
+            <a
+              href={waLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex w-full items-center justify-center gap-2 bg-[#25D366] px-6 py-3.5 font-display text-sm font-bold uppercase tracking-wide text-black transition-colors hover:bg-[#1ebe5d] sm:w-auto"
+            >
+              <MessageCircle className="size-5" aria-hidden="true" />
+              WhatsApp-এ সাপোর্ট
+            </a>
+            <p className="bn mt-3 text-xs text-muted-foreground">
+              অর্ডার সম্পর্কে কোনো প্রশ্ন? এখনই WhatsApp-এ মেসেজ করুন।
+            </p>
+            <Button
+              type="button"
+              variant="ghost"
+              className="mt-4"
+              onClick={() => setConfirmation(null)}
+            >
+              আরেকটি অর্ডার করুন
             </Button>
           </div>
         </div>
