@@ -1,0 +1,2 @@
+ALTER TABLE public.orders ALTER COLUMN city DROP NOT NULL;
+ALTER TABLE public.orders ALTER COLUMN area DROP NOT NULL;

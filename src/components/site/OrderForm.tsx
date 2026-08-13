@@ -72,8 +72,6 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
       phone: "",
       customerName: "",
       address: "",
-      city: "",
-      area: "",
       postalCode: "",
       designId,
       thickness,
@@ -376,35 +374,19 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
             <FieldError message={errors.address?.message} />
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-3">
-            <div>
-              <Label htmlFor="city">
-                City <span className="bn text-muted-foreground">/ শহর</span>
-              </Label>
-              <Input id="city" className={`mt-2 ${errClass(!!errors.city)}`} aria-invalid={!!errors.city} {...register("city")} />
-              <FieldError message={errors.city?.message} />
-            </div>
-            <div>
-              <Label htmlFor="area">
-                Area <span className="bn text-muted-foreground">/ এলাকা</span>
-              </Label>
-              <Input id="area" className={`mt-2 ${errClass(!!errors.area)}`} aria-invalid={!!errors.area} {...register("area")} />
-              <FieldError message={errors.area?.message} />
-            </div>
-            <div>
-              <Label htmlFor="postalCode">
-                Postal code <span className="bn text-muted-foreground">/ পোস্ট কোড</span>
-              </Label>
-              <Input
-                id="postalCode"
-                inputMode="numeric"
-                maxLength={4}
-                className={`mt-2 ${errClass(!!errors.postalCode)}`}
-                aria-invalid={!!errors.postalCode}
-                {...register("postalCode")}
-              />
-              <FieldError message={errors.postalCode?.message} />
-            </div>
+          <div>
+            <Label htmlFor="postalCode">
+              Postal code <span className="bn text-muted-foreground">/ পোস্ট কোড</span>
+            </Label>
+            <Input
+              id="postalCode"
+              inputMode="numeric"
+              maxLength={4}
+              className={`mt-2 max-w-60 ${errClass(!!errors.postalCode)}`}
+              aria-invalid={!!errors.postalCode}
+              {...register("postalCode")}
+            />
+            <FieldError message={errors.postalCode?.message} />
           </div>
 
           <div>
