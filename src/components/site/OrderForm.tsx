@@ -452,7 +452,7 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
         </fieldset>
       </div>
 
-      <aside className="iso-shadow top-28 border border-ink bg-card p-6 lg:sticky">
+      <aside className="iso-shadow top-28 border border-ink bg-card p-5 sm:p-6 lg:sticky">
         <h3 className="eyebrow text-muted-foreground">Order summary</h3>
         <img
           src={selected.imageUrl}
