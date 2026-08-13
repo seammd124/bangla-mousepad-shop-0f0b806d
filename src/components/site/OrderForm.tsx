@@ -279,7 +279,7 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="grid gap-8 pb-28 lg:grid-cols-[1.25fr_1fr] lg:items-start lg:gap-10 lg:pb-0"
+      className="grid gap-8 lg:grid-cols-[1.25fr_1fr] lg:items-start lg:gap-10"
       noValidate
     >
       <div className="space-y-8 lg:space-y-10">
