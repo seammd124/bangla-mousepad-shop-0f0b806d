@@ -45,6 +45,7 @@ const STATUSES = ["new", "confirmed", "shipped", "delivered", "cancelled"];
 
 const EXPORT_COLUMNS: { key: string; label: string }[] = [
   { key: "order_number", label: "Order No" },
+  { key: "line_type", label: "Line Type" },
   { key: "created_at", label: "Date" },
   { key: "status", label: "Status" },
   { key: "customer_name", label: "Name" },
@@ -59,11 +60,13 @@ const EXPORT_COLUMNS: { key: string; label: string }[] = [
   { key: "thickness", label: "Thickness" },
   { key: "quantity", label: "Qty" },
   { key: "unit_price", label: "Unit Price" },
+  { key: "line_amount", label: "Line Amount" },
   { key: "delivery_area", label: "Delivery Area" },
   { key: "delivery_fee", label: "Delivery Fee" },
   { key: "total", label: "Total" },
   { key: "note", label: "Note" },
 ];
+
 
 const EXPORT_PREFS_KEY = "unipadz-export-columns";
 
