@@ -14,16 +14,16 @@ import { MAX_SAVING, THICKNESS_OPTIONS, formatBdt, type DesignId } from "@/lib/c
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Unipadz — 900×400mm Mousepads | Unique Modz Bangladesh" },
+      { title: "Unipadz — Bangladesh's #1 Premium Desk Mousepad | ৳1399 Only" },
       {
         name: "description",
         content:
-          "Order Unipadz oversized desk mousepads: 900×400mm, 4mm ৳1399 or 5mm ৳1799. Cash on delivery all over Bangladesh.",
+          "Unipadz — 900×400mm premium mousepad. 9 designs, COD nationwide, up to ৳500 off. Order in 1 minute.",
       },
-      { property: "og:title", content: "Unipadz — Premium Desk Mousepads in Bangladesh" },
+      { property: "og:title", content: "Unipadz — Bangladesh's #1 Premium Desk Mousepad" },
       {
         property: "og:description",
-        content: "9 designs, cash on delivery nationwide. Order in one minute.",
+        content: "9 designs, cash on delivery nationwide. Up to ৳500 launch discount. Order in 1 minute.",
       },
       { property: "og:type", content: "product" },
       { name: "twitter:card", content: "summary_large_image" },
