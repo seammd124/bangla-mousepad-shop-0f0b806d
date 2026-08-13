@@ -64,7 +64,9 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --font-display: "Archivo", "Arial Black", sans-serif;
   --font-sans: "Archivo", system-ui, sans-serif;
-  --font-bangla: "Hind Siliguri", "Archivo", sans-serif;
+  --font-bangla: "Anek Bangla", "Hind Siliguri", sans-serif;
+  --font-bangla-serif: "Tiro Bangla", "Anek Bangla", serif;
+
 }
 
 :root {
@@ -173,7 +175,18 @@
 
 @utility bn {
   font-family: var(--font-bangla);
+  font-weight: 500;
+  line-height: 1.85;
+  letter-spacing: 0.005em;
 }
+
+/* Elegant Bangla display voice for headlines and pull quotes. */
+@utility bn-display {
+  font-family: var(--font-bangla-serif);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
 
 @utility eyebrow {
   font-family: var(--font-display);
