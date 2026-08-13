@@ -85,7 +85,16 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
     try {
       const result = await submitOrder({ data: { ...values, designId, thickness } });
       const orderNumber = String(result.orderNumber);
-      setConfirmation({ orderNumber, total: result.total });
+      setConfirmation({
+        orderNumber,
+        total: result.total,
+        name: values.customerName,
+        phone: values.phone,
+        design: selected.name,
+        thickness,
+        quantity: qty,
+        deliveryFee,
+      });
       toast.success(`Order ${orderNumber} placed`, {
         description: "আমরা শীঘ্রই কল করে অর্ডার কনফার্ম করব।",
       });
@@ -98,26 +107,113 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
 
   if (confirmation) {
     return (
-      <div className="iso-shadow border border-ink bg-card p-8 text-center sm:p-12">
-        <div className="mx-auto flex size-14 items-center justify-center border border-ink bg-primary text-primary-foreground">
-          <Check className="size-7" aria-hidden="true" />
+      <div className="mx-auto max-w-2xl">
+        <div className="iso-shadow border border-ink bg-card">
+          <div className="border-b border-ink bg-primary px-6 py-10 text-center text-primary-foreground sm:px-10">
+            <div className="mx-auto flex size-14 items-center justify-center rounded-full border border-primary-foreground/40">
+              <Check className="size-7" aria-hidden="true" />
+            </div>
+            <h3 className="mt-5 font-display text-2xl font-black uppercase tracking-tight sm:text-3xl">
+              Order confirmed
+            </h3>
+            <p className="bn mt-2 text-sm text-primary-foreground/80">
+              ধন্যবাদ {confirmation.name}! আপনার অর্ডারটি আমরা পেয়েছি।
+            </p>
+            <p className="mt-6 text-[11px] uppercase tracking-[0.28em] text-primary-foreground/70">
+              Order number
+            </p>
+            <div className="mt-1 flex items-center justify-center gap-3">
+              <p className="font-display text-3xl font-black tracking-tight sm:text-4xl">
+                {confirmation.orderNumber}
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  void navigator.clipboard?.writeText(confirmation.orderNumber);
+                  toast.success("Order number copied");
+                }}
+                className="border border-primary-foreground/40 p-2 transition-colors hover:bg-primary-foreground/10"
+                aria-label="Copy order number"
+              >
+                <Copy className="size-4" aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+
+          <div className="grid gap-px bg-border sm:grid-cols-2">
+            <div className="bg-card p-6">
+              <p className="eyebrow text-muted-foreground">Your order</p>
+              <dl className="mt-3 space-y-2 text-sm">
+                <div className="flex justify-between gap-4">
+                  <dt className="text-muted-foreground">Design</dt>
+                  <dd className="font-medium">{confirmation.design}</dd>
+                </div>
+                <div className="flex justify-between gap-4">
+                  <dt className="text-muted-foreground">Size / thickness</dt>
+                  <dd className="font-medium">
+                    {PRODUCT_SIZE} · {confirmation.thickness}
+                  </dd>
+                </div>
+                <div className="flex justify-between gap-4">
+                  <dt className="text-muted-foreground">Quantity</dt>
+                  <dd className="font-medium">{confirmation.quantity}</dd>
+                </div>
+                <div className="flex justify-between gap-4">
+                  <dt className="text-muted-foreground">Delivery</dt>
+                  <dd className="font-medium">
+                    {confirmation.deliveryFee === 0 ? "Free" : formatBdt(confirmation.deliveryFee)}
+                  </dd>
+                </div>
+                <div className="flex justify-between gap-4 border-t border-border pt-2">
+                  <dt className="font-bold uppercase">Total</dt>
+                  <dd className="font-display text-lg font-black">{formatBdt(confirmation.total)}</dd>
+                </div>
+              </dl>
+            </div>
+
+            <div className="bg-card p-6">
+              <p className="eyebrow text-muted-foreground">Payment · পেমেন্ট নির্দেশনা</p>
+              <ul className="bn mt-3 space-y-3 text-sm text-muted-foreground">
+                <li className="flex gap-3">
+                  <Banknote className="mt-0.5 size-4 shrink-0 text-foreground" aria-hidden="true" />
+                  <span>
+                    <strong className="text-foreground">ক্যাশ অন ডেলিভারি</strong> — পার্সেল হাতে পেয়ে
+                    ডেলিভারি ম্যানকে{" "}
+                    <strong className="text-foreground">{formatBdt(confirmation.total)}</strong> পরিশোধ
+                    করবেন। অগ্রিম কোনো টাকা লাগবে না।
+                  </span>
+                </li>
+                <li className="flex gap-3">
+                  <PhoneCall className="mt-0.5 size-4 shrink-0 text-foreground" aria-hidden="true" />
+                  <span>
+                    আমরা <strong className="text-foreground">{confirmation.phone}</strong> নম্বরে কল করে
+                    অর্ডার কনফার্ম করব। ফোন খোলা রাখুন।
+                  </span>
+                </li>
+                <li className="flex gap-3">
+                  <Truck className="mt-0.5 size-4 shrink-0 text-foreground" aria-hidden="true" />
+                  <span>ঢাকায় ১–২ দিন, ঢাকার বাইরে ৩–৫ দিনের মধ্যে ডেলিভারি।</span>
+                </li>
+              </ul>
+              <p className="bn mt-4 text-xs text-muted-foreground">
+                যেকোনো প্রয়োজনে কল করুন{" "}
+                <a href="tel:+8801990858209" className="font-semibold text-foreground underline">
+                  01990-858209
+                </a>
+              </p>
+            </div>
+          </div>
+
+          <div className="border-t border-ink p-6 text-center">
+            <Button type="button" variant="outline" onClick={() => setConfirmation(null)}>
+              Place another order
+            </Button>
+          </div>
         </div>
-        <h3 className="mt-6 font-display text-2xl font-black uppercase tracking-tight">
-          Order confirmed
-        </h3>
-        <p className="bn mt-2 text-muted-foreground">
-          আপনার অর্ডারটি আমরা পেয়েছি। শীঘ্রই কল করে কনফার্ম করা হবে।
-        </p>
-        <p className="mt-6 text-sm uppercase tracking-[0.2em] text-muted-foreground">
-          Order number
-        </p>
-        <p className="font-display text-3xl font-black">{confirmation.orderNumber}</p>
-        <p className="mt-4 text-sm text-muted-foreground">
-          Payable on delivery: <strong className="text-foreground">{formatBdt(confirmation.total)}</strong>
-        </p>
       </div>
     );
   }
+
 
   return (
     <form
