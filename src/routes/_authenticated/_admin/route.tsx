@@ -9,7 +9,7 @@ export const Route = createFileRoute("/_authenticated/_admin")({
     if (userError || !userData.user) throw redirect({ to: "/auth" });
 
     const isAdmin = await checkIsAdmin(supabase, userData.user.id);
-    if (error || !isAdmin) throw redirect({ to: "/" });
+    if (!isAdmin) throw redirect({ to: "/" });
 
     return { isAdmin: true as const };
   },
