@@ -176,15 +176,25 @@
 @utility bn {
   font-family: var(--font-bangla);
   font-weight: 500;
-  line-height: 1.75;
+  line-height: 1.8;
   letter-spacing: normal;
+  word-spacing: normal;
+  font-feature-settings: normal;
+  font-variant-ligatures: normal;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Elegant Bangla display voice for headlines and pull quotes. */
 @utility bn-display {
   font-family: var(--font-bangla-serif);
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.7;
+  letter-spacing: normal;
+  font-feature-settings: normal;
+  font-variant-ligatures: normal;
+  text-rendering: optimizeLegibility;
 }
 
 
