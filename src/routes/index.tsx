@@ -69,6 +69,27 @@ const FEATURES = [
   },
 ];
 
+const WHY_FEATURES = [
+  {
+    icon: Sparkles,
+    title: "Ultra Smooth Finish",
+    body: "Ultra Smooth Finish microfiber fabric ensures smooth and accurate mouse movement for both gaming and professional work.",
+    bodyBn: "আলট্রা স্মুথ ফিনিশ মাইক্রোফাইবার কাপড়ে মাউস চলে মসৃণ ও নিখুঁতভাবে — গেমিং ও পেশাদার কাজ, দুটোতেই।",
+  },
+  {
+    icon: Grip,
+    title: "Natural Rubber Base",
+    body: "High-quality natural rubber provides strong anti-slip grip and long-lasting comfort during extended use.",
+    bodyBn: "উন্নতমানের প্রাকৃতিক রাবার বেস শক্ত অ্যান্টি-স্লিপ গ্রিপ আর দীর্ঘ সময় আরাম নিশ্চিত করে।",
+  },
+  {
+    icon: Scissors,
+    title: "Premium Stitched Edges",
+    body: "Built to prevent fraying, making the mousepad more durable and reliable over time.",
+    bodyBn: "প্রিমিয়াম সেলাই করা কিনারা ছিঁড়ে যাওয়া রোধ করে, প্যাডকে করে আরও টেকসই ও নির্ভরযোগ্য।",
+  },
+];
+
 function Index() {
   const [designId, setDesignId] = useState<DesignId>("blood-moon-samurai");
 
