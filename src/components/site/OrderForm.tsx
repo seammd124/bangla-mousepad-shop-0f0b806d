@@ -311,10 +311,13 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
           alt="Selected Unipadz design preview"
           className="mt-4 aspect-2/1 w-full border border-border object-cover"
         />
+        <div className="mt-4">
+          <PriceTag regularPrice={selected.regularPrice} price={selected.price} size="md" />
+        </div>
         <dl className="mt-5 space-y-3 text-sm">
           <div className="flex justify-between gap-4">
             <dt className="text-muted-foreground">Design</dt>
-            <dd className="font-semibold">{DESIGNS.find((d) => d.id === designId)?.name}</dd>
+            <dd className="font-semibold">{selected.name}</dd>
           </div>
           <div className="flex justify-between gap-4">
             <dt className="text-muted-foreground">Size</dt>
@@ -325,10 +328,20 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
             <dd className="font-semibold">{thickness}</dd>
           </div>
           <div className="flex justify-between gap-4">
-            <dt className="text-muted-foreground">
-              Unit price × {Number(quantity) || 1}
-            </dt>
-            <dd className="font-semibold">{formatBdt(unitPrice * (Number(quantity) || 1))}</dd>
+            <dt className="text-muted-foreground">Regular price × {qty}</dt>
+            <dd className="font-semibold text-muted-foreground line-through">
+              {formatBdt(selected.regularPrice * qty)}
+            </dd>
+          </div>
+          {discount > 0 && (
+            <div className="flex justify-between gap-4">
+              <dt className="font-semibold">Launch discount</dt>
+              <dd className="font-display font-black">−{formatBdt(discount)}</dd>
+            </div>
+          )}
+          <div className="flex justify-between gap-4">
+            <dt className="text-muted-foreground">Offer price × {qty}</dt>
+            <dd className="font-semibold">{formatBdt(unitPrice * qty)}</dd>
           </div>
           <div className="flex justify-between gap-4">
             <dt className="text-muted-foreground">Delivery</dt>
@@ -339,9 +352,15 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
           <span className="eyebrow">Total</span>
           <span className="font-display text-3xl font-black">{formatBdt(total)}</span>
         </div>
+        {discount > 0 && (
+          <p className="bn mt-2 text-xs font-semibold">
+            আপনি সাশ্রয় করছেন {formatBdt(discount)} — অফার সীমিত সময়ের জন্য।
+          </p>
+        )}
         <p className="bn mt-2 text-xs text-muted-foreground">
           ক্যাশ অন ডেলিভারি — পণ্য হাতে পেয়ে টাকা দিন।
         </p>
+
 
         <Button
           type="submit"
