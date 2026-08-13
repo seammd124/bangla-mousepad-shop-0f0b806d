@@ -176,8 +176,8 @@
 @utility bn {
   font-family: var(--font-bangla);
   font-weight: 500;
-  line-height: 1.85;
-  letter-spacing: 0.005em;
+  line-height: 1.75;
+  letter-spacing: normal;
 }
 
 /* Elegant Bangla display voice for headlines and pull quotes. */
