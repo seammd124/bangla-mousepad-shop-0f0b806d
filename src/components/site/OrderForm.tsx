@@ -149,47 +149,25 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
                     loading="lazy"
                     className="aspect-2/1 w-full object-cover"
                   />
-                  <span className="mt-2 block px-1 pb-1 text-xs font-bold uppercase tracking-wide">
+                  <span className="mt-2 block px-1 text-xs font-bold uppercase tracking-wide">
                     {design.name}
+                  </span>
+                  <span className="mb-1 block px-1 text-[11px] text-muted-foreground">
+                    {design.thickness} · {formatBdt(design.price)}
                   </span>
                 </button>
               );
             })}
           </div>
           <FieldError message={errors.designId?.message} />
-        </fieldset>
-
-        <fieldset>
-          <legend className="eyebrow text-muted-foreground">02 — Thickness</legend>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            {THICKNESS_OPTIONS.map((option) => {
-              const active = option.id === thickness;
-              return (
-                <button
-                  type="button"
-                  key={option.id}
-                  onClick={() => selectThickness(option.id)}
-                  aria-pressed={active}
-                  className={`border p-4 text-left transition-all ${
-                    active
-                      ? "iso-shadow-sm -translate-x-[1px] -translate-y-[1px] border-ink bg-surface-alt"
-                      : "border-border hover:border-ink"
-                  }`}
-                >
-                  <div className="flex items-baseline justify-between">
-                    <span className="font-display text-xl font-black">{option.label}</span>
-                    <span className="font-display text-lg font-bold">{formatBdt(option.price)}</span>
-                  </div>
-                  <p className="mt-1 text-xs text-muted-foreground">{option.blurb}</p>
-                  <p className="bn text-xs text-muted-foreground">{option.blurbBn}</p>
-                </button>
-              );
-            })}
-          </div>
+          <p className="bn mt-3 text-xs text-muted-foreground">
+            প্রতিটি ডিজাইনের থিকনেস নির্দিষ্ট — ডিজাইন সিলেক্ট করলেই দাম আপডেট হবে।
+          </p>
         </fieldset>
 
         <fieldset className="space-y-5">
-          <legend className="eyebrow text-muted-foreground">03 — Your details</legend>
+          <legend className="eyebrow text-muted-foreground">02 — Your details</legend>
+
 
           <div className="mt-4 grid gap-5 sm:grid-cols-2">
             <div>
