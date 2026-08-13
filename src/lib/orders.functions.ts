@@ -50,8 +50,38 @@ export const placeOrder = createServerFn({ method: "POST" })
       throw new Error("Could not save your order. Please try again.");
     }
 
-    return { orderNumber, total };
+    // Meta Conversions API (server-side Purchase event, deduped with the browser pixel).
+    const eventId = `order-${String(orderNumber)}`;
+    const { getRequestHeaders } = await import("@tanstack/react-start/server");
+    const { sendCapiEvent } = await import("./meta.server");
+    const headers = getRequestHeaders();
+    const cookie = headers.get("cookie") ?? "";
+    const readCookie = (name: string) =>
+      cookie.split(";").map((c) => c.trim()).find((c) => c.startsWith(`${name}=`))?.slice(name.length + 1);
+
+    await sendCapiEvent({
+      eventId,
+      eventName: "Purchase",
+      value: total,
+      currency: "BDT",
+      contentIds: [product.id],
+      contentName: product.name,
+      quantity: data.quantity,
+      email: data.email ?? undefined,
+      phone: `88${data.phone}`,
+      firstName: data.customerName,
+      city: data.city,
+      postalCode: data.postalCode,
+      clientIp: (headers.get("cf-connecting-ip") ?? headers.get("x-forwarded-for") ?? "").split(",")[0]?.trim(),
+      userAgent: headers.get("user-agent") ?? undefined,
+      fbp: readCookie("_fbp"),
+      fbc: readCookie("_fbc"),
+      sourceUrl: headers.get("referer") ?? undefined,
+    });
+
+    return { orderNumber, total, eventId };
   });
+
 
 export const listOrders = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
