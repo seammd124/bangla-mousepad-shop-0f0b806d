@@ -155,6 +155,14 @@ function AdminPage() {
           <Button asChild variant="outline" className="rounded-none uppercase tracking-[0.14em]">
             <Link to="/catalog">Catalog</Link>
           </Button>
+          <Button
+            variant="outline"
+            onClick={exportCsv}
+            className="rounded-none uppercase tracking-[0.14em]"
+          >
+            <Download className="mr-2 h-4 w-4" /> Export CSV
+          </Button>
+
           <Button variant="outline" onClick={signOut} className="rounded-none uppercase tracking-[0.14em]">
             Sign out
           </Button>
