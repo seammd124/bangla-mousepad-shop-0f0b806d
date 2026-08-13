@@ -79,9 +79,10 @@ function Index() {
 
       <main>
         {/* Hero */}
-        <section className="border-b border-border">
-          <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:py-24">
-            <div>
+        <section className="wave-field relative overflow-hidden border-b border-border">
+          <WaveBackdrop />
+          <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-24">
+            <div className="order-2 lg:order-1">
               <p className="eyebrow text-muted-foreground">Unique Modz · Unipadz</p>
               <p className="mt-4 inline-flex items-center gap-2 border border-ink bg-primary px-3 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-primary-foreground">
                 <Flame className="size-3.5" aria-hidden="true" />
