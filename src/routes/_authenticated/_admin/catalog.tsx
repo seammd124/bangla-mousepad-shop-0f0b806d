@@ -27,7 +27,7 @@ import {
 } from "@/lib/catalog.functions";
 import { supabase } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute("/_authenticated/catalog")({
+export const Route = createFileRoute("/_authenticated/_admin/catalog")({
   head: () => ({
     meta: [
       { title: "Catalog & Pricing — Unique Modz" },
