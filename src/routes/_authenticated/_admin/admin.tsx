@@ -25,7 +25,7 @@ import { formatBdt } from "@/lib/catalog";
 import { listOrders, updateOrderStatus } from "@/lib/orders.functions";
 import { supabase } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute("/_authenticated/admin")({
+export const Route = createFileRoute("/_authenticated/_admin/admin")({
   head: () => ({
     meta: [
       { title: "Orders Dashboard — Unique Modz" },
