@@ -50,8 +50,8 @@ export const DELIVERY_OPTIONS: {
   fee: number;
   eta: string;
 }[] = [
-  { id: "dhaka", label: "Inside Dhaka", labelBn: "ঢাকার ভিতরে", fee: 60, eta: "1–2 days" },
-  { id: "outside", label: "Outside Dhaka", labelBn: "ঢাকার বাইরে", fee: 120, eta: "3–5 days" },
+  { id: "dhaka", label: "Inside Dhaka", labelBn: "ঢাকার ভিতরে", fee: 70, eta: "1–2 days" },
+  { id: "outside", label: "Outside Dhaka", labelBn: "ঢাকার বাইরে", fee: 130, eta: "3–5 days" },
 ];
 
 export type DesignId =
