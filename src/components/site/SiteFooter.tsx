@@ -79,9 +79,8 @@ export function SiteFooter() {
       </div>
 
       <div className="border-t border-background/15">
-        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-5 py-6 text-xs uppercase tracking-[0.18em] text-background/50 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mx-auto flex max-w-6xl px-5 py-6 text-xs uppercase tracking-[0.18em] text-background/50">
           <span>© {new Date().getFullYear()} Unique Modz</span>
-          <span>Made in Bangladesh</span>
         </div>
       </div>
     </footer>
