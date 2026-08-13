@@ -79,14 +79,19 @@ create table public.orders (
   id uuid primary key default gen_random_uuid(),
   created_at timestamptz default now(),
   customer_name text not null,
-  phone text not null,
+  email text,                        -- optional
+  phone text not null,               -- stored as +8801XXXXXXXXX
   address text not null,
+  city text not null,
+  area text not null,
+  postal_code text not null,
+  country text not null default 'Bangladesh',
   design_id text not null,
   design_name text not null,
-  thickness text not null,          -- '3mm' | '5mm'
+  thickness text not null,           -- '4mm' | '5mm'
   quantity int not null default 1,
   delivery_area text not null,       -- 'dhaka' | 'outside'
-  unit_price int not null,
+  unit_price int not null,           -- 1399 or 1799
   delivery_fee int not null,
   total int not null,
   status public.order_status default 'new',
@@ -94,6 +99,7 @@ create table public.orders (
 );
 -- grants, RLS, policies (see below)
 ```
+
 
 Grants + RLS: `INSERT` for `anon` (public order form, no login) with a `WITH CHECK` policy; `SELECT/UPDATE/DELETE` only for `service_role` and `admin` role (dashboard). No public read of orders.
 
