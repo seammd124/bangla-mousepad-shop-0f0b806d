@@ -3,6 +3,7 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 import { orderSchema, type OrderInput } from "./order-schema";
 import { createPublicSupabaseClient } from "./supabase-public.server";
+import { checkIsAdmin } from "@/lib/is-admin";
 
 export const placeOrder = createServerFn({ method: "POST" })
   .inputValidator((data: OrderInput) => orderSchema.parse(data))
@@ -29,7 +30,11 @@ export const placeOrder = createServerFn({ method: "POST" })
     // Price and delivery charge always come from the database, never the client.
     const total = product.price * data.quantity + delivery.fee;
 
-    const { data: orderNumber, error } = await supabase.rpc("place_order", {
+    // The order-placing routine is server-only: it is executable by the
+    // service role alone, so visitors cannot invoke it from the browser.
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    const { data: orderNumber, error } = await supabaseAdmin.rpc("place_order", {
       p_customer_name: data.customerName,
       p_email: data.email ?? "",
       p_phone: `+88${data.phone}`,
@@ -85,10 +90,7 @@ export const placeOrder = createServerFn({ method: "POST" })
 export const listOrders = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { data: isAdmin } = await context.supabase.rpc("has_role", {
-      _user_id: context.userId,
-      _role: "admin",
-    });
+    const isAdmin = await checkIsAdmin(context.supabase, context.userId);
     if (!isAdmin) return { isAdmin: false as const, orders: [] };
 
     const { data, error } = await context.supabase

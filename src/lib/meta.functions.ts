@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { checkIsAdmin } from "@/lib/is-admin";
 
 /** Public: only the pixel id, and only when tracking is switched on. */
 export const getMetaPixelConfig = createServerFn({ method: "GET" }).handler(async () => {
@@ -13,10 +14,7 @@ export const getMetaPixelConfig = createServerFn({ method: "GET" }).handler(asyn
 export const adminGetMetaSettings = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { data: isAdmin } = await context.supabase.rpc("has_role", {
-      _user_id: context.userId,
-      _role: "admin",
-    });
+    const isAdmin = await checkIsAdmin(context.supabase, context.userId);
     if (!isAdmin) throw new Error("Forbidden");
 
     const { data, error } = await context.supabase
@@ -61,10 +59,7 @@ export const adminSaveMetaSettings = createServerFn({ method: "POST" })
     return data;
   })
   .handler(async ({ data, context }) => {
-    const { data: isAdmin } = await context.supabase.rpc("has_role", {
-      _user_id: context.userId,
-      _role: "admin",
-    });
+    const isAdmin = await checkIsAdmin(context.supabase, context.userId);
     if (!isAdmin) throw new Error("Forbidden");
 
     const patch: Record<string, unknown> = {
@@ -88,10 +83,7 @@ export const adminSaveMetaSettings = createServerFn({ method: "POST" })
 export const adminClearMetaToken = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { data: isAdmin } = await context.supabase.rpc("has_role", {
-      _user_id: context.userId,
-      _role: "admin",
-    });
+    const isAdmin = await checkIsAdmin(context.supabase, context.userId);
     if (!isAdmin) throw new Error("Forbidden");
 
     const { error } = await context.supabase
