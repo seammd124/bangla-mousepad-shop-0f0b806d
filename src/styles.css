@@ -64,8 +64,8 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --font-display: "Archivo", "Arial Black", sans-serif;
   --font-sans: "Archivo", system-ui, sans-serif;
-  --font-bangla: "Hind Siliguri", "Anek Bangla", sans-serif;
-  --font-bangla-serif: "Hind Siliguri", "Anek Bangla", serif;
+  --font-bangla: "Noto Sans Bengali", "Hind Siliguri", sans-serif;
+  --font-bangla-serif: "Noto Sans Bengali", "Hind Siliguri", serif;
 
 }
 
