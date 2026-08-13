@@ -1,46 +1,57 @@
-# Matto. — Bangladeshi Mousepad COD Landing Page
+# Unique Modz — Unipadz Mousepad COD Landing Page
 
-A single-page bilingual (Bangla + English) storefront where customers browse 9 mousepad designs, pick a thickness (3mm/5mm), and place a Cash-on-Delivery order. Orders are saved to a backend database and viewable on a protected admin dashboard.
+A single-page bilingual (Bangla + English) storefront for **Unique Modz**, selling the **Unipadz** mousepad line. Customers browse 9 designs, pick a thickness (3mm/5mm), and place a Cash-on-Delivery order. Orders are saved to a backend database and viewable on a protected admin dashboard.
+
+## Brand
+
+- **Company:** Unique Modz
+- **Product line:** Unipadz (the mousepads)
+- **Logo:** the uploaded black isometric "UM" monogram — a 3D extruded U interlocking with a flat solid M, pure black on white.
+- Header lockup: UM monogram + `UNIQUE MODZ` wordmark, with `UNIPADZ` as the product-line label. Logo also used as the favicon.
 
 ## Important: MongoDB is not available on this platform
 
 You asked for MongoDB. This platform's built-in backend is **Lovable Cloud**, which runs on PostgreSQL (Supabase) — MongoDB is not supported here. The plan uses Lovable Cloud instead: a PostgreSQL `orders` table, server functions to insert orders, and a protected `/admin` dashboard to view them. Functionally it gives you exactly what you wanted (orders saved to a database, viewable on a backend dashboard) — just on Postgres, not Mongo. If MongoDB is a hard requirement, tell me and we'll reconsider.
 
-## Design direction (approved: Warm tactile premium)
+## Design direction — retheme to the logo
 
-- Fonts: **Instrument Serif** (italic display headings) + **Inter** (UI/body). Bangla set in **Hind Siliguri** for proper rendering.
-- Palette: surface `#fafafa` base, `#f4f4f5` card; ink `#18181b`; accent burnt-amber `#7c2d12`; zinc grays for muted text.
-- Feel: warm, tactile, premium-but-affordable, magazine-editorial. Subtle hover lift on product cards, smooth scroll-to-form on CTA, gentle price update on thickness/qty change.
-- Rounded-full pills for buttons, soft `ring-1 ring-black/5` cards, generous whitespace.
+The approved layout/composition stays (Warm tactile premium structure), but the palette and detailing are re-cut to match the logo: **pure monochrome, hard geometry, isometric**.
 
-Carried into `src/styles.css` as semantic tokens (e.g. `--brand-primary`, `--brand-accent`, `--surface-base`, `--surface-card`, `--font-serif`, `--font-sans`, `--font-bangla`).
+- Palette: paper white `#ffffff` base, off-white `#f5f5f5` surface, ink black `#0a0a0a`, mid-grey `#3f3f46` (the logo's extruded shadow face), light grey `#d4d4d8` borders. No color accent — contrast and grey steps carry all emphasis, exactly like the mark.
+- Typography: geometric, tight, uppercase for brand/labels — heavy grotesk display (matching the monogram's flat weight) + Inter for UI/body; **Hind Siliguri** for Bangla.
+- Geometry: sharp corners (radius 0–2px, no pills), 1px hairline borders instead of soft rings, square buttons. Isometric motif — 30° extruded shadow on cards/buttons on hover, echoing the U's 3D face.
+- Motion: restrained. Card lift with a hard offset shadow, smooth scroll-to-form, instant price update.
+
+Carried into `src/styles.css` as semantic tokens (`--ink`, `--surface`, `--surface-alt`, `--edge`, `--shadow-iso`, `--font-display`, `--font-sans`, `--font-bangla`).
 
 ## Page sections (single route `/`)
 
-1. **Sticky header** — `Matto.` wordmark, anchor nav (Designs / Specifications / Delivery), `Order Now | এখনই কিনুন` pill → scrolls to `#order-form`.
-2. **Hero** — serif italic headline "Precision under every palm. / প্রতি হাতের স্পর্শে নিখুঁত অনুভূতি।", subcopy, `View Designs | ডিজাইন দেখুন` button, hero product image.
-3. **Specifications strip** — material, dimensions, edge stitch, anti-slip base (4 small spec cells).
-4. **Design gallery (`#gallery`)** — 9 selectable design cards (image + bilingual name + "In Stock"). Clicking a card selects it and scrolls to the order form, pre-filling the chosen design. Selected state: ring + checkmark.
+1. **Sticky header** — UM monogram + `UNIQUE MODZ` lockup, anchor nav (Designs / Specifications / Delivery), `Order Now | এখনই কিনুন` square button → scrolls to `#order-form`.
+2. **Hero** — big uppercase headline introducing Unipadz, bilingual subline, `View Designs | ডিজাইন দেখুন` button, hero product image (black mousepad, high-contrast studio shot).
+3. **Specifications strip** — material, dimensions, edge stitch, anti-slip base (4 spec cells with hairline dividers).
+4. **Design gallery (`#gallery`)** — 9 selectable Unipadz design cards (image + bilingual name + "In Stock"). Clicking a card selects it and scrolls to the order form, pre-filling the chosen design. Selected state: solid black border + corner mark.
 5. **Order form (`#order-form`)** — two columns:
    - Left: form — Name | নাম, Phone | ফোন নম্বর, Shipping Address | ডেলিভারি ঠিকানা, Design selector (the 9 designs), Thickness toggle (3mm / 5mm +৳100), Quantity stepper, Delivery area toggle (Inside Dhaka ৳60 / Outside Dhaka ৳120). `Confirm Cash on Delivery Order` button.
    - Right (sticky): live Order Summary card — design, thickness, qty, delivery fee, **Total ৳**, COD badge. Trust badges (Fast Delivery, Quality Check, 7-day return).
 6. **Delivery / trust band** — COD nationwide, 1–2 days Dhaka / 3–5 days outside, return policy, contact.
-7. **Footer** — brand, support links, contact, social, "Made in Bangladesh".
+7. **Footer** — UM monogram, support links, contact, social, "Made in Bangladesh".
+
 
 On submit: client validation (zod) → call `placeOrder` server function → success state with order number; no online payment.
 
 ## Product data (defined in a client-safe `src/lib/products.ts`)
 
-9 designs (bilingual names), each with a generated image:
-1. Zen Wave | জেন ওয়েভ — ৳850
-2. Dhaka Dusk | ঢাকা ডাস্ক — ৳850
-3. Clay Path | কাদা পথ — ৳850
-4. Monsoon Mist | বর্ষার কুয়াশা — ৳850
-5. Jute Weave | পাটের বুনন — ৳850
-6. River Delta | নদী মোহনা — ৳950
-7. Copper Ore | তাম্র আকরিক — ৳950
-8. Charcoal Slate | চারকোল স্লেট — ৳850
-9. Sand Dune | বালিয়াড়ি — ৳850
+9 Unipadz designs, re-cut as a monochrome/geometric collection matching the logo (bilingual names), each with a generated image:
+1. Iso Grid | আইসো গ্রিড — ৳850
+2. Monogram | মনোগ্রাম (UM mark, oversized) — ৳950
+3. Dhaka Lines | ঢাকা লাইনস — ৳850
+4. Halftone | হাফটোন — ৳850
+5. Extrude | এক্সট্রুড — ৳950
+6. Blackout | ব্ল্যাকআউট (plain black, stitched edge) — ৳850
+7. Topo Mono | টপো মনো — ৳850
+8. Static | স্ট্যাটিক (noise/grain field) — ৳850
+9. Bengal Motif | বাংলা মোটিফ (geometric, monochrome) — ৳950
+
 
 Thickness: **3mm Slim** (base price) · **5mm Pro** (+৳100). Delivery: Inside Dhaka ৳60 · Outside Dhaka ৳120. Quantity 1–5.
 
@@ -82,10 +93,11 @@ Server functions (`src/lib/orders.functions.ts`):
 
 Protected route under `_authenticated/`. Gate via `requireSupabaseAuth` + `has_role('admin')`. Shows a table of all orders (date, customer, phone, design, thickness, qty, total, status) with a status dropdown and basic filters. You (the store owner) sign in with your Lovable Cloud account and are granted the `admin` role.
 
-## Images (generated via imagegen)
+## Images and logo
 
-- 1 hero image (warm overhead charcoal mousepad on wooden desk).
-- 9 design images (one per design, matching each design's prompt). Saved under `src/assets/` and imported.
+- The uploaded UM logo is used as-is for the header lockup and footer, and downscaled into `public/favicon.png` as the site favicon.
+- 1 hero image: a black Unipadz mousepad, high-contrast studio lighting, dark seamless background — matching the logo's stark monochrome.
+- 9 design images (one per design above), all monochrome. Saved under `src/assets/`.
 
 ## What I need from you
 
@@ -99,9 +111,10 @@ No online payment, no customer accounts/login, no cart for multiple products (on
 ## Build order
 
 1. Enable Lovable Cloud → write & apply the orders migration (table, grants, RLS, admin role).
-2. Add design tokens + fonts to `src/styles.css`; load fonts via `<link>` in `__root.tsx`.
-3. Generate hero + 9 design images.
+2. Add the monochrome/isometric tokens + fonts to `src/styles.css`; load fonts via `<link>` in `__root.tsx`; wire the UM logo asset and favicon.
+3. Generate hero + 9 monochrome design images.
 4. Build `src/lib/products.ts` and the landing page on `src/routes/index.tsx` (all sections, order form, live summary).
 5. Add `placeOrder` server function; wire form submit → DB insert → success state.
 6. Build `/admin` dashboard route + `listOrders`/`updateOrderStatus`.
-7. SEO head on `/` (title, description, og), verify build + preview.
+7. SEO head on `/` (Unique Modz / Unipadz title, description, og), verify build + preview.
+
