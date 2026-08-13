@@ -106,9 +106,13 @@ function Index() {
             <h2 className="font-display text-3xl font-black uppercase tracking-tight sm:text-4xl">
               Place your order
             </h2>
-            <p className="bn mt-2 text-muted-foreground">
-              ডিজাইন বাছুন, তথ্য দিন — আমরা কল করে কনফার্ম করব।
+            <p className="bn-display mt-3 max-w-xl text-lg">
+              ডিজাইন বেছে নিন, তথ্য দিন — বাকিটা আমাদের দায়িত্ব।
             </p>
+            <p className="bn mt-1 max-w-xl text-sm text-muted-foreground">
+              অর্ডারের পর আমরা কল করে কনফার্ম করব। টাকা দিবেন পণ্য হাতে পাওয়ার পর।
+            </p>
+
 
             <div className="mt-8">
               <OrderForm designId={designId} onDesignChange={setDesignId} />
