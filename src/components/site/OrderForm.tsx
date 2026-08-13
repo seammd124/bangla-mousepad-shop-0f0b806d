@@ -13,22 +13,20 @@ import {
   DELIVERY_OPTIONS,
   DESIGNS,
   PRODUCT_SIZE,
-  THICKNESS_OPTIONS,
   formatBdt,
   getDelivery,
-  getThickness,
+  getDesign,
+  savings,
   type DesignId,
-  type ThicknessId,
 } from "@/lib/catalog";
 import { DESIGN_IMAGES } from "@/lib/design-images";
 import { orderSchema, type OrderInput } from "@/lib/order-schema";
 import { placeOrder } from "@/lib/orders.functions";
+import { PriceTag } from "@/components/site/PriceTag";
 
 interface OrderFormProps {
   designId: DesignId;
   onDesignChange: (id: DesignId) => void;
-  thickness: ThicknessId;
-  onThicknessChange: (id: ThicknessId) => void;
 }
 
 function FieldError({ message }: { message?: string | undefined }) {
