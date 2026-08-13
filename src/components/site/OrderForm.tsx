@@ -21,6 +21,7 @@ import {
 } from "@/lib/catalog";
 import { orderSchema, type OrderInput } from "@/lib/order-schema";
 import { placeOrder } from "@/lib/orders.functions";
+import { trackMeta } from "@/components/site/MetaPixel";
 import { PriceTag } from "@/components/site/PriceTag";
 
 interface OrderFormProps {
@@ -100,6 +101,14 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
 
   const onSubmit = async (values: OrderInput) => {
     try {
+      trackMeta("InitiateCheckout", {
+        currency: "BDT",
+        value: total,
+        content_type: "product",
+        content_ids: [designId],
+        content_name: selected.name,
+        num_items: qty,
+      });
       const result = await submitOrder({ data: { ...values, designId, thickness } });
       const orderNumber = String(result.orderNumber);
       setConfirmation({
@@ -112,6 +121,18 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
         quantity: qty,
         deliveryFee,
       });
+      trackMeta(
+        "Purchase",
+        {
+          currency: "BDT",
+          value: result.total,
+          content_type: "product",
+          content_ids: [designId],
+          content_name: selected.name,
+          num_items: qty,
+        },
+        result.eventId,
+      );
       toast.success(`Order ${orderNumber} placed`, {
         description: "আমরা শীঘ্রই কল করে অর্ডার কনফার্ম করব।",
       });

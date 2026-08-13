@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { Toaster } from "@/components/ui/sonner";
+import { MetaPixel } from "@/components/site/MetaPixel";
 
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
@@ -137,6 +138,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <MetaPixel />
       <Toaster position="top-center" />
     </QueryClientProvider>
   );
