@@ -192,11 +192,65 @@ function AdminPage() {
           </Button>
           <Button
             variant="outline"
-            onClick={exportCsv}
+            onClick={() => setExportOpen(true)}
             className="rounded-none uppercase tracking-[0.14em]"
           >
             <Download className="mr-2 h-4 w-4" /> Export CSV
           </Button>
+
+          <Dialog open={exportOpen} onOpenChange={setExportOpen}>
+            <DialogContent className="max-w-lg rounded-none border-ink">
+              <DialogHeader>
+                <DialogTitle className="font-display uppercase tracking-tight">
+                  Export columns
+                </DialogTitle>
+              </DialogHeader>
+              <p className="text-sm text-muted-foreground">
+                Choose which columns to include. {filtered.length} order(s) match the current
+                filters.
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="rounded-none"
+                  onClick={() => {
+                    const all = EXPORT_COLUMNS.map((c) => c.key);
+                    setExportKeys(all);
+                    localStorage.setItem(EXPORT_PREFS_KEY, JSON.stringify(all));
+                  }}
+                >
+                  Select all
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="rounded-none"
+                  onClick={() => {
+                    setExportKeys([]);
+                    localStorage.setItem(EXPORT_PREFS_KEY, JSON.stringify([]));
+                  }}
+                >
+                  Clear all
+                </Button>
+              </div>
+              <div className="grid max-h-72 grid-cols-2 gap-2 overflow-y-auto border border-border p-3">
+                {EXPORT_COLUMNS.map((c) => (
+                  <label key={c.key} className="flex items-center gap-2 text-sm">
+                    <Checkbox
+                      checked={exportKeys.includes(c.key)}
+                      onCheckedChange={(v) => toggleExportKey(c.key, v === true)}
+                    />
+                    {c.label}
+                  </label>
+                ))}
+              </div>
+              <Button onClick={exportCsv} className="rounded-none uppercase tracking-[0.14em]">
+                <Download className="mr-2 h-4 w-4" /> Download CSV
+              </Button>
+            </DialogContent>
+          </Dialog>
+
 
           <Button variant="outline" onClick={signOut} className="rounded-none uppercase tracking-[0.14em]">
             Sign out
