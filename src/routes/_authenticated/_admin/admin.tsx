@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -20,6 +20,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
 import { LogoLockup } from "@/components/site/Logo";
 import { formatBdt } from "@/lib/catalog";
 import { listOrders, updateOrderStatus } from "@/lib/orders.functions";
@@ -42,6 +43,30 @@ export const Route = createFileRoute("/_authenticated/_admin/admin")({
 
 const STATUSES = ["new", "confirmed", "shipped", "delivered", "cancelled"];
 
+const EXPORT_COLUMNS: { key: string; label: string }[] = [
+  { key: "order_number", label: "Order No" },
+  { key: "created_at", label: "Date" },
+  { key: "status", label: "Status" },
+  { key: "customer_name", label: "Name" },
+  { key: "phone", label: "Phone" },
+  { key: "email", label: "Email" },
+  { key: "address", label: "Address" },
+  { key: "area", label: "Area" },
+  { key: "city", label: "City" },
+  { key: "postal_code", label: "Postal Code" },
+  { key: "country", label: "Country" },
+  { key: "design_name", label: "Design" },
+  { key: "thickness", label: "Thickness" },
+  { key: "quantity", label: "Qty" },
+  { key: "unit_price", label: "Unit Price" },
+  { key: "delivery_area", label: "Delivery Area" },
+  { key: "delivery_fee", label: "Delivery Fee" },
+  { key: "total", label: "Total" },
+  { key: "note", label: "Note" },
+];
+
+const EXPORT_PREFS_KEY = "unipadz-export-columns";
+
 function AdminPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -50,6 +75,31 @@ function AdminPage() {
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [exportOpen, setExportOpen] = useState(false);
+  const [exportKeys, setExportKeys] = useState<string[]>(() =>
+    EXPORT_COLUMNS.map((c) => c.key),
+  );
+
+  useEffect(() => {
+    const saved = localStorage.getItem(EXPORT_PREFS_KEY);
+    if (!saved) return;
+    try {
+      const parsed = JSON.parse(saved) as string[];
+      const valid = parsed.filter((k) => EXPORT_COLUMNS.some((c) => c.key === k));
+      if (valid.length) setExportKeys(valid);
+    } catch {
+      /* ignore malformed prefs */
+    }
+  }, []);
+
+  const toggleExportKey = (key: string, checked: boolean) => {
+    setExportKeys((prev) => {
+      const next = checked ? [...prev, key] : prev.filter((k) => k !== key);
+      localStorage.setItem(EXPORT_PREFS_KEY, JSON.stringify(next));
+      return next;
+    });
+  };
+
 
 
   const { data, isLoading } = useQuery({
@@ -106,27 +156,11 @@ function AdminPage() {
       toast.error("No orders to export");
       return;
     }
-    const columns: { key: string; label: string }[] = [
-      { key: "order_number", label: "Order No" },
-      { key: "created_at", label: "Date" },
-      { key: "status", label: "Status" },
-      { key: "customer_name", label: "Name" },
-      { key: "phone", label: "Phone" },
-      { key: "email", label: "Email" },
-      { key: "address", label: "Address" },
-      { key: "area", label: "Area" },
-      { key: "city", label: "City" },
-      { key: "postal_code", label: "Postal Code" },
-      { key: "country", label: "Country" },
-      { key: "design_name", label: "Design" },
-      { key: "thickness", label: "Thickness" },
-      { key: "quantity", label: "Qty" },
-      { key: "unit_price", label: "Unit Price" },
-      { key: "delivery_area", label: "Delivery Area" },
-      { key: "delivery_fee", label: "Delivery Fee" },
-      { key: "total", label: "Total" },
-      { key: "note", label: "Note" },
-    ];
+    const columns = EXPORT_COLUMNS.filter((c) => exportKeys.includes(c.key));
+    if (columns.length === 0) {
+      toast.error("Select at least one column");
+      return;
+    }
     const escape = (value: unknown) => {
       const s = value === null || value === undefined ? "" : String(value);
       return `"${s.replace(/"/g, '""')}"`;
@@ -142,8 +176,10 @@ function AdminPage() {
     a.download = `unipadz-orders-${new Date().toISOString().slice(0, 10)}.csv`;
     a.click();
     URL.revokeObjectURL(url);
+    setExportOpen(false);
     toast.success(`${filtered.length} orders exported`);
   };
+
 
 
   return (
@@ -157,11 +193,65 @@ function AdminPage() {
           </Button>
           <Button
             variant="outline"
-            onClick={exportCsv}
+            onClick={() => setExportOpen(true)}
             className="rounded-none uppercase tracking-[0.14em]"
           >
             <Download className="mr-2 h-4 w-4" /> Export CSV
           </Button>
+
+          <Dialog open={exportOpen} onOpenChange={setExportOpen}>
+            <DialogContent className="max-w-lg rounded-none border-ink">
+              <DialogHeader>
+                <DialogTitle className="font-display uppercase tracking-tight">
+                  Export columns
+                </DialogTitle>
+              </DialogHeader>
+              <p className="text-sm text-muted-foreground">
+                Choose which columns to include. {filtered.length} order(s) match the current
+                filters.
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="rounded-none"
+                  onClick={() => {
+                    const all = EXPORT_COLUMNS.map((c) => c.key);
+                    setExportKeys(all);
+                    localStorage.setItem(EXPORT_PREFS_KEY, JSON.stringify(all));
+                  }}
+                >
+                  Select all
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="rounded-none"
+                  onClick={() => {
+                    setExportKeys([]);
+                    localStorage.setItem(EXPORT_PREFS_KEY, JSON.stringify([]));
+                  }}
+                >
+                  Clear all
+                </Button>
+              </div>
+              <div className="grid max-h-72 grid-cols-2 gap-2 overflow-y-auto border border-border p-3">
+                {EXPORT_COLUMNS.map((c) => (
+                  <label key={c.key} className="flex items-center gap-2 text-sm">
+                    <Checkbox
+                      checked={exportKeys.includes(c.key)}
+                      onCheckedChange={(v) => toggleExportKey(c.key, v === true)}
+                    />
+                    {c.label}
+                  </label>
+                ))}
+              </div>
+              <Button onClick={exportCsv} className="rounded-none uppercase tracking-[0.14em]">
+                <Download className="mr-2 h-4 w-4" /> Download CSV
+              </Button>
+            </DialogContent>
+          </Dialog>
+
 
           <Button variant="outline" onClick={signOut} className="rounded-none uppercase tracking-[0.14em]">
             Sign out
