@@ -302,37 +302,30 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
         <dl className="mt-5 space-y-3 text-sm">
           <div className="flex justify-between gap-4">
             <dt className="text-muted-foreground">Design</dt>
-            <dd className="font-semibold">{selected.name}</dd>
+            <dd className="font-semibold">
+              {selected.name} · {thickness}
+            </dd>
           </div>
           <div className="flex justify-between gap-4">
             <dt className="text-muted-foreground">Size</dt>
             <dd className="font-semibold">{PRODUCT_SIZE}</dd>
           </div>
           <div className="flex justify-between gap-4">
-            <dt className="text-muted-foreground">Thickness</dt>
-            <dd className="font-semibold">{thickness}</dd>
-          </div>
-          <div className="flex justify-between gap-4">
-            <dt className="text-muted-foreground">Regular price × {qty}</dt>
-            <dd className="font-semibold text-muted-foreground line-through">
-              {formatBdt(selected.regularPrice * qty)}
-            </dd>
-          </div>
-          {discount > 0 && (
-            <div className="flex justify-between gap-4">
-              <dt className="font-semibold">Launch discount</dt>
-              <dd className="font-display font-black">−{formatBdt(discount)}</dd>
-            </div>
-          )}
-          <div className="flex justify-between gap-4">
             <dt className="text-muted-foreground">Offer price × {qty}</dt>
             <dd className="font-semibold">{formatBdt(unitPrice * qty)}</dd>
           </div>
+          {discount > 0 && (
+            <div className="flex justify-between gap-4">
+              <dt className="font-semibold">You save</dt>
+              <dd className="font-display font-black">−{formatBdt(discount)}</dd>
+            </div>
+          )}
           <div className="flex justify-between gap-4">
             <dt className="text-muted-foreground">Delivery</dt>
             <dd className="font-semibold">{formatBdt(deliveryFee)}</dd>
           </div>
         </dl>
+
         <div className="mt-5 flex items-baseline justify-between border-t border-ink pt-5">
           <span className="eyebrow">Total</span>
           <span className="font-display text-3xl font-black">{formatBdt(total)}</span>
