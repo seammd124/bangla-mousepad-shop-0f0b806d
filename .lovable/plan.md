@@ -9,9 +9,10 @@ A single-page bilingual (Bangla + English) storefront for **Unique Modz**, selli
 - **Logo:** the uploaded black isometric "UM" monogram — a 3D extruded U interlocking with a flat solid M, pure black on white.
 - Header lockup: UM monogram + `UNIQUE MODZ` wordmark, with `UNIPADZ` as the product-line label. Logo also used as the favicon.
 
-## Important: MongoDB is not available on this platform
+## Database
 
-You asked for MongoDB. This platform's built-in backend is **Lovable Cloud**, which runs on PostgreSQL (Supabase) — MongoDB is not supported here. The plan uses Lovable Cloud instead: a PostgreSQL `orders` table, server functions to insert orders, and a protected `/admin` dashboard to view them. Functionally it gives you exactly what you wanted (orders saved to a database, viewable on a backend dashboard) — just on Postgres, not Mongo. If MongoDB is a hard requirement, tell me and we'll reconsider.
+Postgres, as you asked — via **Lovable Cloud** (the built-in backend, PostgreSQL under the hood). Orders are stored in an `orders` table and shown on a protected `/admin` dashboard.
+
 
 ## Design direction — retheme to the logo
 
