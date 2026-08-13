@@ -41,16 +41,17 @@ On submit: client validation (zod) → call `placeOrder` server function → suc
 
 ## Product data (defined in a client-safe `src/lib/products.ts`)
 
-9 designs (bilingual names), each with a generated image:
-1. Zen Wave | জেন ওয়েভ — ৳850
-2. Dhaka Dusk | ঢাকা ডাস্ক — ৳850
-3. Clay Path | কাদা পথ — ৳850
-4. Monsoon Mist | বর্ষার কুয়াশা — ৳850
-5. Jute Weave | পাটের বুনন — ৳850
-6. River Delta | নদী মোহনা — ৳950
-7. Copper Ore | তাম্র আকরিক — ৳950
-8. Charcoal Slate | চারকোল স্লেট — ৳850
-9. Sand Dune | বালিয়াড়ি — ৳850
+9 Unipadz designs, re-cut as a monochrome/geometric collection matching the logo (bilingual names), each with a generated image:
+1. Iso Grid | আইসো গ্রিড — ৳850
+2. Monogram | মনোগ্রাম (UM mark, oversized) — ৳950
+3. Dhaka Lines | ঢাকা লাইনস — ৳850
+4. Halftone | হাফটোন — ৳850
+5. Extrude | এক্সট্রুড — ৳950
+6. Blackout | ব্ল্যাকআউট (plain black, stitched edge) — ৳850
+7. Topo Mono | টপো মনো — ৳850
+8. Static | স্ট্যাটিক (noise/grain field) — ৳850
+9. Bengal Motif | বাংলা মোটিফ (geometric, monochrome) — ৳950
+
 
 Thickness: **3mm Slim** (base price) · **5mm Pro** (+৳100). Delivery: Inside Dhaka ৳60 · Outside Dhaka ৳120. Quantity 1–5.
 
