@@ -15,9 +15,6 @@ export function SiteFooter() {
             Unipadz — oversized desk mousepads built in Bangladesh for people who care about
             their setup.
           </p>
-          <p className="bn mt-3 max-w-xs text-sm text-background/60">
-            বাংলাদেশে তৈরি প্রিমিয়াম বড় মাউসপ্যাড।
-          </p>
         </div>
 
         <div>
