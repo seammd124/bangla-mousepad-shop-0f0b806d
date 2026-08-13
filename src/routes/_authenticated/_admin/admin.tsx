@@ -308,6 +308,10 @@ function AdminPage() {
           <Button asChild variant="outline" className="rounded-none uppercase tracking-[0.14em]">
             <Link to="/catalog">Catalog</Link>
           </Button>
+          <Button asChild variant="outline" className="rounded-none uppercase tracking-[0.14em]">
+            <Link to="/meta">Meta Ads</Link>
+          </Button>
+
           <Button
             variant="outline"
             onClick={() => setExportOpen(true)}
