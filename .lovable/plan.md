@@ -40,6 +40,31 @@ New model: **design-driven pricing.** Each `Design` carries its own `thickness` 
 
 This keeps the user's original "2 thickness options" intent (both 4mm and 5mm are offered across the line) while being accurate to what's actually sold.
 
+## Discount framing and urgency
+
+Every price on the site is presented as a limited-time offer against the regular price, not as a plain number.
+
+**Regular → offer price (both tiers land on ~22% off):**
+
+| Thickness | Regular price | Offer price | You save |
+|---|---|---|---|
+| 4mm | ৳1,799 | **৳1,399** | ৳400 (22%) |
+| 5mm | ৳2,299 | **৳1,799** | ৳500 (22%) |
+
+Price is rendered everywhere by one shared `PriceTag` component so the treatment never drifts: regular price struck through in muted grey, offer price large in ink black, and a `-22%` badge. Bilingual save line underneath — `Save ৳400 · ৳৪০০ সাশ্রয়`.
+
+**Urgency elements (monochrome, on-brand — no loud red banners):**
+
+1. **Top announcement bar** — thin sticky strip above the header: `LIMITED TIME OFFER — UP TO ৳500 OFF · সীমিত সময়ের অফার` with a live countdown timer (HH:MM:SS) counting to midnight, resetting daily. Dismissible.
+2. **Hero** — offer badge above the headline (`22% OFF · LAUNCH OFFER`), the price line uses `PriceTag` with the struck-through regular price, and a small line: `Offer ends soon · অফার শীঘ্রই শেষ`.
+3. **Gallery cards** — each card gets a `-22%` corner badge and shows regular struck-through + offer price under the design name.
+4. **Order form summary** — line items show `Regular ৳1,799`, `Discount −৳400`, then **Total**, so the saving is visible at the moment of decision. A `You're saving ৳400 today` highlight sits above the confirm button.
+5. **Stock/social proof strip** — near the form: `Cash on Delivery · Free returns in 7 days · Selling fast — limited stock` in Bangla + English. Static copy, no fake live counters.
+
+Copy stays honest: it advertises a launch/limited-time discount off the regular price, which matches the pricing already live on uniquemodz.com. No fabricated "only 3 left" counters or fake purchase notifications.
+
+
+
 ## Files to change
 
 1. **`src/lib/catalog.ts`**
