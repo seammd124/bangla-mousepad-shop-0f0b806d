@@ -159,7 +159,7 @@ function Index() {
               </dl>
             </div>
 
-            <div className="relative order-1 mx-auto w-full max-w-xs sm:max-w-sm lg:order-2 lg:max-w-md">
+            <div className="relative order-1 mx-auto w-full max-w-xs sm:max-w-sm lg:order-2 lg:max-w-[340px]">
               <div className="iso-shadow border border-ink bg-background p-2">
                 <video
                   src={heroVideo.url}
