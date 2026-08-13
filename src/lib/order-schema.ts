@@ -14,7 +14,7 @@ export const orderSchema = z.object({
   phone: z
     .string()
     .trim()
-    .regex(BD_PHONE_REGEX, "Enter a valid 11-digit Bangladeshi number, e.g. 01881655083"),
+    .regex(BD_PHONE_REGEX, "Enter a valid 11-digit Bangladeshi number, e.g. 0181XXXXXXX"),
   customerName: z.string().trim().min(2, "Name is required | নাম দিন").max(120),
   address: z.string().trim().min(5, "Full address is required | ঠিকানা দিন").max(400),
   postalCode: z.string().trim().regex(/^\d{4}$/, "Postal code must be 4 digits | ৪ সংখ্যার পোস্ট কোড"),
