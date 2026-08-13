@@ -45,6 +45,7 @@ const STATUSES = ["new", "confirmed", "shipped", "delivered", "cancelled"];
 
 const EXPORT_COLUMNS: { key: string; label: string }[] = [
   { key: "order_number", label: "Order No" },
+  { key: "line_type", label: "Line Type" },
   { key: "created_at", label: "Date" },
   { key: "status", label: "Status" },
   { key: "customer_name", label: "Name" },
@@ -59,11 +60,13 @@ const EXPORT_COLUMNS: { key: string; label: string }[] = [
   { key: "thickness", label: "Thickness" },
   { key: "quantity", label: "Qty" },
   { key: "unit_price", label: "Unit Price" },
+  { key: "line_amount", label: "Line Amount" },
   { key: "delivery_area", label: "Delivery Area" },
   { key: "delivery_fee", label: "Delivery Fee" },
   { key: "total", label: "Total" },
   { key: "note", label: "Note" },
 ];
+
 
 const EXPORT_PREFS_KEY = "unipadz-export-columns";
 
@@ -198,11 +201,89 @@ function AdminPage() {
       const s = value === null || value === undefined ? "" : String(value);
       return `"${s.replace(/"/g, '""')}"`;
     };
-    const rows = exportFiltered.map((o) =>
-      columns.map((c) => escape((o as Record<string, unknown>)[c.key])).join(","),
+    const toRow = (record: Record<string, unknown>) =>
+      columns.map((c) => escape(record[c.key])).join(",");
+
+    const rows: string[] = [];
+    let grandItems = 0;
+    let grandDelivery = 0;
+    let grandTotal = 0;
+    let grandQty = 0;
+
+    for (const o of exportFiltered) {
+      const base = o as unknown as Record<string, unknown>;
+      const qty = Number(o.quantity) || 0;
+      const unit = Number(o.unit_price) || 0;
+      const itemAmount = qty * unit;
+      const delivery = Number(o.delivery_fee) || 0;
+      const total = Number(o.total) || 0;
+
+      // Line item row
+      rows.push(
+        toRow({
+          ...base,
+          line_type: "Item",
+          delivery_area: "",
+          delivery_fee: "",
+          total: "",
+          line_amount: itemAmount,
+        }),
+      );
+
+      // Delivery charge row
+      rows.push(
+        toRow({
+          ...base,
+          line_type: "Delivery",
+          design_name: "",
+          thickness: "",
+          quantity: "",
+          unit_price: "",
+          line_amount: delivery,
+          total: "",
+        }),
+      );
+
+      // Order total row
+      rows.push(
+        toRow({
+          ...base,
+          line_type: "Order Total",
+          design_name: "",
+          thickness: "",
+          quantity: "",
+          unit_price: "",
+          delivery_area: "",
+          delivery_fee: "",
+          line_amount: total,
+          total,
+        }),
+      );
+
+      if (o.status !== "cancelled") {
+        grandItems += itemAmount;
+        grandDelivery += delivery;
+        grandTotal += total;
+        grandQty += qty;
+      }
+    }
+
+    // Grand total summary (excludes cancelled orders)
+    rows.push(toRow({}));
+    rows.push(
+      toRow({
+        order_number: "GRAND TOTAL",
+        line_type: "Summary (excl. cancelled)",
+        quantity: grandQty,
+        line_amount: grandItems,
+        delivery_fee: grandDelivery,
+        total: grandTotal,
+      }),
     );
+
     const csv = ["\uFEFF" + columns.map((c) => escape(c.label)).join(","), ...rows].join("\r\n");
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
