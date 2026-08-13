@@ -13,22 +13,20 @@ import {
   DELIVERY_OPTIONS,
   DESIGNS,
   PRODUCT_SIZE,
-  THICKNESS_OPTIONS,
   formatBdt,
   getDelivery,
-  getThickness,
+  getDesign,
+  savings,
   type DesignId,
-  type ThicknessId,
 } from "@/lib/catalog";
 import { DESIGN_IMAGES } from "@/lib/design-images";
 import { orderSchema, type OrderInput } from "@/lib/order-schema";
 import { placeOrder } from "@/lib/orders.functions";
+import { PriceTag } from "@/components/site/PriceTag";
 
 interface OrderFormProps {
   designId: DesignId;
   onDesignChange: (id: DesignId) => void;
-  thickness: ThicknessId;
-  onThicknessChange: (id: ThicknessId) => void;
 }
 
 function FieldError({ message }: { message?: string | undefined }) {
@@ -36,14 +34,12 @@ function FieldError({ message }: { message?: string | undefined }) {
   return <p className="mt-1.5 text-xs font-medium text-destructive">{message}</p>;
 }
 
-export function OrderForm({
-  designId,
-  onDesignChange,
-  thickness,
-  onThicknessChange,
-}: OrderFormProps) {
+export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
   const submitOrder = useServerFn(placeOrder);
   const [confirmation, setConfirmation] = useState<{ orderNumber: string; total: number } | null>(null);
+
+  const selected = getDesign(designId) ?? DESIGNS[0]!;
+  const thickness = selected.thickness;
 
   const {
     register,
@@ -71,19 +67,18 @@ export function OrderForm({
 
   const quantity = watch("quantity");
   const deliveryArea = watch("deliveryArea");
+  const qty = Number(quantity) || 1;
 
-  const unitPrice = getThickness(thickness)?.price ?? 0;
+  const unitPrice = selected.price;
   const deliveryFee = getDelivery(deliveryArea)?.fee ?? 0;
-  const total = unitPrice * (Number(quantity) || 1) + deliveryFee;
+  const total = unitPrice * qty + deliveryFee;
+  const discount = savings(selected) * qty;
 
   const selectDesign = (id: DesignId) => {
     onDesignChange(id);
     setValue("designId", id, { shouldValidate: true });
-  };
-
-  const selectThickness = (id: ThicknessId) => {
-    onThicknessChange(id);
-    setValue("thickness", id, { shouldValidate: true });
+    const next = getDesign(id);
+    if (next) setValue("thickness", next.thickness, { shouldValidate: true });
   };
 
   const onSubmit = async (values: OrderInput) => {
@@ -154,47 +149,25 @@ export function OrderForm({
                     loading="lazy"
                     className="aspect-2/1 w-full object-cover"
                   />
-                  <span className="mt-2 block px-1 pb-1 text-xs font-bold uppercase tracking-wide">
+                  <span className="mt-2 block px-1 text-xs font-bold uppercase tracking-wide">
                     {design.name}
+                  </span>
+                  <span className="mb-1 block px-1 text-[11px] text-muted-foreground">
+                    {design.thickness} · {formatBdt(design.price)}
                   </span>
                 </button>
               );
             })}
           </div>
           <FieldError message={errors.designId?.message} />
-        </fieldset>
-
-        <fieldset>
-          <legend className="eyebrow text-muted-foreground">02 — Thickness</legend>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            {THICKNESS_OPTIONS.map((option) => {
-              const active = option.id === thickness;
-              return (
-                <button
-                  type="button"
-                  key={option.id}
-                  onClick={() => selectThickness(option.id)}
-                  aria-pressed={active}
-                  className={`border p-4 text-left transition-all ${
-                    active
-                      ? "iso-shadow-sm -translate-x-[1px] -translate-y-[1px] border-ink bg-surface-alt"
-                      : "border-border hover:border-ink"
-                  }`}
-                >
-                  <div className="flex items-baseline justify-between">
-                    <span className="font-display text-xl font-black">{option.label}</span>
-                    <span className="font-display text-lg font-bold">{formatBdt(option.price)}</span>
-                  </div>
-                  <p className="mt-1 text-xs text-muted-foreground">{option.blurb}</p>
-                  <p className="bn text-xs text-muted-foreground">{option.blurbBn}</p>
-                </button>
-              );
-            })}
-          </div>
+          <p className="bn mt-3 text-xs text-muted-foreground">
+            প্রতিটি ডিজাইনের থিকনেস নির্দিষ্ট — ডিজাইন সিলেক্ট করলেই দাম আপডেট হবে।
+          </p>
         </fieldset>
 
         <fieldset className="space-y-5">
-          <legend className="eyebrow text-muted-foreground">03 — Your details</legend>
+          <legend className="eyebrow text-muted-foreground">02 — Your details</legend>
+
 
           <div className="mt-4 grid gap-5 sm:grid-cols-2">
             <div>
@@ -338,10 +311,13 @@ export function OrderForm({
           alt="Selected Unipadz design preview"
           className="mt-4 aspect-2/1 w-full border border-border object-cover"
         />
+        <div className="mt-4">
+          <PriceTag regularPrice={selected.regularPrice} price={selected.price} size="md" />
+        </div>
         <dl className="mt-5 space-y-3 text-sm">
           <div className="flex justify-between gap-4">
             <dt className="text-muted-foreground">Design</dt>
-            <dd className="font-semibold">{DESIGNS.find((d) => d.id === designId)?.name}</dd>
+            <dd className="font-semibold">{selected.name}</dd>
           </div>
           <div className="flex justify-between gap-4">
             <dt className="text-muted-foreground">Size</dt>
@@ -352,10 +328,20 @@ export function OrderForm({
             <dd className="font-semibold">{thickness}</dd>
           </div>
           <div className="flex justify-between gap-4">
-            <dt className="text-muted-foreground">
-              Unit price × {Number(quantity) || 1}
-            </dt>
-            <dd className="font-semibold">{formatBdt(unitPrice * (Number(quantity) || 1))}</dd>
+            <dt className="text-muted-foreground">Regular price × {qty}</dt>
+            <dd className="font-semibold text-muted-foreground line-through">
+              {formatBdt(selected.regularPrice * qty)}
+            </dd>
+          </div>
+          {discount > 0 && (
+            <div className="flex justify-between gap-4">
+              <dt className="font-semibold">Launch discount</dt>
+              <dd className="font-display font-black">−{formatBdt(discount)}</dd>
+            </div>
+          )}
+          <div className="flex justify-between gap-4">
+            <dt className="text-muted-foreground">Offer price × {qty}</dt>
+            <dd className="font-semibold">{formatBdt(unitPrice * qty)}</dd>
           </div>
           <div className="flex justify-between gap-4">
             <dt className="text-muted-foreground">Delivery</dt>
@@ -366,9 +352,15 @@ export function OrderForm({
           <span className="eyebrow">Total</span>
           <span className="font-display text-3xl font-black">{formatBdt(total)}</span>
         </div>
+        {discount > 0 && (
+          <p className="bn mt-2 text-xs font-semibold">
+            আপনি সাশ্রয় করছেন {formatBdt(discount)} — অফার সীমিত সময়ের জন্য।
+          </p>
+        )}
         <p className="bn mt-2 text-xs text-muted-foreground">
           ক্যাশ অন ডেলিভারি — পণ্য হাতে পেয়ে টাকা দিন।
         </p>
+
 
         <Button
           type="submit"

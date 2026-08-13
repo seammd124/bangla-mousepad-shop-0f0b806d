@@ -2,21 +2,21 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 import { orderSchema, type OrderInput } from "./order-schema";
-import { getDelivery, getDesign, getThickness } from "./catalog";
+import { getDelivery, getDesign } from "./catalog";
 import { createPublicSupabaseClient } from "./supabase-public.server";
 
 export const placeOrder = createServerFn({ method: "POST" })
   .inputValidator((data: OrderInput) => orderSchema.parse(data))
   .handler(async ({ data }) => {
     const design = getDesign(data.designId);
-    const thickness = getThickness(data.thickness);
     const delivery = getDelivery(data.deliveryArea);
 
-    if (!design || !thickness || !delivery) {
+    if (!design || !delivery) {
       throw new Error("Invalid product selection");
     }
 
-    const unitPrice = thickness.price;
+    // Thickness and price are fixed per design — never trust the client value.
+    const unitPrice = design.price;
     const deliveryFee = delivery.fee;
     const total = unitPrice * data.quantity + deliveryFee;
 
@@ -32,7 +32,7 @@ export const placeOrder = createServerFn({ method: "POST" })
       p_postal_code: data.postalCode,
       p_design_id: design.id,
       p_design_name: design.name,
-      p_thickness: thickness.id,
+      p_thickness: design.thickness,
       p_quantity: data.quantity,
       p_delivery_area: delivery.id,
       p_note: data.note ?? "",

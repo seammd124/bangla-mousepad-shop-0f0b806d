@@ -1,11 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowDown, BadgeCheck, Layers, Ruler, Truck, Wallet } from "lucide-react";
+import { ArrowDown, BadgeCheck, Flame, Layers, RotateCcw, Ruler, ShieldCheck, Truck, Wallet } from "lucide-react";
 
 import { OrderForm } from "@/components/site/OrderForm";
+import { OfferBar } from "@/components/site/OfferBar";
+import { PriceTag } from "@/components/site/PriceTag";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
-import { DESIGNS, PRODUCT_SIZE, THICKNESS_OPTIONS, formatBdt, type DesignId, type ThicknessId } from "@/lib/catalog";
+import {
+  DESIGNS,
+  HEADLINE_DISCOUNT,
+  MAX_SAVING,
+  PRODUCT_SIZE,
+  THICKNESS_OPTIONS,
+  formatBdt,
+  type DesignId,
+} from "@/lib/catalog";
 import { DESIGN_IMAGES } from "@/lib/design-images";
 import heroVideo from "@/assets/unipadz-hero.mp4.asset.json";
 import heroPoster from "@/assets/unipadz-poster.jpg.asset.json";
@@ -59,12 +69,13 @@ const FEATURES = [
 ];
 
 function Index() {
-  const [designId, setDesignId] = useState<DesignId>("iso-grid");
-  const [thickness, setThickness] = useState<ThicknessId>("4mm");
+  const [designId, setDesignId] = useState<DesignId>("blood-moon-samurai");
 
   return (
     <div id="top" className="min-h-screen bg-background">
+      <OfferBar />
       <SiteHeader />
+
 
       <main>
         {/* Hero */}
@@ -72,6 +83,10 @@ function Index() {
           <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:py-24">
             <div>
               <p className="eyebrow text-muted-foreground">Unique Modz · Unipadz</p>
+              <p className="mt-4 inline-flex items-center gap-2 border border-ink bg-primary px-3 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-primary-foreground">
+                <Flame className="size-3.5" aria-hidden="true" />
+                Launch offer · save up to {formatBdt(MAX_SAVING)}
+              </p>
               <h1 className="mt-5 font-display text-5xl font-black uppercase leading-[0.92] tracking-tight sm:text-6xl lg:text-7xl">
                 The desk pad
                 <br />
@@ -80,8 +95,8 @@ function Index() {
                 <span className="bg-foreground px-2 text-background">your setup</span>
               </h1>
               <p className="bn mt-6 max-w-md text-lg text-muted-foreground">
-                ৯০০ × ৪০০ মি.মি. প্রিমিয়াম মাউসপ্যাড — ৯টি ডিজাইন, ২টি থিকনেস, সারা বাংলাদেশে
-                ক্যাশ অন ডেলিভারি।
+                ৯০০ × ৪০০ মি.মি. প্রিমিয়াম মাউসপ্যাড — ৯টি ডিজাইন, ৪ ও ৫ মি.মি. থিকনেস, সারা
+                বাংলাদেশে ক্যাশ অন ডেলিভারি।
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -92,13 +107,18 @@ function Index() {
                   Order Now
                   <ArrowDown className="size-4 transition-transform group-hover:translate-y-0.5" aria-hidden="true" />
                 </a>
-                <div className="text-sm">
-                  <span className="font-display text-2xl font-black">
-                    {formatBdt(THICKNESS_OPTIONS[0]!.price)}
-                  </span>
-                  <span className="ml-2 text-muted-foreground">starting price</span>
+                <div>
+                  <PriceTag
+                    regularPrice={THICKNESS_OPTIONS[0]!.regularPrice}
+                    price={THICKNESS_OPTIONS[0]!.price}
+                    size="md"
+                  />
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    starting price · offer ends soon
+                  </p>
                 </div>
               </div>
+
 
               <dl className="mt-10 grid max-w-md grid-cols-3 gap-4 border-t border-border pt-6 text-sm">
                 <div>
@@ -154,16 +174,29 @@ function Index() {
 
             <div className="mt-10 grid gap-4 sm:grid-cols-2">
               {THICKNESS_OPTIONS.map((option) => (
-                <div key={option.id} className="flex items-center justify-between border border-ink bg-background p-6">
+                <div key={option.id} className="flex items-center justify-between gap-4 border border-ink bg-background p-6">
                   <div>
                     <p className="font-display text-2xl font-black">
                       {PRODUCT_SIZE} · {option.label}
                     </p>
                     <p className="bn mt-1 text-sm text-muted-foreground">{option.blurbBn}</p>
                   </div>
-                  <p className="font-display text-3xl font-black">{formatBdt(option.price)}</p>
+                  <PriceTag regularPrice={option.regularPrice} price={option.price} size="lg" />
                 </div>
               ))}
+            </div>
+
+            {/* Trust strip */}
+            <div className="mt-10 grid gap-px border border-ink bg-ink sm:grid-cols-3">
+              <p className="flex items-center gap-3 bg-background p-5 text-sm font-semibold">
+                <Wallet className="size-5" aria-hidden="true" /> Cash on delivery nationwide
+              </p>
+              <p className="flex items-center gap-3 bg-background p-5 text-sm font-semibold">
+                <RotateCcw className="size-5" aria-hidden="true" /> 7-day replacement guarantee
+              </p>
+              <p className="flex items-center gap-3 bg-background p-5 text-sm font-semibold">
+                <ShieldCheck className="size-5" aria-hidden="true" /> Limited launch stock
+              </p>
             </div>
           </div>
         </section>
@@ -173,7 +206,7 @@ function Index() {
           <div className="mx-auto max-w-6xl px-5 py-16">
             <p className="eyebrow text-muted-foreground">The lineup</p>
             <h2 className="mt-4 font-display text-3xl font-black uppercase tracking-tight sm:text-4xl">
-              Nine designs. One price.
+              Nine designs. Up to {HEADLINE_DISCOUNT}% off.
             </h2>
             <p className="bn mt-2 text-muted-foreground">
               পছন্দের ডিজাইনে ট্যাপ করুন — অর্ডার ফর্মে সেটি সিলেক্ট হয়ে যাবে।
@@ -196,20 +229,32 @@ function Index() {
                         : "border-border hover:iso-shadow hover:-translate-x-[2px] hover:-translate-y-[2px] hover:border-ink"
                     }`}
                   >
-                    <img
-                      src={DESIGN_IMAGES[design.id]}
-                      alt={`${design.name} — Unipadz mousepad design`}
-                      loading="lazy"
-                      width={1024}
-                      height={512}
-                      className="aspect-2/1 w-full object-cover"
-                    />
+                    <div className="relative">
+                      <img
+                        src={DESIGN_IMAGES[design.id]}
+                        alt={`${design.name} — Unipadz mousepad design`}
+                        loading="lazy"
+                        width={1000}
+                        height={444}
+                        className="aspect-2/1 w-full object-cover"
+                      />
+                      <span className="absolute left-2 top-2 border border-ink bg-background px-2 py-1 text-[10px] font-bold uppercase tracking-[0.12em]">
+                        {design.thickness}
+                      </span>
+                    </div>
                     <div className="p-3">
                       <h3 className="font-display text-lg font-black uppercase">{design.name}</h3>
                       <p className="bn text-sm text-muted-foreground">{design.nameBn}</p>
                       <p className="mt-2 text-sm text-muted-foreground">{design.description}</p>
+                      <PriceTag
+                        className="mt-3"
+                        regularPrice={design.regularPrice}
+                        price={design.price}
+                        size="sm"
+                      />
                     </div>
                   </button>
+
                 );
               })}
             </div>
@@ -251,12 +296,7 @@ function Index() {
             </p>
 
             <div className="mt-10">
-              <OrderForm
-                designId={designId}
-                onDesignChange={setDesignId}
-                thickness={thickness}
-                onThicknessChange={setThickness}
-              />
+              <OrderForm designId={designId} onDesignChange={setDesignId} />
             </div>
           </div>
         </section>
