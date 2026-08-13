@@ -7,6 +7,7 @@ import { OfferBar } from "@/components/site/OfferBar";
 import { PriceTag } from "@/components/site/PriceTag";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
+import { WaveBackdrop } from "@/components/site/WaveBackdrop";
 import {
   DESIGNS,
   HEADLINE_DISCOUNT,
