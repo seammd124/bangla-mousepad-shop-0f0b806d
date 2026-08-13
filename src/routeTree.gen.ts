@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/_admin/route'
 import { Route as AuthenticatedAdminAdminRouteImport } from './routes/_authenticated/_admin/admin'
 import { Route as AuthenticatedAdminCatalogRouteImport } from './routes/_authenticated/_admin/catalog'
+import { Route as AuthenticatedAdminMetaRouteImport } from './routes/_authenticated/_admin/meta'
 import { Route as ApiPublicProductImageSplatRouteImport } from './routes/api/public/product-image/$'
 
 const IndexRoute = IndexRouteImport.update({
@@ -46,6 +47,11 @@ const AuthenticatedAdminCatalogRoute =
     path: '/catalog',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminMetaRoute = AuthenticatedAdminMetaRouteImport.update({
+  id: '/meta',
+  path: '/meta',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
 const ApiPublicProductImageSplatRoute =
   ApiPublicProductImageSplatRouteImport.update({
     id: '/api/public/product-image/$',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/admin': typeof AuthenticatedAdminAdminRoute
   '/catalog': typeof AuthenticatedAdminCatalogRoute
+  '/meta': typeof AuthenticatedAdminMetaRoute
   '/api/public/product-image/$': typeof ApiPublicProductImageSplatRoute
 }
 export interface FileRoutesByTo {
@@ -65,6 +72,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/admin': typeof AuthenticatedAdminAdminRoute
   '/catalog': typeof AuthenticatedAdminCatalogRoute
+  '/meta': typeof AuthenticatedAdminMetaRoute
   '/api/public/product-image/$': typeof ApiPublicProductImageSplatRoute
 }
 export interface FileRoutesById {
@@ -75,14 +83,26 @@ export interface FileRoutesById {
   '/_authenticated/_admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/_authenticated/_admin/admin': typeof AuthenticatedAdminAdminRoute
   '/_authenticated/_admin/catalog': typeof AuthenticatedAdminCatalogRoute
+  '/_authenticated/_admin/meta': typeof AuthenticatedAdminMetaRoute
   '/api/public/product-image/$': typeof ApiPublicProductImageSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/auth' | '/admin' | '/catalog' | '/api/public/product-image/$'
+    | '/'
+    | '/auth'
+    | '/admin'
+    | '/catalog'
+    | '/meta'
+    | '/api/public/product-image/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/admin' | '/catalog' | '/api/public/product-image/$'
+  to:
+    | '/'
+    | '/auth'
+    | '/admin'
+    | '/catalog'
+    | '/meta'
+    | '/api/public/product-image/$'
   id:
     | '__root__'
     | '/'
@@ -91,6 +111,7 @@ export interface FileRouteTypes {
     | '/_authenticated/_admin'
     | '/_authenticated/_admin/admin'
     | '/_authenticated/_admin/catalog'
+    | '/_authenticated/_admin/meta'
     | '/api/public/product-image/$'
   fileRoutesById: FileRoutesById
 }
@@ -145,6 +166,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminCatalogRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/_admin/meta': {
+      id: '/_authenticated/_admin/meta'
+      path: '/meta'
+      fullPath: '/meta'
+      preLoaderRoute: typeof AuthenticatedAdminMetaRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/api/public/product-image/$': {
       id: '/api/public/product-image/$'
       path: '/api/public/product-image/$'
@@ -158,12 +186,14 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminAdminRoute: typeof AuthenticatedAdminAdminRoute
   AuthenticatedAdminCatalogRoute: typeof AuthenticatedAdminCatalogRoute
+  AuthenticatedAdminMetaRoute: typeof AuthenticatedAdminMetaRoute
 }
 
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
   {
     AuthenticatedAdminAdminRoute: AuthenticatedAdminAdminRoute,
     AuthenticatedAdminCatalogRoute: AuthenticatedAdminCatalogRoute,
+    AuthenticatedAdminMetaRoute: AuthenticatedAdminMetaRoute,
   }
 
 const AuthenticatedAdminRouteRouteWithChildren =

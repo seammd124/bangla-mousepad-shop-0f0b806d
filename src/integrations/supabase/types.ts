@@ -41,6 +41,39 @@ export type Database = {
         }
         Relationships: []
       }
+      meta_settings: {
+        Row: {
+          access_token: string
+          capi_enabled: boolean
+          created_at: string
+          id: string
+          pixel_enabled: boolean
+          pixel_id: string
+          test_event_code: string
+          updated_at: string
+        }
+        Insert: {
+          access_token?: string
+          capi_enabled?: boolean
+          created_at?: string
+          id?: string
+          pixel_enabled?: boolean
+          pixel_id?: string
+          test_event_code?: string
+          updated_at?: string
+        }
+        Update: {
+          access_token?: string
+          capi_enabled?: boolean
+          created_at?: string
+          id?: string
+          pixel_enabled?: boolean
+          pixel_id?: string
+          test_event_code?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           address: string
