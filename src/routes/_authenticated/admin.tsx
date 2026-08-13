@@ -1,9 +1,12 @@
+import { useMemo, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
+import { Search } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -38,6 +41,9 @@ function AdminPage() {
   const queryClient = useQueryClient();
   const fetchOrders = useServerFn(listOrders);
   const setStatus = useServerFn(updateOrderStatus);
+  const [query, setQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin-orders"],
@@ -62,6 +68,26 @@ function AdminPage() {
   const revenue = orders
     .filter((o) => o.status !== "cancelled")
     .reduce((sum, o) => sum + Number(o.total), 0);
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return orders.filter((o) => {
+      if (statusFilter !== "all" && o.status !== statusFilter) return false;
+      if (!q) return true;
+      return [
+        o.order_number,
+        o.customer_name,
+        o.phone,
+        o.email,
+        o.city,
+        o.area,
+        o.address,
+        o.design_name,
+      ]
+        .filter(Boolean)
+        .some((v) => String(v).toLowerCase().includes(q));
+    });
+  }, [orders, query, statusFilter]);
 
   return (
     <div className="min-h-screen bg-surface-alt">
@@ -105,7 +131,37 @@ function AdminPage() {
               </div>
             </div>
 
-            <div className="mt-8 overflow-x-auto border border-ink bg-background">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <div className="relative flex-1">
+                <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search order no, name, phone, city, design…"
+                  className="rounded-none pl-9"
+                  aria-label="Search orders"
+                />
+              </div>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-full rounded-none sm:w-[180px]" aria-label="Filter by status">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All statuses</SelectItem>
+                  {STATUSES.map((status) => (
+                    <SelectItem key={status} value={status}>
+                      {status}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <p className="mt-3 text-xs uppercase tracking-[0.14em] text-muted-foreground">
+              Showing {filtered.length} of {orders.length}
+            </p>
+
+            <div className="mt-4 overflow-x-auto border border-ink bg-background">
               <table className="w-full min-w-[900px] text-sm">
                 <thead className="border-b border-ink bg-surface-alt text-left">
                   <tr className="[&>th]:px-4 [&>th]:py-3 [&>th]:text-xs [&>th]:uppercase [&>th]:tracking-[0.14em]">
@@ -118,7 +174,7 @@ function AdminPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {orders.map((order) => (
+                  {filtered.map((order) => (
                     <tr key={order.id} className="border-b border-border last:border-0 [&>td]:px-4 [&>td]:py-4 [&>td]:align-top">
                       <td>
                         <span className="font-display font-bold">#{order.order_number}</span>
@@ -165,10 +221,10 @@ function AdminPage() {
                       </td>
                     </tr>
                   ))}
-                  {orders.length === 0 ? (
+                  {filtered.length === 0 ? (
                     <tr>
                       <td colSpan={6} className="px-4 py-10 text-center text-muted-foreground">
-                        No orders yet.
+                        {orders.length === 0 ? "No orders yet." : "No orders match your search."}
                       </td>
                     </tr>
                   ) : null}
