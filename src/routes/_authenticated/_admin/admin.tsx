@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Search, Eye, Phone, MessageCircle, Copy } from "lucide-react";
+import { Search, Eye, Phone, MessageCircle, Copy, Download } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -101,6 +101,51 @@ function AdminPage() {
     });
   }, [orders, query, statusFilter]);
 
+  const exportCsv = () => {
+    if (filtered.length === 0) {
+      toast.error("No orders to export");
+      return;
+    }
+    const columns: { key: string; label: string }[] = [
+      { key: "order_number", label: "Order No" },
+      { key: "created_at", label: "Date" },
+      { key: "status", label: "Status" },
+      { key: "customer_name", label: "Name" },
+      { key: "phone", label: "Phone" },
+      { key: "email", label: "Email" },
+      { key: "address", label: "Address" },
+      { key: "area", label: "Area" },
+      { key: "city", label: "City" },
+      { key: "postal_code", label: "Postal Code" },
+      { key: "country", label: "Country" },
+      { key: "design_name", label: "Design" },
+      { key: "thickness", label: "Thickness" },
+      { key: "quantity", label: "Qty" },
+      { key: "unit_price", label: "Unit Price" },
+      { key: "delivery_area", label: "Delivery Area" },
+      { key: "delivery_fee", label: "Delivery Fee" },
+      { key: "total", label: "Total" },
+      { key: "note", label: "Note" },
+    ];
+    const escape = (value: unknown) => {
+      const s = value === null || value === undefined ? "" : String(value);
+      return `"${s.replace(/"/g, '""')}"`;
+    };
+    const rows = filtered.map((o) =>
+      columns.map((c) => escape((o as Record<string, unknown>)[c.key])).join(","),
+    );
+    const csv = ["\uFEFF" + columns.map((c) => escape(c.label)).join(","), ...rows].join("\r\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `unipadz-orders-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success(`${filtered.length} orders exported`);
+  };
+
+
   return (
     <div className="min-h-screen bg-surface-alt">
       <header className="border-b border-border bg-background">
@@ -110,6 +155,14 @@ function AdminPage() {
           <Button asChild variant="outline" className="rounded-none uppercase tracking-[0.14em]">
             <Link to="/catalog">Catalog</Link>
           </Button>
+          <Button
+            variant="outline"
+            onClick={exportCsv}
+            className="rounded-none uppercase tracking-[0.14em]"
+          >
+            <Download className="mr-2 h-4 w-4" /> Export CSV
+          </Button>
+
           <Button variant="outline" onClick={signOut} className="rounded-none uppercase tracking-[0.14em]">
             Sign out
           </Button>
