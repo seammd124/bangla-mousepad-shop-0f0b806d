@@ -281,10 +281,10 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="grid gap-10 lg:grid-cols-[1.25fr_1fr] lg:items-start"
+      className="grid gap-8 pb-28 lg:grid-cols-[1.25fr_1fr] lg:items-start lg:gap-10 lg:pb-0"
       noValidate
     >
-      <div className="space-y-10">
+      <div className="space-y-8 lg:space-y-10">
         <fieldset>
           <legend className="eyebrow text-muted-foreground">01 — Choose design</legend>
           <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -296,7 +296,7 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
                   key={design.id}
                   onClick={() => selectDesign(design.id)}
                   aria-pressed={active}
-                  className={`group border p-1.5 text-left transition-all ${
+                  className={`group flex h-full flex-col border p-1.5 text-left transition-all ${
                     active
                       ? "iso-shadow-sm -translate-x-[1px] -translate-y-[1px] border-ink"
                       : "border-border hover:border-ink"
@@ -308,16 +308,17 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
                     loading="lazy"
                     className="aspect-2/1 w-full object-cover"
                   />
-                  <span className="mt-2 block px-1 text-xs font-bold uppercase tracking-wide">
+                  <span className="mt-2 block px-1 text-[11px] font-bold uppercase leading-tight tracking-wide sm:text-xs">
                     {design.name}
                   </span>
-                  <span className="mb-1 block px-1 text-[11px] text-muted-foreground">
+                  <span className="mb-1 mt-auto block px-1 pt-1 text-[11px] text-muted-foreground">
                     {design.thickness} · {formatBdt(design.price)}
                   </span>
                 </button>
               );
             })}
           </div>
+
           <FieldError message={errors.designId?.message} />
           <p className="bn mt-3 text-xs text-muted-foreground">
             প্রতিটি ডিজাইনের থিকনেস নির্দিষ্ট — ডিজাইন সিলেক্ট করলেই দাম আপডেট হবে।
