@@ -40,7 +40,7 @@ const TRUST = [
 
 function Index() {
   const [designId, setDesignId] = useState<DesignId>("blood-moon-samurai");
-  const design = getDesign(designId);
+  
 
   return (
     <div id="top" className="min-h-screen bg-background">
