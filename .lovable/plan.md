@@ -93,10 +93,11 @@ Server functions (`src/lib/orders.functions.ts`):
 
 Protected route under `_authenticated/`. Gate via `requireSupabaseAuth` + `has_role('admin')`. Shows a table of all orders (date, customer, phone, design, thickness, qty, total, status) with a status dropdown and basic filters. You (the store owner) sign in with your Lovable Cloud account and are granted the `admin` role.
 
-## Images (generated via imagegen)
+## Images and logo
 
-- 1 hero image (warm overhead charcoal mousepad on wooden desk).
-- 9 design images (one per design, matching each design's prompt). Saved under `src/assets/` and imported.
+- The uploaded UM logo is used as-is for the header lockup and footer, and downscaled into `public/favicon.png` as the site favicon.
+- 1 hero image: a black Unipadz mousepad, high-contrast studio lighting, dark seamless background — matching the logo's stark monochrome.
+- 9 design images (one per design above), all monochrome. Saved under `src/assets/`.
 
 ## What I need from you
 
@@ -110,9 +111,10 @@ No online payment, no customer accounts/login, no cart for multiple products (on
 ## Build order
 
 1. Enable Lovable Cloud → write & apply the orders migration (table, grants, RLS, admin role).
-2. Add design tokens + fonts to `src/styles.css`; load fonts via `<link>` in `__root.tsx`.
-3. Generate hero + 9 design images.
+2. Add the monochrome/isometric tokens + fonts to `src/styles.css`; load fonts via `<link>` in `__root.tsx`; wire the UM logo asset and favicon.
+3. Generate hero + 9 monochrome design images.
 4. Build `src/lib/products.ts` and the landing page on `src/routes/index.tsx` (all sections, order form, live summary).
 5. Add `placeOrder` server function; wire form submit → DB insert → success state.
 6. Build `/admin` dashboard route + `listOrders`/`updateOrderStatus`.
-7. SEO head on `/` (title, description, og), verify build + preview.
+7. SEO head on `/` (Unique Modz / Unipadz title, description, og), verify build + preview.
+
