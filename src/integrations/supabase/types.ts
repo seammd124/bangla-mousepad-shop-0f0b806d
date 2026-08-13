@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      delivery_settings: {
+        Row: {
+          eta: string
+          fee: number
+          id: string
+          label: string
+          label_bn: string
+          updated_at: string
+        }
+        Insert: {
+          eta?: string
+          fee: number
+          id: string
+          label: string
+          label_bn?: string
+          updated_at?: string
+        }
+        Update: {
+          eta?: string
+          fee?: number
+          id?: string
+          label?: string
+          label_bn?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           address: string
@@ -83,6 +110,54 @@ export type Database = {
           thickness?: string
           total?: number
           unit_price?: number
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string
+          description_bn: string
+          id: string
+          image_url: string
+          name: string
+          name_bn: string
+          price: number
+          regular_price: number
+          sort_order: number
+          thickness: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string
+          description_bn?: string
+          id: string
+          image_url?: string
+          name: string
+          name_bn?: string
+          price: number
+          regular_price?: number
+          sort_order?: number
+          thickness: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string
+          description_bn?: string
+          id?: string
+          image_url?: string
+          name?: string
+          name_bn?: string
+          price?: number
+          regular_price?: number
+          sort_order?: number
+          thickness?: string
+          updated_at?: string
         }
         Relationships: []
       }
