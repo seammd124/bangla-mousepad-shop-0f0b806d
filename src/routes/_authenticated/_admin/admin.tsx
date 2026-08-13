@@ -42,6 +42,30 @@ export const Route = createFileRoute("/_authenticated/_admin/admin")({
 
 const STATUSES = ["new", "confirmed", "shipped", "delivered", "cancelled"];
 
+const EXPORT_COLUMNS: { key: string; label: string }[] = [
+  { key: "order_number", label: "Order No" },
+  { key: "created_at", label: "Date" },
+  { key: "status", label: "Status" },
+  { key: "customer_name", label: "Name" },
+  { key: "phone", label: "Phone" },
+  { key: "email", label: "Email" },
+  { key: "address", label: "Address" },
+  { key: "area", label: "Area" },
+  { key: "city", label: "City" },
+  { key: "postal_code", label: "Postal Code" },
+  { key: "country", label: "Country" },
+  { key: "design_name", label: "Design" },
+  { key: "thickness", label: "Thickness" },
+  { key: "quantity", label: "Qty" },
+  { key: "unit_price", label: "Unit Price" },
+  { key: "delivery_area", label: "Delivery Area" },
+  { key: "delivery_fee", label: "Delivery Fee" },
+  { key: "total", label: "Total" },
+  { key: "note", label: "Note" },
+];
+
+const EXPORT_PREFS_KEY = "unipadz-export-columns";
+
 function AdminPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -50,6 +74,31 @@ function AdminPage() {
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [exportOpen, setExportOpen] = useState(false);
+  const [exportKeys, setExportKeys] = useState<string[]>(() =>
+    EXPORT_COLUMNS.map((c) => c.key),
+  );
+
+  useEffect(() => {
+    const saved = localStorage.getItem(EXPORT_PREFS_KEY);
+    if (!saved) return;
+    try {
+      const parsed = JSON.parse(saved) as string[];
+      const valid = parsed.filter((k) => EXPORT_COLUMNS.some((c) => c.key === k));
+      if (valid.length) setExportKeys(valid);
+    } catch {
+      /* ignore malformed prefs */
+    }
+  }, []);
+
+  const toggleExportKey = (key: string, checked: boolean) => {
+    setExportKeys((prev) => {
+      const next = checked ? [...prev, key] : prev.filter((k) => k !== key);
+      localStorage.setItem(EXPORT_PREFS_KEY, JSON.stringify(next));
+      return next;
+    });
+  };
+
 
 
   const { data, isLoading } = useQuery({
