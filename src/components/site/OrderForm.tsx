@@ -52,8 +52,7 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
 
   const errClass = (hasError?: boolean) =>
     hasError ? "border-destructive focus-visible:ring-destructive" : "";
-  const aria = (hasError?: boolean) =>
-    ({ "aria-invalid": hasError } as { "aria-invalid": boolean });
+
 
 
   const {
