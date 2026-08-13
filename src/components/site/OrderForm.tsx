@@ -123,6 +123,14 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
   };
 
   if (confirmation) {
+    const waMessage =
+      `আসসালামু আলাইকুম, আমি অর্ডার করেছি — Unipadz।\n` +
+      `অর্ডার নম্বর: ${confirmation.orderNumber}\n` +
+      `ডিজাইন: ${confirmation.design} (${confirmation.thickness})\n` +
+      `পরিমাণ: ${confirmation.quantity}\n` +
+      `নাম: ${confirmation.name}\n` +
+      `মোট: ${formatBdt(confirmation.total)}`;
+    const waLink = `https://wa.me/${CONTACT.phoneE164.replace("+", "")}?text=${encodeURIComponent(waMessage)}`;
     return (
       <div className="mx-auto max-w-2xl">
         <div className="iso-shadow border border-ink bg-card">
