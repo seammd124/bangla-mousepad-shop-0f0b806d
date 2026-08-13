@@ -523,7 +523,8 @@ function AdminPage() {
                       <td className="max-w-[240px]">
                         <div>{order.address}</div>
                         <div className="text-xs text-muted-foreground">
-                          {order.area}, {order.city} — {order.postal_code}
+                          {[order.area, order.city].filter(Boolean).join(", ")}
+                          {order.postal_code ? ` — ${order.postal_code}` : ""}
                         </div>
                       </td>
                       <td className="font-display font-bold">{formatBdt(Number(order.total))}</td>
@@ -625,7 +626,8 @@ function AdminPage() {
                   <p className="eyebrow text-muted-foreground">Delivery address</p>
                   <p className="mt-2">{selected.address}</p>
                   <p className="text-muted-foreground">
-                    {selected.area}, {selected.city} — {selected.postal_code}
+                    {[selected.area, selected.city].filter(Boolean).join(", ")}
+                    {selected.postal_code ? ` — ${selected.postal_code}` : ""}
                   </p>
                   <p className="text-muted-foreground">{selected.country}</p>
                   <Button
@@ -635,7 +637,7 @@ function AdminPage() {
                     onClick={() =>
                       copy(
                         "Address",
-                        `${selected.customer_name}, ${selected.phone}, ${selected.address}, ${selected.area}, ${selected.city} - ${selected.postal_code}`,
+                        `${selected.customer_name}, ${selected.phone}, ${selected.address}${[selected.area, selected.city].filter(Boolean).length ? `, ${[selected.area, selected.city].filter(Boolean).join(", ")}` : ""}${selected.postal_code ? ` - ${selected.postal_code}` : ""}`,
                       )
                     }
                   >
