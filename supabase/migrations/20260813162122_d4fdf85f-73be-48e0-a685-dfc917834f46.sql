@@ -1,0 +1,2 @@
+REVOKE EXECUTE ON FUNCTION public.place_order(text, text, text, text, text, text, text, text, text, text, integer, text, text) FROM anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.place_order(text, text, text, text, text, text, text, text, text, text, integer, text, text) TO service_role;
