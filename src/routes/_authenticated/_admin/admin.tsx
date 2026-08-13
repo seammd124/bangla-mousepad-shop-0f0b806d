@@ -20,6 +20,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
 import { LogoLockup } from "@/components/site/Logo";
 import { formatBdt } from "@/lib/catalog";
 import { listOrders, updateOrderStatus } from "@/lib/orders.functions";
