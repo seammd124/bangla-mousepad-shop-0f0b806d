@@ -84,14 +84,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Order 900×400mm Unipadz desk mousepads in 4mm or 5mm. Cash on delivery across Bangladesh.",
+          "Unique Modz এর Unipadz — 900×400mm প্রিমিয়াম ডেস্ক মাউসপ্যাড, 4mm ও 5mm থিকনেস। সারা বাংলাদেশে ক্যাশ অন ডেলিভারি।",
       },
       { name: "author", content: "Unique Modz" },
-      { property: "og:title", content: "Unipadz by Unique Modz" },
+      { property: "og:title", content: "Unipadz by Unique Modz — প্রিমিয়াম মাউসপ্যাড" },
       {
         property: "og:description",
-        content: "Oversized 900×400mm mousepads. Cash on delivery across Bangladesh.",
+        content: "900×400mm বড় মাউসপ্যাড, 4mm ও 5mm। সারা বাংলাদেশে ক্যাশ অন ডেলিভারি।",
       },
+
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

@@ -19,13 +19,15 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Unipadz — 900×400mm premium mousepad. 9 designs, COD nationwide, up to ৳500 off. Order in 1 minute.",
+          "Unipadz premium gaming mousepad — 900×400mm, 4mm ও 5mm, ৯টি ডিজাইন। দাম মাত্র ৳১৩৯৯ থেকে, সারা বাংলাদেশে ক্যাশ অন ডেলিভারি। ১ মিনিটে অর্ডার করুন।",
       },
-      { property: "og:title", content: "Unipadz — Bangladesh's #1 Premium Desk Mousepad" },
+      { property: "og:title", content: "Unipadz — প্রিমিয়াম বড় গেমিং মাউসপ্যাড | ৳১৩৯৯ থেকে" },
       {
         property: "og:description",
-        content: "9 designs, cash on delivery nationwide. Up to ৳500 launch discount. Order in 1 minute.",
+        content:
+          "900×400mm প্রিমিয়াম মাউসপ্যাড, ৯টি ডিজাইন। সারা বাংলাদেশে ক্যাশ অন ডেলিভারি — অর্ডার করুন ১ মিনিটে।",
       },
+
       { property: "og:type", content: "product" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
