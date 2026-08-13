@@ -287,7 +287,7 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
               <Label htmlFor="customerName">
                 Full name <span className="bn text-muted-foreground">/ নাম</span>
               </Label>
-              <Input id="customerName" className="mt-2" {...register("customerName")} />
+              <Input id="customerName" className={`mt-2 ${errClass(!!errors.customerName)}`} aria-invalid={!!errors.customerName} {...register("customerName")} />
               <FieldError message={errors.customerName?.message} />
             </div>
 
@@ -304,7 +304,8 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
                   inputMode="numeric"
                   maxLength={11}
                   placeholder="0181XXXXXXX"
-                  className="rounded-l-none"
+                  className={`rounded-l-none ${errClass(!!errors.phone)}`}
+                  aria-invalid={!!errors.phone}
                   {...register("phone")}
                 />
               </div>
@@ -316,7 +317,7 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
             <Label htmlFor="email">
               Email <span className="text-muted-foreground">(optional)</span>
             </Label>
-            <Input id="email" type="email" className="mt-2" {...register("email")} />
+            <Input id="email" type="email" className={`mt-2 ${errClass(!!errors.email)}`} aria-invalid={!!errors.email} {...register("email")} />
             <FieldError message={errors.email?.message} />
           </div>
 
@@ -324,7 +325,7 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
             <Label htmlFor="address">
               Full address <span className="bn text-muted-foreground">/ সম্পূর্ণ ঠিকানা</span>
             </Label>
-            <Textarea id="address" rows={3} className="mt-2" {...register("address")} />
+            <Textarea id="address" rows={3} className={`mt-2 ${errClass(!!errors.address)}`} aria-invalid={!!errors.address} {...register("address")} />
             <FieldError message={errors.address?.message} />
           </div>
 
@@ -333,14 +334,14 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
               <Label htmlFor="city">
                 City <span className="bn text-muted-foreground">/ শহর</span>
               </Label>
-              <Input id="city" className="mt-2" {...register("city")} />
+              <Input id="city" className={`mt-2 ${errClass(!!errors.city)}`} aria-invalid={!!errors.city} {...register("city")} />
               <FieldError message={errors.city?.message} />
             </div>
             <div>
               <Label htmlFor="area">
                 Area <span className="bn text-muted-foreground">/ এলাকা</span>
               </Label>
-              <Input id="area" className="mt-2" {...register("area")} />
+              <Input id="area" className={`mt-2 ${errClass(!!errors.area)}`} aria-invalid={!!errors.area} {...register("area")} />
               <FieldError message={errors.area?.message} />
             </div>
             <div>
@@ -351,7 +352,8 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
                 id="postalCode"
                 inputMode="numeric"
                 maxLength={4}
-                className="mt-2"
+                className={`mt-2 ${errClass(!!errors.postalCode)}`}
+                aria-invalid={!!errors.postalCode}
                 {...register("postalCode")}
               />
               <FieldError message={errors.postalCode?.message} />
@@ -365,7 +367,8 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
               type="number"
               min={1}
               max={5}
-              className="mt-2 max-w-32"
+              className={`mt-2 max-w-32 ${errClass(!!errors.quantity)}`}
+              aria-invalid={!!errors.quantity}
               {...register("quantity", { valueAsNumber: true })}
             />
             <FieldError message={errors.quantity?.message} />
