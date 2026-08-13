@@ -112,16 +112,16 @@ Server functions (`src/lib/orders.functions.ts`):
 
 Protected route under `_authenticated/`. Gate via `requireSupabaseAuth` + `has_role('admin')`. Shows a table of all orders (date, customer, phone, design, thickness, qty, total, status) with a status dropdown and basic filters. You (the store owner) sign in with your Lovable Cloud account and are granted the `admin` role.
 
-## Images and logo
+## Media assets
 
-- The uploaded UM logo is used as-is for the header lockup and footer, and downscaled into `public/favicon.png` as the site favicon.
-- 1 hero image: a black Unipadz mousepad, high-contrast studio lighting, dark seamless background — matching the logo's stark monochrome.
-- 9 design images (one per design above), all monochrome. Saved under `src/assets/`.
+- **Logo:** the uploaded UM monogram for the header lockup and footer, downscaled into `public/favicon.png` as the favicon.
+- **Hero video:** your `UniPadz-1.mp4` (2160×3840, 21.7s, 98MB) compressed with ffmpeg to a web-ready MP4 (~1080×1920, H.264) plus a WebM fallback, uploaded via Lovable Assets and streamed from the CDN. A poster JPG is extracted from the first clean frame.
+- **Design images:** placeholder monochrome renders under `src/assets/` until you send the real designs.
 
-## What I need from you
+## What I need from you (can come after the build)
 
-1. **WhatsApp/phone number and/or email** for the contact section and order confirmation copy. (You chose "I'll type it" but didn't include it — send it after approving and I'll wire it in. Until then I'll use a clearly-marked placeholder you can edit.)
-2. Confirmation that **Lovable Cloud (PostgreSQL)** is acceptable in place of MongoDB.
+1. **The 9 mousepad designs + descriptions** — I'll build against placeholders and swap them in when you send them.
+2. **Contact WhatsApp/phone number and/or email** for the contact section and footer.
 
 ## Out of scope (per "landing page only")
 
@@ -130,10 +130,12 @@ No online payment, no customer accounts/login, no cart for multiple products (on
 ## Build order
 
 1. Enable Lovable Cloud → write & apply the orders migration (table, grants, RLS, admin role).
-2. Add the monochrome/isometric tokens + fonts to `src/styles.css`; load fonts via `<link>` in `__root.tsx`; wire the UM logo asset and favicon.
-3. Generate hero + 9 monochrome design images.
-4. Build `src/lib/products.ts` and the landing page on `src/routes/index.tsx` (all sections, order form, live summary).
-5. Add `placeOrder` server function; wire form submit → DB insert → success state.
-6. Build `/admin` dashboard route + `listOrders`/`updateOrderStatus`.
-7. SEO head on `/` (Unique Modz / Unipadz title, description, og), verify build + preview.
+2. Compress the hero video + extract poster; upload logo/video as CDN assets; set the favicon.
+3. Add the monochrome/isometric tokens + fonts to `src/styles.css`; load fonts via `<link>` in `__root.tsx`.
+4. Generate placeholder design images.
+5. Build `src/lib/products.ts` and the landing page on `src/routes/index.tsx` (hero video, gallery, order form, live summary).
+6. Add `placeOrder` server function with matching server-side zod validation; wire submit → DB insert → success state.
+7. Build `/admin` dashboard route + `listOrders`/`updateOrderStatus`.
+8. SEO head on `/` (Unique Modz / Unipadz title, description, og), verify build + preview.
+
 
