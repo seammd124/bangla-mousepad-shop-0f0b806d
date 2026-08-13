@@ -153,9 +153,40 @@ function AdminPage() {
     });
   }, [orders, query, statusFilter]);
 
+  // Orders narrowed to the selected date range (for CSV export only).
+  const exportFiltered = useMemo(() => {
+    return filtered.filter((o) => {
+      if (!o.created_at) return true;
+      const d = new Date(o.created_at).getTime();
+      if (dateFrom && d < new Date(dateFrom + "T00:00:00").getTime()) return false;
+      if (dateTo && d > new Date(dateTo + "T23:59:59").getTime()) return false;
+      return true;
+    });
+  }, [filtered, dateFrom, dateTo]);
+
+  const setDatePreset = (days: number | "all" | "today") => {
+    if (days === "all") {
+      setDateFrom("");
+      setDateTo("");
+      return;
+    }
+    const now = new Date();
+    const end = new Date(now);
+    end.setHours(23, 59, 59, 999);
+    const start = new Date(now);
+    if (days === "today") {
+      start.setHours(0, 0, 0, 0);
+    } else {
+      start.setDate(start.getDate() - (days - 1));
+      start.setHours(0, 0, 0, 0);
+    }
+    setDateFrom(start.toISOString().slice(0, 10));
+    setDateTo(end.toISOString().slice(0, 10));
+  };
+
   const exportCsv = () => {
-    if (filtered.length === 0) {
-      toast.error("No orders to export");
+    if (exportFiltered.length === 0) {
+      toast.error("No orders to export in this range");
       return;
     }
     const columns = EXPORT_COLUMNS.filter((c) => exportKeys.includes(c.key));
@@ -167,7 +198,7 @@ function AdminPage() {
       const s = value === null || value === undefined ? "" : String(value);
       return `"${s.replace(/"/g, '""')}"`;
     };
-    const rows = filtered.map((o) =>
+    const rows = exportFiltered.map((o) =>
       columns.map((c) => escape((o as Record<string, unknown>)[c.key])).join(","),
     );
     const csv = ["\uFEFF" + columns.map((c) => escape(c.label)).join(","), ...rows].join("\r\n");
@@ -175,11 +206,14 @@ function AdminPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `unipadz-orders-${new Date().toISOString().slice(0, 10)}.csv`;
+    const rangeTag = dateFrom || dateTo
+      ? `${dateFrom || "start"}_to_${dateTo || "end"}`
+      : new Date().toISOString().slice(0, 10);
+    a.download = `unipadz-orders-${rangeTag}.csv`;
     a.click();
     URL.revokeObjectURL(url);
     setExportOpen(false);
-    toast.success(`${filtered.length} orders exported`);
+    toast.success(`${exportFiltered.length} orders exported`);
   };
 
 
