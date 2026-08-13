@@ -11,23 +11,23 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  DELIVERY_OPTIONS,
-  DESIGNS,
   PRODUCT_SIZE,
   formatBdt,
-  getDelivery,
-  getDesign,
+  getDeliveryOption,
+  getProduct,
   savings,
-  type DesignId,
+  type DeliveryOption,
+  type Product,
 } from "@/lib/catalog";
-import { DESIGN_IMAGES } from "@/lib/design-images";
 import { orderSchema, type OrderInput } from "@/lib/order-schema";
 import { placeOrder } from "@/lib/orders.functions";
 import { PriceTag } from "@/components/site/PriceTag";
 
 interface OrderFormProps {
-  designId: DesignId;
-  onDesignChange: (id: DesignId) => void;
+  designId: string;
+  onDesignChange: (id: string) => void;
+  products: Product[];
+  delivery: DeliveryOption[];
 }
 
 function FieldError({ message }: { message?: string | undefined }) {
@@ -35,7 +35,7 @@ function FieldError({ message }: { message?: string | undefined }) {
   return <p className="mt-1.5 text-xs font-medium text-destructive">{message}</p>;
 }
 
-export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
+export function OrderForm({ designId, onDesignChange, products, delivery }: OrderFormProps) {
   const submitOrder = useServerFn(placeOrder);
   const [confirmation, setConfirmation] = useState<{
     orderNumber: string;
@@ -48,7 +48,7 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
     deliveryFee: number;
   } | null>(null);
 
-  const selected = getDesign(designId) ?? DESIGNS[0]!;
+  const selected = getProduct(products, designId) ?? products[0]!;
   const thickness = selected.thickness;
 
   const errClass = (hasError?: boolean) =>
@@ -87,14 +87,14 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
   const qty = Number(quantity) || 1;
 
   const unitPrice = selected.price;
-  const deliveryFee = getDelivery(deliveryArea)?.fee ?? 0;
+  const deliveryFee = getDeliveryOption(delivery, deliveryArea)?.fee ?? 0;
   const total = unitPrice * qty + deliveryFee;
   const discount = savings(selected) * qty;
 
-  const selectDesign = (id: DesignId) => {
+  const selectDesign = (id: string) => {
     onDesignChange(id);
     setValue("designId", id, { shouldValidate: true });
-    const next = getDesign(id);
+    const next = getProduct(products, id);
     if (next) setValue("thickness", next.thickness, { shouldValidate: true });
   };
 
@@ -267,7 +267,7 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
         <fieldset>
           <legend className="eyebrow text-muted-foreground">01 — Choose design</legend>
           <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {DESIGNS.map((design) => {
+            {products.map((design) => {
               const active = design.id === designId;
               return (
                 <button
@@ -282,7 +282,7 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
                   }`}
                 >
                   <img
-                    src={DESIGN_IMAGES[design.id]}
+                    src={design.imageUrl}
                     alt={`${design.name} Unipadz mousepad design`}
                     loading="lazy"
                     className="aspect-2/1 w-full object-cover"
@@ -404,7 +404,7 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
               Delivery area <span className="bn text-muted-foreground">/ ডেলিভারি এলাকা</span>
             </Label>
             <div className="mt-2 grid gap-3 sm:grid-cols-2">
-              {DELIVERY_OPTIONS.map((option) => (
+              {delivery.map((option) => (
                 <label
                   key={option.id}
                   className={`flex cursor-pointer items-center justify-between border p-3 text-sm transition-colors ${
@@ -433,7 +433,7 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
       <aside className="iso-shadow top-28 border border-ink bg-card p-6 lg:sticky">
         <h3 className="eyebrow text-muted-foreground">Order summary</h3>
         <img
-          src={DESIGN_IMAGES[designId]}
+          src={selected.imageUrl}
           alt="Selected Unipadz design preview"
           className="mt-4 aspect-2/1 w-full border border-border object-cover"
         />
