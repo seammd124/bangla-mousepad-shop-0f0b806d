@@ -190,7 +190,7 @@ export function OrderForm({ designId, onDesignChange }: OrderFormProps) {
                   id="phone"
                   inputMode="numeric"
                   maxLength={11}
-                  placeholder="01881655083"
+                  placeholder="0181XXXXXXX"
                   className="rounded-l-none"
                   {...register("phone")}
                 />
