@@ -55,16 +55,16 @@ export async function sendCapiEvent(event: CapiPurchase) {
     if (!settings?.capi_enabled || !settings.pixel_id || !settings.access_token) return;
 
     const userData: Record<string, unknown> = {};
-    if (event.email) userData.em = [await sha256(event.email)];
-    if (event.phone) userData.ph = [await sha256(event.phone.replace(/[^0-9]/g, ""))];
-    if (event.firstName) userData.fn = [await sha256(event.firstName.split(" ")[0] ?? "")];
-    if (event.city) userData.ct = [await sha256(event.city.replace(/\s+/g, ""))];
-    if (event.postalCode) userData.zp = [await sha256(event.postalCode)];
-    userData.country = [await sha256("bd")];
-    if (event.clientIp) userData.client_ip_address = event.clientIp;
-    if (event.userAgent) userData.client_user_agent = event.userAgent;
-    if (event.fbp) userData.fbp = event.fbp;
-    if (event.fbc) userData.fbc = event.fbc;
+    if (event.email) userData["em"] = [await sha256(event.email)];
+    if (event.phone) userData["ph"] = [await sha256(event.phone.replace(/[^0-9]/g, ""))];
+    if (event.firstName) userData["fn"] = [await sha256(event.firstName.split(" ")[0] ?? "")];
+    if (event.city) userData["ct"] = [await sha256(event.city.replace(/\s+/g, ""))];
+    if (event.postalCode) userData["zp"] = [await sha256(event.postalCode)];
+    userData["country"] = [await sha256("bd")];
+    if (event.clientIp) userData["client_ip_address"] = event.clientIp;
+    if (event.userAgent) userData["client_user_agent"] = event.userAgent;
+    if (event.fbp) userData["fbp"] = event.fbp;
+    if (event.fbc) userData["fbc"] = event.fbc;
 
     const body = {
       data: [
