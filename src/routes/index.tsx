@@ -66,20 +66,21 @@ function Index() {
         {/* Hero */}
         <section className="wave-field relative overflow-hidden border-b border-border">
           <WaveBackdrop />
-          <div className="mx-auto max-w-3xl px-5 py-16 text-center lg:py-24">
+          <div className="mx-auto max-w-3xl px-4 py-12 text-center sm:px-5 sm:py-16 lg:py-24">
             <p className="inline-flex items-center gap-2 border border-ink bg-primary px-3 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-primary-foreground">
               <Flame className="size-3.5" aria-hidden="true" />
               Launch offer — save up to {formatBdt(saving)}
             </p>
 
-            <h1 className="mt-6 font-display text-4xl font-black uppercase leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl">
+            <h1 className="mt-6 font-display text-[2.1rem] font-black uppercase leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl">
               Your desk deserves{" "}
               <span className="bg-foreground px-2 text-background">better</span>
             </h1>
 
-            <p className="bn-display mx-auto mt-6 max-w-xl text-xl text-foreground/90 sm:text-2xl">
+            <p className="bn-display mx-auto mt-5 max-w-xl text-lg text-foreground/90 sm:mt-6 sm:text-2xl">
               ৯০০ × ৪০০ মি.মি. প্রিমিয়াম মাউসপ্যাড — নিখুঁত গ্লাইড, নিঃশব্দ কন্ট্রোল, আর ডেস্কের
               চেহারাই বদলে দেওয়া ফিনিশ।
+
             </p>
 
             <p className="bn mx-auto mt-4 max-w-lg text-sm text-muted-foreground">
@@ -87,20 +88,21 @@ function Index() {
               লাগবে মাত্র ১ মিনিট, ক্যাশ অন ডেলিভারি, সারা বাংলাদেশে।
             </p>
 
-            <div className="mt-9 flex flex-col items-center justify-center gap-5 sm:flex-row">
+            <div className="mt-8 flex flex-col items-center justify-center gap-5 sm:mt-9 sm:flex-row">
               <a
                 href="#order-form"
-                className="iso-shadow group inline-flex items-center gap-3 border border-ink bg-primary px-9 py-4 font-display text-sm font-bold uppercase tracking-[0.16em] text-primary-foreground transition-transform hover:-translate-x-[2px] hover:-translate-y-[2px]"
+                className="iso-shadow group inline-flex w-full items-center justify-center gap-3 border border-ink bg-primary px-8 py-4 font-display text-sm font-bold uppercase tracking-[0.16em] text-primary-foreground transition-transform hover:-translate-x-[2px] hover:-translate-y-[2px] sm:w-auto sm:px-9"
               >
                 Order Now
                 <ArrowDown className="size-4 transition-transform group-hover:translate-y-0.5" aria-hidden="true" />
               </a>
+
               {cheapest ? (
                 <PriceTag regularPrice={cheapest.regularPrice} price={cheapest.price} size="md" />
               ) : null}
             </div>
 
-            <ul className="mx-auto mt-10 grid max-w-2xl gap-3 border-t border-border pt-6 text-sm sm:grid-cols-3">
+            <ul className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-4 border-t border-border pt-6 text-sm xs:grid-cols-3 sm:grid-cols-3">
               {TRUST.map((item) => (
                 <li key={item.label} className="flex flex-col items-center gap-1">
                   <item.icon className="size-4 shrink-0" aria-hidden="true" />
@@ -109,19 +111,21 @@ function Index() {
                 </li>
               ))}
             </ul>
+
           </div>
         </section>
 
 
         {/* Order form */}
-        <section id="order-form" className="scroll-mt-24 bg-surface-alt">
-          <div className="mx-auto max-w-6xl px-5 py-14 lg:py-20">
-            <h2 className="font-display text-3xl font-black uppercase tracking-tight sm:text-4xl">
+        <section id="order-form" className="scroll-mt-20 bg-surface-alt">
+          <div className="mx-auto max-w-6xl px-4 py-12 sm:px-5 sm:py-14 lg:py-20">
+            <h2 className="font-display text-2xl font-black uppercase tracking-tight sm:text-4xl">
               Place your order
             </h2>
-            <p className="bn-display mt-3 max-w-xl text-lg">
+            <p className="bn-display mt-3 max-w-xl text-base sm:text-lg">
               ডিজাইন বেছে নিন, তথ্য দিন — বাকিটা আমাদের দায়িত্ব।
             </p>
+
             <p className="bn mt-1 max-w-xl text-sm text-muted-foreground">
               অর্ডারের পর আমরা কল করে কনফার্ম করব। টাকা দিবেন পণ্য হাতে পাওয়ার পর।
             </p>
