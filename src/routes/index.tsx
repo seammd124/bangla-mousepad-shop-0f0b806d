@@ -262,12 +262,7 @@ function Index() {
             </p>
 
             <div className="mt-10">
-              <OrderForm
-                designId={designId}
-                onDesignChange={setDesignId}
-                thickness={thickness}
-                onThicknessChange={setThickness}
-              />
+              <OrderForm designId={designId} onDesignChange={setDesignId} />
             </div>
           </div>
         </section>
