@@ -201,5 +201,5 @@ const bnDigits = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮",
 
 /** Format a number in Bangla digits, e.g. 400 -> ৪০০. */
 export function toBanglaDigits(value: number | string): string {
-  return String(value).replace(/\d/g, (d) => bnDigits[Number(d)]);
+  return String(value).replace(/\d/g, (d) => bnDigits[Number(d)] ?? d);
 }
