@@ -1,0 +1,1 @@
+DELETE FROM public.order_rate_limit;
