@@ -1,0 +1,1 @@
+REVOKE INSERT ON public.orders FROM anon, authenticated;
