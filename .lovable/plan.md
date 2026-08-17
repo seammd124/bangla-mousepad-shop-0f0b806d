@@ -1,38 +1,35 @@
-# Add "Why Choose Unipadz" benefits section
+# লোকাল ফাইল থেকে ছবি রেন্ডার
 
-## Goal
-Integrate the user's provided marketing copy into the landing page as a dedicated, bilingual (English + Bangla) benefits section that sells the material quality and build of the Unipadz mousepad — beyond the terse spec tiles that already exist.
+সব ছবি (লোগো + ৯টি মাউসপ্যাড ডিজাইন) প্রজেক্টের ভেতরে লোকাল ফাইল হিসেবে থাকবে এবং সেখান থেকেই রেন্ডার হবে। ডাটাবেস বা CDN থেকে কোনো ছবি লোড হবে না।
 
-## Where it goes
-Insert a new section in `src/routes/index.tsx`, between the existing **Specifications** section (`#specs`) and the **Designs gallery** (`#designs`). It does not replace the spec tiles; it expands on them with the richer copy the user supplied.
+## যা করা হবে
 
-## Section structure — `#why-unipadz`
+1. আপলোড করা ১০টি ফাইল `src/assets/` এ কপি করা হবে (আসল বাইনারি ফাইল, কোনো CDN পয়েন্টার নয়):
+   - `logo.jpg` → `src/assets/um-logo.jpg`
+   - `design-blood-moon-samurai.webp`
+   - `Cyclops_Blast_Premium.webp` → `design-cyclops-blast.webp`
+   - `INTERFACE_Black.webp` → `design-interface-black.webp`
+   - `INTERFACE_White.webp` → `design-interface-white.webp`
+   - `PC_Parts_Matrix_Blue.webp` → `design-matrix-blue.webp`
+   - `PC_Parts_Matrix_White.webp` → `design-matrix-white.webp`
+   - `Midnight_Galaxy.webp` → `design-midnight-galaxy.webp`
+   - `Neon_City.webp` → `design-neon-city.webp`
+   - `Time_Traveller_Astronaut_Premium.webp` → `design-time-traveller.webp`
 
-1. **Eyebrow + headline**
-   - Eyebrow: `Why Unipadz` / `কেন ইউনিপ্যাডজ`
-   - Headline (EN): `Smoother control. Better comfort. Premium desk aesthetics.`
-   - Subline (BN): `গেমিং, অফিস, ডিজাইন বা পড়াশোনা — যেকোনো কাজে নিখুঁত মাউস ট্র্যাকিং আর আরামদায়ক অভিজ্ঞতা।`
+2. নতুন ফাইল `src/lib/product-images.ts` — প্রতিটি প্রোডাক্ট কোড অনুযায়ী লোকাল ইমপোর্টের ম্যাপ। প্রোডাক্টের ছবি এখান থেকেই আসবে; ডাটাবেসের `image_url` আর ব্যবহার হবে না (কোনো কোড ম্যাচ না পেলে শুধু তখনই ফলব্যাক)।
 
-2. **Intro paragraph** (bilingual, two-column on desktop)
-   - EN: the user's first paragraph — "Experience smoother control, better comfort, and premium desk aesthetics… precise mouse tracking with a soft and durable surface… high-quality materials, smooth micro-textured cloth surface for speed and accuracy, anti-slip rubber base… stitched edges prevent fraying."
-   - BN: a faithful Bangla translation of the same.
+3. `OrderForm.tsx` (ডিজাইন গ্রিড + সিলেক্টেড প্রিভিউ) এবং `Logo.tsx` লোকাল ছবি ব্যবহার করবে।
 
-3. **Three feature blocks** ("Why Choose Unipadz?" bullets) in a 3-up grid, each with icon + title + EN body + BN body, sourced from the user's three bullets:
-   - **Ultra Smooth Finish** — Ultra Smooth Finish microfiber fabric for smooth, accurate mouse movement (gaming + pro work). BN equivalent.
-   - **Natural Rubber Base** — High-quality natural rubber, strong anti-slip grip, long-lasting comfort during extended use. BN equivalent.
-   - **Premium Stitched Edges** — Built to prevent fraying, more durable and reliable over time. BN equivalent.
+4. ফেভিকন লোগো থেকে স্কয়ার করে `public/favicon.png` হিসেবে সেট হবে।
 
-   Icons reused from the existing `lucide-react` set (e.g. `Sparkles`, `Grip`, `Stitch`/`ShieldCheck`) to stay monochrome and consistent.
+5. পুরোনো CDN পয়েন্টার ফাইলগুলো (`src/assets/*.asset.json`, ব্যবহার-না-হওয়া ভিডিও/পোস্টার সহ) মুছে ফেলা হবে।
 
-## Data file
-Add the section's text as a small `WHY_FEATURES` array + intro copy constant in `src/lib/catalog.ts` (or a new `src/lib/why.ts`), so copy lives in data — not inline JSX — matching the existing `FEATURES` pattern.
+## যা অপরিবর্তিত থাকবে
 
-## Styling
-Reuse existing tokens (`bg-surface-alt`, `border-ink`, `font-display`, `.eyebrow`, `.bn`). No new colors. Hard-cornered cards with hairline borders, consistent with the approved monochrome/isometric direction.
+- দাম, নাম, ডিসকাউন্ট, ডেলিভারি চার্জ আগের মতোই ডাটাবেস/অ্যাডমিন প্যানেল থেকে নিয়ন্ত্রিত হবে।
+- অর্ডার, অ্যাডমিন ড্যাশবোর্ড, রেট লিমিট — কোনো পরিবর্তন নেই।
 
-## Out of scope
-No changes to the order form, pricing, database, or design gallery. No new dependencies.
+## টেকনিক্যাল নোট
 
-## Verification
-- `tsgo` typecheck passes.
-- Visual check in the preview: new section renders between Specs and Designs, bilingual text legible, monochrome styling intact.
+- Vite ইমেজ ইমপোর্ট ব্যবহার হবে (`import img from "@/assets/x.webp"`), তাই ছবি বিল্ডে হ্যাশড ও অপটিমাইজড হয়ে বান্ডলের সাথেই সার্ভ হবে — অন্য হোস্টে নিলেও কাজ করবে।
+- অ্যাডমিন ক্যাটালগ পেজে ইমেজ আপলোড/URL ফিল্ড থাকবে, কিন্তু সাইটে লোকাল ম্যাপের ছবি অগ্রাধিকার পাবে; চাইলে পরে ফিল্ডটি সরিয়ে দেওয়া যাবে।
