@@ -451,8 +451,15 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
         <img
           src={selected.imageUrl}
           alt="Selected Unipadz design preview"
-          className="mt-4 aspect-2/1 w-full border border-border object-cover"
+          decoding="async"
+          width={800}
+          height={400}
+          onError={(e) => {
+            e.currentTarget.style.visibility = "hidden";
+          }}
+          className="mt-4 aspect-2/1 w-full border border-border bg-muted object-cover"
         />
+
         <div className="mt-4">
           <PriceTag regularPrice={selected.regularPrice} price={selected.price} size="md" />
         </div>
