@@ -74,6 +74,27 @@ export type Database = {
         }
         Relationships: []
       }
+      order_rate_limit: {
+        Row: {
+          created_at: string
+          id: string
+          ip_hash: string
+          phone: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          ip_hash: string
+          phone?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          ip_hash?: string
+          phone?: string | null
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           address: string

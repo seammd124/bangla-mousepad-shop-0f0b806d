@@ -34,6 +34,47 @@ export const placeOrder = createServerFn({ method: "POST" })
     // service role alone, so visitors cannot invoke it from the browser.
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
+    // ---- Rate limiting (service-role only table) ----
+    const { getRequestHeaders: getHeadersForRateLimit } = await import("@tanstack/react-start/server");
+    const rlHeaders = getHeadersForRateLimit();
+    const rawIp =
+      (rlHeaders.get("cf-connecting-ip") ?? rlHeaders.get("x-forwarded-for") ?? "")
+        .split(",")[0]
+        ?.trim() || "unknown";
+
+    const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(rawIp));
+    const ipHash = Array.from(new Uint8Array(digest))
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+
+    const fullPhone = `+88${data.phone}`;
+    const now = Date.now();
+    const iso = (msAgo: number) => new Date(now - msAgo).toISOString();
+    const TOO_MANY = "অনেকবার চেষ্টা করা হয়েছে, কিছুক্ষণ পর আবার চেষ্টা করুন।";
+
+    const [tenMin, dayWindow, phoneWindow] = await Promise.all([
+      supabaseAdmin
+        .from("order_rate_limit")
+        .select("id", { count: "exact", head: true })
+        .eq("ip_hash", ipHash)
+        .gte("created_at", iso(10 * 60 * 1000)),
+      supabaseAdmin
+        .from("order_rate_limit")
+        .select("id", { count: "exact", head: true })
+        .eq("ip_hash", ipHash)
+        .gte("created_at", iso(24 * 60 * 60 * 1000)),
+      supabaseAdmin
+        .from("order_rate_limit")
+        .select("id", { count: "exact", head: true })
+        .eq("phone", fullPhone)
+        .gte("created_at", iso(5 * 60 * 1000)),
+    ]);
+
+    if ((tenMin.count ?? 0) >= 3 || (dayWindow.count ?? 0) >= 8 || (phoneWindow.count ?? 0) >= 1) {
+      throw new Error(TOO_MANY);
+    }
+
+
     const { data: orderNumber, error } = await supabaseAdmin.rpc("place_order", {
       p_customer_name: data.customerName,
       p_email: data.email ?? "",
@@ -54,6 +95,14 @@ export const placeOrder = createServerFn({ method: "POST" })
       console.error("placeOrder failed", error.message);
       throw new Error("Could not save your order. Please try again.");
     }
+
+    await supabaseAdmin.from("order_rate_limit").insert({ ip_hash: ipHash, phone: fullPhone });
+    // Opportunistic cleanup of throttle rows older than 7 days.
+    await supabaseAdmin
+      .from("order_rate_limit")
+      .delete()
+      .lt("created_at", new Date(now - 7 * 24 * 60 * 60 * 1000).toISOString());
+
 
     // Meta Conversions API (server-side Purchase event, deduped with the browser pixel).
     const eventId = `order-${String(orderNumber)}`;
