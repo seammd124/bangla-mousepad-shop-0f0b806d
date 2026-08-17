@@ -304,15 +304,8 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
                     src={design.imageUrl}
                     alt={`${design.name} Unipadz mousepad design`}
                     loading="lazy"
-                    decoding="async"
-                    width={800}
-                    height={400}
-                    onError={(e) => {
-                      e.currentTarget.style.visibility = "hidden";
-                    }}
-                    className="aspect-2/1 w-full bg-muted object-cover"
+                    className="aspect-2/1 w-full object-cover"
                   />
-
                   <span className="mt-2 block px-1 text-[11px] font-bold uppercase leading-tight tracking-wide sm:text-xs">
                     {design.name}
                   </span>
@@ -451,15 +444,8 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
         <img
           src={selected.imageUrl}
           alt="Selected Unipadz design preview"
-          decoding="async"
-          width={800}
-          height={400}
-          onError={(e) => {
-            e.currentTarget.style.visibility = "hidden";
-          }}
-          className="mt-4 aspect-2/1 w-full border border-border bg-muted object-cover"
+          className="mt-4 aspect-2/1 w-full border border-border object-cover"
         />
-
         <div className="mt-4">
           <PriceTag regularPrice={selected.regularPrice} price={selected.price} size="md" />
         </div>

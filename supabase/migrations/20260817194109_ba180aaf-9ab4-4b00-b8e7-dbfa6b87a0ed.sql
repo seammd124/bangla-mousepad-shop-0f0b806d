@@ -1,1 +1,0 @@
-UPDATE public.products SET image_url = '/api/public/product-image/blood-moon-samurai/optimized-1200.webp' WHERE image_url LIKE '%blood-moon-samurai%';
