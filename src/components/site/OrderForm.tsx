@@ -301,7 +301,7 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
                   }`}
                 >
                   <img
-                    src={design.imageUrl}
+                    src={productImage(design.id, design.imageUrl)}
                     alt={`${design.name} Unipadz mousepad design`}
                     loading="lazy"
                     className="aspect-2/1 w-full object-cover"
