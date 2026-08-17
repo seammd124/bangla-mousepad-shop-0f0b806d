@@ -23,6 +23,8 @@ import { orderSchema, type OrderInput } from "@/lib/order-schema";
 import { placeOrder } from "@/lib/orders.functions";
 import { trackMeta } from "@/components/site/MetaPixel";
 import { PriceTag } from "@/components/site/PriceTag";
+import { productImage } from "@/lib/product-images";
+
 
 interface OrderFormProps {
   designId: string;
@@ -301,7 +303,7 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
                   }`}
                 >
                   <img
-                    src={design.imageUrl}
+                    src={productImage(design.id, design.imageUrl)}
                     alt={`${design.name} Unipadz mousepad design`}
                     loading="lazy"
                     className="aspect-2/1 w-full object-cover"
@@ -442,7 +444,7 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
       <aside className="iso-shadow top-28 border border-ink bg-card p-5 sm:p-6 lg:sticky">
         <h3 className="eyebrow text-muted-foreground">Order summary</h3>
         <img
-          src={selected.imageUrl}
+          src={productImage(selected.id, selected.imageUrl)}
           alt="Selected Unipadz design preview"
           className="mt-4 aspect-2/1 w-full border border-border object-cover"
         />
