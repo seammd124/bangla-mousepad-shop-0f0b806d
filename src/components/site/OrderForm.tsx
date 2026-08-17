@@ -304,8 +304,15 @@ export function OrderForm({ designId, onDesignChange, products, delivery }: Orde
                     src={design.imageUrl}
                     alt={`${design.name} Unipadz mousepad design`}
                     loading="lazy"
-                    className="aspect-2/1 w-full object-cover"
+                    decoding="async"
+                    width={800}
+                    height={400}
+                    onError={(e) => {
+                      e.currentTarget.style.visibility = "hidden";
+                    }}
+                    className="aspect-2/1 w-full bg-muted object-cover"
                   />
+
                   <span className="mt-2 block px-1 text-[11px] font-bold uppercase leading-tight tracking-wide sm:text-xs">
                     {design.name}
                   </span>
