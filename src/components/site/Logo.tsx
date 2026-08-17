@@ -1,9 +1,10 @@
-import logoAsset from "@/assets/um-logo.png.asset.json";
+import logoUrl from "@/assets/um-logo.jpg";
 
 export function LogoMark({ className = "h-9 w-9" }: { className?: string }) {
   return (
     <img
-      src={logoAsset.url}
+      src={logoUrl}
+
       alt="Unique Modz monogram"
       width={64}
       height={64}
