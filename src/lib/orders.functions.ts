@@ -70,7 +70,13 @@ export const placeOrder = createServerFn({ method: "POST" })
         .gte("created_at", iso(5 * 60 * 1000)),
     ]);
 
-    if ((tenMin.count ?? 0) >= 3 || (dayWindow.count ?? 0) >= 8 || (phoneWindow.count ?? 0) >= 1) {
+    // When the IP header is missing (preview/proxy), every visitor would share the
+    // same "unknown" bucket — so only the phone throttle applies in that case.
+    const ipKnown = rawIp !== "unknown";
+    if (
+      (ipKnown && ((tenMin.count ?? 0) >= 3 || (dayWindow.count ?? 0) >= 8)) ||
+      (phoneWindow.count ?? 0) >= 1
+    ) {
       throw new Error(TOO_MANY);
     }
 
