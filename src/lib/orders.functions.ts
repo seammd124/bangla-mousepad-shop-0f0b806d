@@ -96,6 +96,14 @@ export const placeOrder = createServerFn({ method: "POST" })
       throw new Error("Could not save your order. Please try again.");
     }
 
+    await supabaseAdmin.from("order_rate_limit").insert({ ip_hash: ipHash, phone: fullPhone });
+    // Opportunistic cleanup of throttle rows older than 7 days.
+    await supabaseAdmin
+      .from("order_rate_limit")
+      .delete()
+      .lt("created_at", new Date(now - 7 * 24 * 60 * 60 * 1000).toISOString());
+
+
     // Meta Conversions API (server-side Purchase event, deduped with the browser pixel).
     const eventId = `order-${String(orderNumber)}`;
     const { getRequestHeaders } = await import("@tanstack/react-start/server");
