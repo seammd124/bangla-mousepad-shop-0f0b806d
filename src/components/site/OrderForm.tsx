@@ -23,6 +23,8 @@ import { orderSchema, type OrderInput } from "@/lib/order-schema";
 import { placeOrder } from "@/lib/orders.functions";
 import { trackMeta } from "@/components/site/MetaPixel";
 import { PriceTag } from "@/components/site/PriceTag";
+import { productImage } from "@/lib/product-images";
+
 
 interface OrderFormProps {
   designId: string;
